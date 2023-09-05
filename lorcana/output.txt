@@ -1,0 +1,66 @@
+﻿Total Unique Cards: 188
+Total Cards: 685
+Total Foiled Cards: 49
+Total Play Set Cards (>=3): 120
+Total Play Set Cards (>=4): 91
+Total Tradeable Cards (>4): 60
+Ariel On Human Legs: 2
+Cinderella Gentle and Kind: 2
+Mickey Mouse True Friend: 5
+Minnie Mouse Beloved Princess: 3
+Stitch New Dog: 4
+Timon Grub Rustler: 1
+Control Your Temper! : 2
+Hakuna Matata : 3
+Healing Glow : 1
+Dinglehopper : 4
+Archimedes Highly Educated Owl: 1
+Dr. Facilier Charlatan: 5
+Magic Broom Bucket Brigade: 3
+Maleficent Sorceress: 1
+Olaf Friendly Snowman: 1
+The Wardrobe Belle's Confidant: 1
+Yzma Alchemist: 3
+Friends On The Other Side : 4
+Aladdin Prince Ali: 1
+Flynn Rider Charming Rogue: 2
+Horace No-Good Scoundrel: 2
+Jasper Common Crook: 1
+Mad Hatter Gracious Host: 1
+Megara Pulling the Strings: 3
+Mickey Mouse Steamboat Pilot: 3
+Stampede : 3
+Sudden Chill : 1
+Vicious Betrayal : 1
+Stolen Scimitar : 4
+Aladdin Street Rat: 3
+Captain Colonel's Lieutenant: 2
+Donald Duck Boisterous Fowl: 2
+Gaston Arrogant Hunter: 2
+Pongo Ol' Rascal: 1
+Rapunzel Letting Down Her Hair: 1
+Scar Fiery Usurper: 5
+Sergeant Tibbs Courageous Cat: 3
+Dragon Fire : 2
+He's Got A Sword! : 2
+Tangle : 3
+Aurora Briar Rose: 5
+Aurora Regal Princess: 2
+Gramma Tala Storyteller: 3
+Jasmine Disguised: 1
+Maleficent Sinister Visitor: 2
+Mickey Mouse Detective: 2
+Philoctetes Trainer of Heroes: 2
+Develop Your Brain : 4
+Coconut Basket : 1
+Magic Golden Flower : 1
+Beast Hardheaded: 1
+Captain Hook Forceful Duelist: 2
+Goons Maleficent's Underlings: 3
+Kristoff Offical Ice Master: 5
+Prince Eric Dashing and Brave: 1
+Simba Rightful Heir: 1
+Tinker Bell Tiny Tactician: 3
+Break : 1
+Smash : 1
+Beast's Mirror : 1
