@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System;
+using Newtonsoft.Json.Linq;
 
 namespace lorcana.Cards
 {
@@ -27,7 +28,7 @@ namespace lorcana.Cards
         }
 
 
-        public static T? GetPropertyValue<T>(JObject item, string v)
+        public static T GetPropertyValue<T>(JObject item, string v)
         {
             var token = FindProperty(item, v);
             if (token != null)

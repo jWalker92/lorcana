@@ -1,4 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace lorcana.Cards
@@ -13,7 +18,7 @@ namespace lorcana.Cards
         {
             string allCardsJson = await GetAllCards();
             var allNames = JsonConvert.DeserializeObject<List<string>>(allCardsJson);
-            string allCardsInfoJson = await GetAllCardsInfos(string.Join(';', allNames));
+            string allCardsInfoJson = await GetAllCardsInfos(string.Join(";", allNames));
 
             var allInfo = JsonConvert.DeserializeObject<List<JObject>>(allCardsInfoJson);
 

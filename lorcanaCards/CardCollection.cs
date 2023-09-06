@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace lorcana.Cards
 {
@@ -40,7 +42,7 @@ namespace lorcana.Cards
                         foil = true;
                     }
                 }
-                Card? card = cardsList.FirstOrDefault(x => x.Number == number);
+                Card card = cardsList.FirstOrDefault(x => x.Number == number);
                 if (card == null)
                 {
                     card = library.FirstOrDefault(x => x.Number == number);
