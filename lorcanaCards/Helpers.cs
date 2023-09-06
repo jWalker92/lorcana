@@ -4,18 +4,6 @@ namespace lorcana.Cards
 {
 	public static class Helpers
     {
-
-        public static ConsoleColor ConsoleColorFromColor(CardColor color)
-        {
-            if (color == CardColor.Amber) return ConsoleColor.DarkYellow;
-            if (color == CardColor.Amehtyst) return ConsoleColor.DarkMagenta;
-            if (color == CardColor.Emerald) return ConsoleColor.DarkGreen;
-            if (color == CardColor.Ruby) return ConsoleColor.DarkRed;
-            if (color == CardColor.Sapphire) return ConsoleColor.DarkBlue;
-            if (color == CardColor.Steel) return ConsoleColor.Gray;
-            return ConsoleColor.White;
-        }
-
         public static CardColor ColorFromString(string str)
         {
             if (str == "Amber") return CardColor.Amber;
@@ -56,7 +44,6 @@ namespace lorcana.Cards
             return default;
         }
 
-        // Methode zum Suchen einer Eigenschaft in einem JToken
         public static JToken FindProperty(JToken token, string key)
         {
             if (token is JObject obj)
@@ -86,7 +73,6 @@ namespace lorcana.Cards
                     }
                 }
             }
-
             return null;
         }
     }

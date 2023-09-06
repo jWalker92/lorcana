@@ -2,16 +2,16 @@
 
 namespace lorcana
 {
-
     internal class Program
     {
-
         static async Task Main(string[] args)
         {
+            Console.WriteLine("Building Library...");
             await CardLibrary.BuildLibrary();
 
             var json = File.ReadAllText("update.json");
 
+            Console.WriteLine("Building Collection...");
             var collection = new CardCollection(CardLibrary.List, json);
             var cardsList = collection.List;
 
@@ -25,7 +25,7 @@ namespace lorcana
             Console.WriteLine("Missing Cards: " + missingCards.Count());
             foreach (var missing in missingCards)
             {
-                missing.WriteDisplay();
+                WriteCardDisplay(missing);
                 Console.WriteLine();
             }
             Console.WriteLine();
@@ -39,7 +39,7 @@ namespace lorcana
             Console.WriteLine("2 missing: " + twoCards.Count());
             foreach (var twoCard in twoCards)
             {
-                twoCard.WriteDisplay();
+                WriteCardDisplay(twoCard);
                 Console.WriteLine();
             }
             Console.WriteLine();
@@ -48,7 +48,7 @@ namespace lorcana
             Console.WriteLine("1 missing: " + threeCards.Count());
             foreach (var threeCard in threeCards)
             {
-                threeCard.WriteDisplay();
+                WriteCardDisplay(threeCard);
                 Console.WriteLine();
             }
 
@@ -58,10 +58,18 @@ namespace lorcana
             Console.WriteLine("Total Tradeable Card count: " + tradeables.Sum(x => x.Total - 4));
             foreach (var tradeable in tradeables)
             {
-                tradeable.WriteDisplay();
+                WriteCardDisplay(tradeable);
                 Console.WriteLine(": " + (tradeable.Total - 4));
             }
             Console.ReadKey();
+        }
+
+        private static void WriteCardDisplay(Card c)
+        {
+            var preColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColorFromColor(c.Color);
+            Console.Write(c.Display);
+            Console.ForegroundColor = preColor;
         }
 
         private static ConsoleColor ConsoleColorFromColor(CardColor color)

@@ -36,14 +36,7 @@ namespace lorcana.Cards
         public string RarityStr { get; set; }
         public Rarity Rarity => Helpers.RarityFromString(RarityStr);
 
-        private string Display => "#" + Number + " " + Title + (!string.IsNullOrEmpty(SubTitle) ? " (" + SubTitle + ")" : "");
-        public void WriteDisplay()
-        {
-            var preColor = Console.ForegroundColor;
-            Console.ForegroundColor = Helpers.ConsoleColorFromColor(Color);
-            Console.Write(Display);
-            Console.ForegroundColor = preColor;
-        }
+        public string Display => "#" + Number + " " + Title + (!string.IsNullOrEmpty(SubTitle) ? " (" + SubTitle + ")" : "");
     }
 }
 
