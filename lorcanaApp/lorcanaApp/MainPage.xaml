@@ -27,6 +27,7 @@
                         <StackLayout Grid.Column="1" Orientation="Vertical" VerticalOptions="Start" Spacing="0" Grid.RowSpan="2">
                             <Label Text="{Binding Title}" FontSize="18" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
                             <Label Text="{Binding SubTitle}" FontSize="Subtitle"/>
+                            <Label Text="{Binding Body}" MaxLines="3" LineBreakMode="TailTruncation"/>
                         </StackLayout>
                         <Label Text="{Binding Number, StringFormat='{}#{0:000}'}" FontSize="20" Grid.Column="2" Grid.ColumnSpan="2" HorizontalOptions="End"/>
                         <Frame Grid.Row="1" Grid.Column="2" WidthRequest="32" HeightRequest="32" BorderColor="Black" Padding="0" CornerRadius="8" VerticalOptions="Center">

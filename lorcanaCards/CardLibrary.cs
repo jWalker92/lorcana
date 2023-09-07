@@ -37,7 +37,8 @@ namespace lorcana.Cards
                     RarityStr = rarityStr,
                     Image = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "medium"),
                     SmallImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "small"),
-                    ArtImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "art-crop")
+                    ArtImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "art-crop"),
+                    Body = Helpers.GetPropertyValue<string>(item, "body-text")
                 };
                 allCardsInfo.Add(infoCard);
             }

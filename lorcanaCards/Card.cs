@@ -25,6 +25,7 @@ namespace lorcana.Cards
     {
         public string Title { get; set; }
         public string SubTitle { get; set; }
+        public string Body { get; set; }
         public int Number { get; set; }
         public int Normals { get; set; }
         public int Foils { get; set; }
