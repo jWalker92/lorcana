@@ -47,7 +47,7 @@ namespace lorcana.Cards
         private static async Task<string> GetAllCardsInfos(string names)
         {
 
-            string apiUrl = $"http://api.lorcana-api.com/strict/{names}";
+            string apiUrl = $"https://api.lorcana-api.com/strict/{names}";
 
             try
             {
@@ -75,7 +75,7 @@ namespace lorcana.Cards
         private static async Task<string> GetAllCards()
         {
 
-            string apiUrl = $"http://api.lorcana-api.com/lists/names";
+            string apiUrl = $"https://api.lorcana-api.com/lists/names";
 
             try
             {

@@ -35,6 +35,7 @@ namespace lorcana.Cards
         public CardColor Color { get; set; }
         public string RarityStr { get; set; }
         public Rarity Rarity => Helpers.RarityFromString(RarityStr);
+        public string RarityIcon;
 
         public string Display => "#" + Number + " " + Title + (!string.IsNullOrEmpty(SubTitle) ? " (" + SubTitle + ")" : "");
     }

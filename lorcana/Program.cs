@@ -52,14 +52,14 @@ namespace lorcana
                 Console.WriteLine();
             }
 
-            var tradeables = cardsList.Where(x => x.Total > 4);
+            var tradeables = cardsList.Where(x => x.Total > 5);
             Console.WriteLine();
-            Console.WriteLine("Total Tradeable Cards (>4): " + tradeables.Count());
-            Console.WriteLine("Total Tradeable Card count: " + tradeables.Sum(x => x.Total - 4));
+            Console.WriteLine("Total Tradeable Cards (>5): " + tradeables.Count());
+            Console.WriteLine("Total Tradeable Card count: " + tradeables.Sum(x => x.Total - 5));
             foreach (var tradeable in tradeables)
             {
                 WriteCardDisplay(tradeable);
-                Console.WriteLine(": " + (tradeable.Total - 4));
+                Console.WriteLine(": " + (tradeable.Total - 5));
             }
             Console.ReadKey();
         }
