@@ -121,6 +121,21 @@ namespace lorcanaApp
 
             canvas.Clear(SKColors.White);
 
+            // Definieren Sie den Farbverlauf
+            SKPoint startPoint = new SKPoint(0, 0);
+            SKPoint endPoint = new SKPoint(e.Info.Width, e.Info.Height);
+            SKColor[] colors = { SKColors.DarkBlue, SKColors.Purple };
+            float[] colorPos = { 0.0f, 1.0f };
+            SKShader shader = SKShader.CreateLinearGradient(startPoint, endPoint, colors, colorPos, SKShaderTileMode.Clamp);
+
+            // Zeichnen Sie einen Rechteck mit dem Farbverlauf
+            SKPaint paint = new SKPaint
+            {
+                Shader = shader
+            };
+
+            canvas.DrawRect(new SKRect(0, 0, e.Info.Width, e.Info.Height), paint);
+
             float centerX = canvasWidth / 2f;
             float centerY = canvasHeight / 2f;
 

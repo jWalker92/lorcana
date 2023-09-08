@@ -30,12 +30,14 @@
                             <Label Text="{Binding Body}" MaxLines="3" LineBreakMode="TailTruncation"/>
                         </StackLayout>
                         <Label Text="{Binding Number, StringFormat='{}#{0:000}'}" FontSize="20" Grid.Column="2" Grid.ColumnSpan="2" HorizontalOptions="End"/>
-                        <Frame Grid.Row="1" Grid.Column="2" WidthRequest="32" HeightRequest="32" BorderColor="Black" Padding="0" CornerRadius="8" VerticalOptions="Center">
+                        <Frame Grid.Row="1" Grid.Column="2" WidthRequest="32" HeightRequest="32" HasShadow="False"
+                               BorderColor="Black" Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#44A0A0A0">
                             <Label Text="{Binding Normals}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
                         </Frame>
-                        <Frame Grid.Row="1" Grid.Column="3" WidthRequest="32" HeightRequest="32" BorderColor="Black" CornerRadius="8" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
+                        <Frame Grid.Row="1" Grid.Column="3" WidthRequest="32" HeightRequest="32" HasShadow="False"
+                               BorderColor="Black" CornerRadius="8" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
                             <ContentView>
-                                <Label Text="{Binding Foils}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="{Binding Foils}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
                                 <ContentView.Background>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
                                         <GradientStop Color="#FFC1A1" Offset="0" /> <!-- Rosa -->
