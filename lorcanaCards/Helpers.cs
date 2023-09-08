@@ -7,13 +7,44 @@ namespace lorcana.Cards
     {
         public static CardColor ColorFromString(string str)
         {
-            if (str == "Amber") return CardColor.Amber;
-            if (str == "Amethyst") return CardColor.Amehtyst;
-            if (str == "Emerald") return CardColor.Emerald;
-            if (str == "Ruby") return CardColor.Ruby;
-            if (str == "Sapphire") return CardColor.Sapphire;
-            if (str == "Steel") return CardColor.Steel;
-            return CardColor.Amber;
+            switch (str)
+            {
+                case "Amber":
+                    return CardColor.Amber;
+                case "Amethyst":
+                    return CardColor.Amethyst;
+                case "Emerald":
+                    return CardColor.Emerald;
+                case "Ruby":
+                    return CardColor.Ruby;
+                case "Sapphire":
+                    return CardColor.Sapphire;
+                case "Steel":
+                    return CardColor.Steel;
+                default:
+                    return CardColor.Amber;
+            }
+        }
+
+        public static string StringFromColor(CardColor color)
+        {
+            switch (color)
+            {
+                case CardColor.Amber:
+                    return "Amber";
+                case CardColor.Amethyst:
+                    return "Amethyst";
+                case CardColor.Emerald:
+                    return "Emerald";
+                case CardColor.Ruby:
+                    return "Ruby";
+                case CardColor.Sapphire:
+                    return "Sapphire";
+                case CardColor.Steel:
+                    return "Steel";
+                default:
+                    return "?";
+            }
         }
 
         public static Rarity RarityFromString(string str)

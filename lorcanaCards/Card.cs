@@ -4,7 +4,7 @@ namespace lorcana.Cards
     public enum CardColor
     {
         Amber,
-        Amehtyst,
+        Amethyst,
         Emerald,
         Ruby,
         Sapphire,

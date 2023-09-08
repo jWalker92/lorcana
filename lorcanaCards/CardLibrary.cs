@@ -14,13 +14,25 @@ namespace lorcana.Cards
 
         public static List<Card> List { get => allCardsInfo; }
 
-        public static async Task BuildLibrary()
-        {
-            string allCardsJson = await GetAllCards();
-            var allNames = JsonConvert.DeserializeObject<List<string>>(allCardsJson);
-            string allCardsInfoJson = await GetAllCardsInfos(string.Join(";", allNames));
+        public static string AllCardsJson { get; private set; }
 
-            var allInfo = JsonConvert.DeserializeObject<List<JObject>>(allCardsInfoJson);
+        public static string AllCardsInfoJson { get; private set; }
+
+        public static async Task BuildLibrary(string allCardsJson, string allCardsInfoJson)
+        {
+            if (string.IsNullOrEmpty(allCardsJson))
+            {
+                allCardsJson = await GetAllCards();
+            }
+            AllCardsJson = allCardsJson;
+            var allNames = JsonConvert.DeserializeObject<List<string>>(AllCardsJson);
+
+            if (string.IsNullOrEmpty(allCardsInfoJson))
+            {
+                allCardsInfoJson = await GetAllCardsInfos(string.Join(";", allNames));
+            }
+            AllCardsInfoJson = allCardsInfoJson;
+            var allInfo = JsonConvert.DeserializeObject<List<JObject>>(AllCardsInfoJson);
 
             allCardsInfo = new List<Card>();
             foreach (var item in allInfo)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using lorcana.Cards;
@@ -10,6 +11,10 @@ namespace lorcanaApp
 {
     public partial class MainPage : ContentPage
     {
+
+        const string allCardsCache = "allCards.json";
+        const string allCardsInfoCache = "allCardsInfo.json";
+
         List<string> pickerItems = new List<string> {
             "All",
             "Owned",
@@ -40,7 +45,12 @@ namespace lorcanaApp
         {
             try
             {
-                await CardLibrary.BuildLibrary();
+
+                string allCardsJson = Preferences.Get(allCardsCache, "");
+                string allCardsInfoJson = Preferences.Get(allCardsInfoCache, "");
+                await CardLibrary.BuildLibrary(allCardsJson, allCardsInfoJson);
+                Preferences.Set(allCardsCache, CardLibrary.AllCardsJson);
+                Preferences.Set(allCardsInfoCache, CardLibrary.AllCardsInfoJson);
                 string contents = Preferences.Get("contents", "{}");
                 collection = new CardCollection(CardLibrary.List, contents);
             }
