@@ -26,6 +26,7 @@ namespace lorcanaApp
             "Missing"
         };
         private CardCollection collection;
+        private List<Card> filteredList;
 
         public MainPage()
         {
@@ -64,7 +65,7 @@ namespace lorcanaApp
         {
             try
             {
-                var filteredList = new List<Card>();
+                filteredList = new List<Card>();
                 switch (listPicker.SelectedIndex)
                 {
                     case 0:
@@ -140,7 +141,11 @@ namespace lorcanaApp
             {
                 return;
             }
-            Navigation.PushAsync(new CardDetailPage(cardsList.SelectedItem as Card));
+            if (cardsList.SelectedItem is Card card)
+            {
+                int index = filteredList.IndexOf(card);
+                Navigation.PushAsync(new CardDetailPage(filteredList, index));
+            }
             cardsList.SelectedItem = null;
         }
     }

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+    x:Class="lorcanaApp.CardDetailPage">
+    <Grid ColumnDefinitions="Auto,*,Auto">
+        <skia:SKCanvasView Grid.ColumnSpan="3" x:Name="skiaView" VerticalOptions="Start" InputTransparent="True"/>
+        <ScrollView x:Name="scrollView" Grid.ColumnSpan="3" Padding="32">
+            <StackLayout>
+                <BoxView x:Name="skSpacer"/>
+                <Label Text="{Binding CurrentCard.Title}" FontSize="Title"/>
+                <Label Text="{Binding CurrentCard.SubTitle}" FontSize="Subtitle"/>
+                <Label Text="{Binding CurrentCard.Body}"/>
+            </StackLayout>
+        </ScrollView>
+        <Button Text="&lt;" Clicked="Prev_Clicked" VerticalOptions="Center" BackgroundColor="#AAF0F0F0"/>
+        <Button Text="&gt;" Clicked="Next_Clicked" VerticalOptions="Center" BackgroundColor="#AAF0F0F0" Grid.Column="2"/>
+    </Grid>
+</ContentPage>
+

@@ -21,7 +21,7 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="cards:Card">
                     <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto" Padding="8,4">
-                        <Frame Grid.RowSpan="2" CornerRadius="4" Padding="0" IsClippedToBounds="True">
+                        <Frame Grid.RowSpan="2" CornerRadius="4" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
                             <Image Source="{Binding SmallImage}"/>
                         </Frame>
                         <StackLayout Grid.Column="1" Orientation="Vertical" VerticalOptions="Start" Spacing="0" Grid.RowSpan="2">

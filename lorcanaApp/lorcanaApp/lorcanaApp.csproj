@@ -23,6 +23,7 @@
     <None Remove="Resources\" />
     <None Remove="Resources\Raw\" />
     <None Remove="Resources\Raw\update.json" />
+    <None Remove="Resources\karte.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -32,5 +33,6 @@
     <EmbeddedResource Include="Resources\Raw\update.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources\card.png" />
   </ItemGroup>
 </Project>
