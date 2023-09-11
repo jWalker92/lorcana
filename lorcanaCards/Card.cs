@@ -38,7 +38,8 @@ namespace lorcana.Cards
         public Rarity Rarity => Helpers.RarityFromString(RarityStr);
         public string RarityIcon;
 
-        public string Display => "#" + Number + " " + Title + (!string.IsNullOrEmpty(SubTitle) ? " (" + SubTitle + ")" : "");
+        public string NumberDisplay => "#" + Number.ToString("D3");
+        public string Display => Title + (!string.IsNullOrEmpty(SubTitle) ? " (" + SubTitle + ")" : "");
     }
 }
 

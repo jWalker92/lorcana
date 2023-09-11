@@ -107,6 +107,35 @@ namespace lorcana.Cards
             }
             return null;
         }
+
+        private const string filledCircle = "\u25CF";
+        private const string openBook = "\u1F4D6";
+        private const string filledTriangle = "\u25B2";
+        private const string filledSquare = "\u25C6";
+        private const string filledPentagon = "\u2B23";
+        private const string filledHexagon = "\u2B21";
+
+
+        public static string StringFromRarity(Rarity rarity, bool unicode = false)
+        {
+            switch (rarity)
+            {
+                case Rarity.Common:
+                    return unicode ? filledCircle : "C";
+                case Rarity.Uncommon:
+                    return unicode ? openBook : "U";
+                case Rarity.Rare:
+                    return unicode ? filledTriangle : "R";
+                case Rarity.SuperRare:
+                    return unicode ? filledSquare : "S";
+                case Rarity.Legendary:
+                    return unicode ? filledPentagon : "L";
+                case Rarity.Enchanted:
+                    return unicode ? filledHexagon : "E";
+                default:
+                    return "?";
+            }
+        }
     }
 }
 

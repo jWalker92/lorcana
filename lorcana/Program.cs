@@ -9,6 +9,9 @@ namespace lorcana
 
         static async Task Main(string[] args)
         {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("Building Library...");
 
             string allCardsJson = null;
@@ -33,7 +36,7 @@ namespace lorcana
 
             Console.Clear();
 
-            Console.WriteLine("INFOS:");
+            Console.WriteLine("INFOS: ");
             foreach (CardColor color in (CardColor[])Enum.GetValues(typeof(CardColor)))
             {
                 var cardsInColor = CardLibrary.List.Where(x => x.Color == color);
@@ -74,6 +77,11 @@ namespace lorcana
             WriteList(threeCards);
             Console.WriteLine();
 
+            var noAlbum = cardsList.Where(x => x.Total == 4);
+            Console.WriteLine("Playable but not in album: " + noAlbum.Count());
+            WriteList(noAlbum);
+            Console.WriteLine();
+
             var tradeables = cardsList.Where(x => x.Total > 5);
             Console.WriteLine("Total Tradeable Cards (>5): " + tradeables.Count());
             Console.WriteLine("Total Tradeable Card count: " + tradeables.Sum(x => x.Total - 5));
@@ -92,6 +100,10 @@ namespace lorcana
 
         private static void WriteCardDisplay(Card c)
         {
+            Console.Write(c.NumberDisplay);
+            Console.Write(" ");
+            WriteRarityColored(c.Rarity);
+            Console.Write("\t");
             var preColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColorFromColor(c.Color);
             Console.Write(c.Display);
@@ -106,6 +118,14 @@ namespace lorcana
             Console.ForegroundColor = preColor;
         }
 
+        private static void WriteRarityColored(Rarity rarity)
+        {
+            var preColor = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColorFromRarity(rarity);
+            Console.Write(Helpers.StringFromRarity(rarity, true));
+            Console.ForegroundColor = preColor;
+        }
+
         private static ConsoleColor ConsoleColorFromColor(CardColor color)
         {
             if (color == CardColor.Amber) return ConsoleColor.DarkYellow;
@@ -113,8 +133,29 @@ namespace lorcana
             if (color == CardColor.Emerald) return ConsoleColor.DarkGreen;
             if (color == CardColor.Ruby) return ConsoleColor.DarkRed;
             if (color == CardColor.Sapphire) return ConsoleColor.DarkBlue;
-            if (color == CardColor.Steel) return ConsoleColor.DarkGray;
+            if (color == CardColor.Steel) return ConsoleColor.Gray;
             return ConsoleColor.White;
+        }
+
+        private static ConsoleColor ConsoleColorFromRarity(Rarity rarity)
+        {
+            switch (rarity)
+            {
+                case Rarity.Common:
+                    return ConsoleColor.DarkGray;
+                case Rarity.Uncommon:
+                    return ConsoleColor.White;
+                case Rarity.Rare:
+                    return ConsoleColor.DarkRed;
+                case Rarity.SuperRare:
+                    return ConsoleColor.Gray;
+                case Rarity.Legendary:
+                    return ConsoleColor.DarkYellow;
+                case Rarity.Enchanted:
+                    return ConsoleColor.Cyan;
+                default:
+                    return ConsoleColor.DarkGray;
+            }
         }
     }
 }

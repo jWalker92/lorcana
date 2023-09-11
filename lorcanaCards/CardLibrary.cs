@@ -47,7 +47,7 @@ namespace lorcana.Cards
                     SubTitle = Helpers.GetPropertyValue<string>(item, "subtitle"),
                     Color = Helpers.ColorFromString(Helpers.GetPropertyValue<string>(item, "color")),
                     RarityStr = rarityStr,
-                    Image = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "medium"),
+                    Image = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "large"),
                     SmallImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "small"),
                     ArtImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "art-crop"),
                     Body = Helpers.GetPropertyValue<string>(item, "body-text")

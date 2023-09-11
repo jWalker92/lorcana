@@ -1,833 +1,833 @@
 ﻿{
-                                "001-060:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-074:foil": {
-                                    "integerValue": "3"
-                                },
-                                "001-012:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-190:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-127:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-014:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-200:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-028:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-189:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-041:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-214:foil": {
-                                    "integerValue": "0"
-                                },
-                                "001-087": {
-                                    "integerValue": "8"
-                                },
-                                "001-086": {
-                                    "integerValue": "9"
-                                },
-                                "001-085": {
-                                    "integerValue": "3"
-                                },
-                                "001-084": {
-                                    "integerValue": "3"
-                                },
-                                "001-163:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-089": {
-                                    "integerValue": "9"
-                                },
-                                "001-088": {
-                                    "integerValue": "2"
-                                },
-                                "001-083": {
-                                    "integerValue": "5"
-                                },
-                                "001-154:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-062:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-081": {
-                                    "integerValue": "6"
-                                },
-                                "001-080": {
-                                    "integerValue": "3"
-                                },
-                                "001-069:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-098": {
-                                    "integerValue": "7"
-                                },
-                                "001-097": {
-                                    "integerValue": "5"
-                                },
-                                "001-096": {
-                                    "integerValue": "8"
-                                },
-                                "001-095": {
-                                    "integerValue": "6"
-                                },
-                                "001-099": {
-                                    "integerValue": "4"
-                                },
-                                "001-090": {
-                                    "integerValue": "2"
-                                },
-                                "001-179:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-094": {
-                                    "integerValue": "3"
-                                },
-                                "001-093": {
-                                    "integerValue": "5"
-                                },
-                                "001-092": {
-                                    "integerValue": "4"
-                                },
-                                "001-091": {
-                                    "integerValue": "10"
-                                },
-                                "001-078:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-106:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-072:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-066:foil": {
-                                    "integerValue": "3"
-                                },
-                                "001-166:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-065": {
-                                    "integerValue": "6"
-                                },
-                                "001-186": {
-                                    "integerValue": "5"
-                                },
-                                "001-118:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-064": {
-                                    "integerValue": "9"
-                                },
-                                "001-185": {
-                                    "integerValue": "4"
-                                },
-                                "001-063": {
-                                    "integerValue": "8"
-                                },
-                                "001-184": {
-                                    "integerValue": "7"
-                                },
-                                "001-097:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-062": {
-                                    "integerValue": "5"
-                                },
-                                "001-183": {
-                                    "integerValue": "4"
-                                },
-                                "001-069": {
-                                    "integerValue": "7"
-                                },
-                                "001-068": {
-                                    "integerValue": "2"
-                                },
-                                "001-189": {
-                                    "integerValue": "2"
-                                },
-                                "001-067": {
-                                    "integerValue": "4"
-                                },
-                                "001-188": {
-                                    "integerValue": "3"
-                                },
-                                "001-066": {
-                                    "integerValue": "1"
-                                },
-                                "001-187": {
-                                    "integerValue": "9"
-                                },
-                                "001-005:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-061": {
-                                    "integerValue": "5"
-                                },
-                                "001-182": {
-                                    "integerValue": "10"
-                                },
-                                "001-060": {
-                                    "integerValue": "9"
-                                },
-                                "001-181": {
-                                    "integerValue": "8"
-                                },
-                                "001-180": {
-                                    "integerValue": "2"
-                                },
-                                "001-019:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-096:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-051:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-076": {
-                                    "integerValue": "1"
-                                },
-                                "001-197": {
-                                    "integerValue": "6"
-                                },
-                                "001-075": {
-                                    "integerValue": "6"
-                                },
-                                "001-196": {
-                                    "integerValue": "4"
-                                },
-                                "001-074": {
-                                    "integerValue": "4"
-                                },
-                                "001-195": {
-                                    "integerValue": "2"
-                                },
-                                "001-073": {
-                                    "integerValue": "5"
-                                },
-                                "001-194": {
-                                    "integerValue": "6"
-                                },
-                                "001-079": {
-                                    "integerValue": "10"
-                                },
-                                "001-078": {
-                                    "integerValue": "0"
-                                },
-                                "001-199": {
-                                    "integerValue": "5"
-                                },
-                                "001-077": {
-                                    "integerValue": "7"
-                                },
-                                "001-198": {
-                                    "integerValue": "4"
-                                },
-                                "001-072": {
-                                    "integerValue": "1"
-                                },
-                                "001-193": {
-                                    "integerValue": "2"
-                                },
-                                "001-071": {
-                                    "integerValue": "5"
-                                },
-                                "001-191": {
-                                    "integerValue": "5"
-                                },
-                                "001-070": {
-                                    "integerValue": "1"
-                                },
-                                "001-190": {
-                                    "integerValue": "6"
-                                },
-                                "001-022:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-049": {
-                                    "integerValue": "8"
-                                },
-                                "001-169": {
-                                    "integerValue": "8"
-                                },
-                                "001-048": {
-                                    "integerValue": "3"
-                                },
-                                "001-032:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-077:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-043": {
-                                    "integerValue": "3"
-                                },
-                                "001-164": {
-                                    "integerValue": "5"
-                                },
-                                "001-042": {
-                                    "integerValue": "2"
-                                },
-                                "001-163": {
-                                    "integerValue": "5"
-                                },
-                                "001-215:foil": {
-                                    "integerValue": "0"
-                                },
-                                "001-041": {
-                                    "integerValue": "4"
-                                },
-                                "001-162": {
-                                    "integerValue": "1"
-                                },
-                                "001-040": {
-                                    "integerValue": "4"
-                                },
-                                "001-161": {
-                                    "integerValue": "13"
-                                },
-                                "001-047": {
-                                    "integerValue": "9"
-                                },
-                                "001-168": {
-                                    "integerValue": "1"
-                                },
-                                "001-046": {
-                                    "integerValue": "9"
-                                },
-                                "001-167": {
-                                    "integerValue": "2"
-                                },
-                                "001-107:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-045": {
-                                    "integerValue": "6"
-                                },
-                                "001-166": {
-                                    "integerValue": "6"
-                                },
-                                "001-044": {
-                                    "integerValue": "3"
-                                },
-                                "001-165": {
-                                    "integerValue": "5"
-                                },
-                                "001-102:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-160": {
-                                    "integerValue": "5"
-                                },
-                                "001-108:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-140:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-059": {
-                                    "integerValue": "4"
-                                },
-                                "001-054": {
-                                    "integerValue": "7"
-                                },
-                                "001-053": {
-                                    "integerValue": "7"
-                                },
-                                "001-174": {
-                                    "integerValue": "8"
-                                },
-                                "001-052": {
-                                    "integerValue": "6"
-                                },
-                                "001-173": {
-                                    "integerValue": "2"
-                                },
-                                "001-051": {
-                                    "integerValue": "1"
-                                },
-                                "001-172": {
-                                    "integerValue": "4"
-                                },
-                                "001-136:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-179": {
-                                    "integerValue": "9"
-                                },
-                                "001-058": {
-                                    "integerValue": "8"
-                                },
-                                "001-057": {
-                                    "integerValue": "7"
-                                },
-                                "001-178": {
-                                    "integerValue": "1"
-                                },
-                                "001-177": {
-                                    "integerValue": "4"
-                                },
-                                "001-056": {
-                                    "integerValue": "3"
-                                },
-                                "001-055": {
-                                    "integerValue": "9"
-                                },
-                                "001-176": {
-                                    "integerValue": "6"
-                                },
-                                "001-050": {
-                                    "integerValue": "3"
-                                },
-                                "001-171": {
-                                    "integerValue": "6"
-                                },
-                                "001-170": {
-                                    "integerValue": "5"
-                                },
-                                "001-061:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-029": {
-                                    "integerValue": "2"
-                                },
-                                "001-028": {
-                                    "integerValue": "5"
-                                },
-                                "001-149": {
-                                    "integerValue": "2"
-                                },
-                                "001-027": {
-                                    "integerValue": "9"
-                                },
-                                "001-148": {
-                                    "integerValue": "6"
-                                },
-                                "001-026": {
-                                    "integerValue": "10"
-                                },
-                                "001-142": {
-                                    "integerValue": "2"
-                                },
-                                "001-013:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-021": {
-                                    "integerValue": "1"
-                                },
-                                "001-141": {
-                                    "integerValue": "5"
-                                },
-                                "001-020": {
-                                    "integerValue": "5"
-                                },
-                                "001-140": {
-                                    "integerValue": "8"
-                                },
-                                "001-025": {
-                                    "integerValue": "5"
-                                },
-                                "001-146": {
-                                    "integerValue": "6"
-                                },
-                                "001-024": {
-                                    "integerValue": "10"
-                                },
-                                "001-145": {
-                                    "integerValue": "7"
-                                },
-                                "001-144": {
-                                    "integerValue": "4"
-                                },
-                                "001-023": {
-                                    "integerValue": "1"
-                                },
-                                "001-022": {
-                                    "integerValue": "8"
-                                },
-                                "001-143": {
-                                    "integerValue": "4"
-                                },
-                                "001-090:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-188:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-039": {
-                                    "integerValue": "3"
-                                },
-                                "001-038": {
-                                    "integerValue": "10"
-                                },
-                                "001-159": {
-                                    "integerValue": "4"
-                                },
-                                "001-037": {
-                                    "integerValue": "3"
-                                },
-                                "001-158": {
-                                    "integerValue": "4"
-                                },
-                                "001-145:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-032": {
-                                    "integerValue": "8"
-                                },
-                                "001-153": {
-                                    "integerValue": "5"
-                                },
-                                "001-152": {
-                                    "integerValue": "3"
-                                },
-                                "001-031": {
-                                    "integerValue": "6"
-                                },
-                                "001-030": {
-                                    "integerValue": "3"
-                                },
-                                "001-151": {
-                                    "integerValue": "4"
-                                },
-                                "001-150": {
-                                    "integerValue": "9"
-                                },
-                                "001-036": {
-                                    "integerValue": "5"
-                                },
-                                "001-157": {
-                                    "integerValue": "2"
-                                },
-                                "001-035": {
-                                    "integerValue": "4"
-                                },
-                                "001-156": {
-                                    "integerValue": "7"
-                                },
-                                "001-155": {
-                                    "integerValue": "7"
-                                },
-                                "001-034": {
-                                    "integerValue": "3"
-                                },
-                                "001-033": {
-                                    "integerValue": "3"
-                                },
-                                "001-154": {
-                                    "integerValue": "10"
-                                },
-                                "001-030:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-172:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-007": {
-                                    "integerValue": "9"
-                                },
-                                "001-128": {
-                                    "integerValue": "6"
-                                },
-                                "001-006": {
-                                    "integerValue": "4"
-                                },
-                                "001-127": {
-                                    "integerValue": "6"
-                                },
-                                "001-005": {
-                                    "integerValue": "5"
-                                },
-                                "001-138:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-126": {
-                                    "integerValue": "1"
-                                },
-                                "001-004": {
-                                    "integerValue": "6"
-                                },
-                                "001-125": {
-                                    "integerValue": "5"
-                                },
-                                "001-201:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-009": {
-                                    "integerValue": "1"
-                                },
-                                "001-129": {
-                                    "integerValue": "4"
-                                },
-                                "001-008": {
-                                    "integerValue": "4"
-                                },
-                                "001-120": {
-                                    "integerValue": "8"
-                                },
-                                "001-003": {
-                                    "integerValue": "9"
-                                },
-                                "001-124": {
-                                    "integerValue": "6"
-                                },
-                                "001-002": {
-                                    "integerValue": "2"
-                                },
-                                "001-123": {
-                                    "integerValue": "1"
-                                },
-                                "001-001": {
-                                    "integerValue": "8"
-                                },
-                                "001-122": {
-                                    "integerValue": "11"
-                                },
-                                "001-121": {
-                                    "integerValue": "7"
-                                },
-                                "001-068:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-018": {
-                                    "integerValue": "1"
-                                },
-                                "001-139": {
-                                    "integerValue": "2"
-                                },
-                                "001-017": {
-                                    "integerValue": "7"
-                                },
-                                "001-138": {
-                                    "integerValue": "12"
-                                },
-                                "001-137": {
-                                    "integerValue": "3"
-                                },
-                                "001-016": {
-                                    "integerValue": "3"
-                                },
-                                "001-015": {
-                                    "integerValue": "4"
-                                },
-                                "001-136": {
-                                    "integerValue": "3"
-                                },
-                                "001-128:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-019": {
-                                    "integerValue": "8"
-                                },
-                                "001-010": {
-                                    "integerValue": "5"
-                                },
-                                "001-131": {
-                                    "integerValue": "5"
-                                },
-                                "001-130": {
-                                    "integerValue": "9"
-                                },
-                                "001-034:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-014": {
-                                    "integerValue": "3"
-                                },
-                                "001-135": {
-                                    "integerValue": "5"
-                                },
-                                "001-013": {
-                                    "integerValue": "10"
-                                },
-                                "001-134": {
-                                    "integerValue": "3"
-                                },
-                                "001-012": {
-                                    "integerValue": "9"
-                                },
-                                "001-133": {
-                                    "integerValue": "8"
-                                },
-                                "001-011": {
-                                    "integerValue": "6"
-                                },
-                                "001-132": {
-                                    "integerValue": "8"
-                                },
-                                "001-122:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-075:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-106": {
-                                    "integerValue": "5"
-                                },
-                                "001-105": {
-                                    "integerValue": "8"
-                                },
-                                "001-104": {
-                                    "integerValue": "2"
-                                },
-                                "001-103": {
-                                    "integerValue": "10"
-                                },
-                                "001-109": {
-                                    "integerValue": "6"
-                                },
-                                "001-104:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-108": {
-                                    "integerValue": "6"
-                                },
-                                "001-107": {
-                                    "integerValue": "3"
-                                },
-                                "001-102": {
-                                    "integerValue": "13"
-                                },
-                                "001-101": {
-                                    "integerValue": "7"
-                                },
-                                "001-100": {
-                                    "integerValue": "7"
-                                },
-                                "001-105:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-119:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-196:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-117": {
-                                    "integerValue": "5"
-                                },
-                                "001-116": {
-                                    "integerValue": "8"
-                                },
-                                "001-115": {
-                                    "integerValue": "5"
-                                },
-                                "001-114": {
-                                    "integerValue": "3"
-                                },
-                                "001-119": {
-                                    "integerValue": "4"
-                                },
-                                "001-118": {
-                                    "integerValue": "1"
-                                },
-                                "001-134:foil": {
-                                    "integerValue": "0"
-                                },
-                                "001-113": {
-                                    "integerValue": "1"
-                                },
-                                "001-036:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-112": {
-                                    "integerValue": "2"
-                                },
-                                "001-111": {
-                                    "integerValue": "5"
-                                },
-                                "001-110": {
-                                    "integerValue": "8"
-                                },
-                                "001-167:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-006:foil": {
-                                    "integerValue": "0"
-                                },
-                                "001-180:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-204": {
-                                    "integerValue": "3"
-                                },
-                                "001-203": {
-                                    "integerValue": "2"
-                                },
-                                "001-202": {
-                                    "integerValue": "6"
-                                },
-                                "001-010:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-201": {
-                                    "integerValue": "5"
-                                },
-                                "001-200": {
-                                    "integerValue": "6"
-                                },
-                                "001-123:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-093:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-001:foil": {
-                                    "integerValue": "2"
-                                },
-                                "001-124:foil": {
-                                    "integerValue": "4"
-                                },
-                                "001-016:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-215": {
-                                    "integerValue": "0"
-                                },
-                                "001-181:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-045:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-139:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-133:foil": {
-                                    "integerValue": "4"
-                                },
-                                "001-064:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-067:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-164:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-017:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-063:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-132:foil": {
-                                    "integerValue": "1"
-                                },
-                                "001-192": {
-                                    "integerValue": "1"
-                                }
-                            }
+  "001-060:foil": {
+    "integerValue": "2"
+  },
+  "001-074:foil": {
+    "integerValue": "3"
+  },
+  "001-012:foil": {
+    "integerValue": "2"
+  },
+  "001-190:foil": {
+    "integerValue": "1"
+  },
+  "001-127:foil": {
+    "integerValue": "1"
+  },
+  "001-014:foil": {
+    "integerValue": "1"
+  },
+  "001-200:foil": {
+    "integerValue": "1"
+  },
+  "001-028:foil": {
+    "integerValue": "2"
+  },
+  "001-189:foil": {
+    "integerValue": "1"
+  },
+  "001-041:foil": {
+    "integerValue": "1"
+  },
+  "001-214:foil": {
+    "integerValue": "0"
+  },
+  "001-132:foil": {
+    "integerValue": "1"
+  },
+  "001-087": {
+    "integerValue": "8"
+  },
+  "001-086": {
+    "integerValue": "9"
+  },
+  "001-085": {
+    "integerValue": "3"
+  },
+  "001-084": {
+    "integerValue": "3"
+  },
+  "001-163:foil": {
+    "integerValue": "1"
+  },
+  "001-089": {
+    "integerValue": "9"
+  },
+  "001-088": {
+    "integerValue": "2"
+  },
+  "001-083": {
+    "integerValue": "5"
+  },
+  "001-154:foil": {
+    "integerValue": "1"
+  },
+  "001-062:foil": {
+    "integerValue": "1"
+  },
+  "001-081": {
+    "integerValue": "6"
+  },
+  "001-080": {
+    "integerValue": "3"
+  },
+  "001-069:foil": {
+    "integerValue": "1"
+  },
+  "001-098": {
+    "integerValue": "7"
+  },
+  "001-097": {
+    "integerValue": "5"
+  },
+  "001-096": {
+    "integerValue": "8"
+  },
+  "001-095": {
+    "integerValue": "6"
+  },
+  "001-099": {
+    "integerValue": "4"
+  },
+  "001-090": {
+    "integerValue": "2"
+  },
+  "001-179:foil": {
+    "integerValue": "2"
+  },
+  "001-094": {
+    "integerValue": "3"
+  },
+  "001-093": {
+    "integerValue": "5"
+  },
+  "001-092": {
+    "integerValue": "4"
+  },
+  "001-091": {
+    "integerValue": "10"
+  },
+  "001-078:foil": {
+    "integerValue": "1"
+  },
+  "001-106:foil": {
+    "integerValue": "2"
+  },
+  "001-072:foil": {
+    "integerValue": "2"
+  },
+  "001-066:foil": {
+    "integerValue": "3"
+  },
+  "001-166:foil": {
+    "integerValue": "1"
+  },
+  "001-065": {
+    "integerValue": "6"
+  },
+  "001-186": {
+    "integerValue": "5"
+  },
+  "001-118:foil": {
+    "integerValue": "1"
+  },
+  "001-064": {
+    "integerValue": "9"
+  },
+  "001-185": {
+    "integerValue": "4"
+  },
+  "001-063": {
+    "integerValue": "8"
+  },
+  "001-184": {
+    "integerValue": "7"
+  },
+  "001-097:foil": {
+    "integerValue": "1"
+  },
+  "001-062": {
+    "integerValue": "5"
+  },
+  "001-183": {
+    "integerValue": "4"
+  },
+  "001-069": {
+    "integerValue": "7"
+  },
+  "001-068": {
+    "integerValue": "2"
+  },
+  "001-189": {
+    "integerValue": "2"
+  },
+  "001-067": {
+    "integerValue": "4"
+  },
+  "001-188": {
+    "integerValue": "3"
+  },
+  "001-066": {
+    "integerValue": "1"
+  },
+  "001-187": {
+    "integerValue": "9"
+  },
+  "001-005:foil": {
+    "integerValue": "1"
+  },
+  "001-061": {
+    "integerValue": "5"
+  },
+  "001-182": {
+    "integerValue": "10"
+  },
+  "001-060": {
+    "integerValue": "9"
+  },
+  "001-181": {
+    "integerValue": "8"
+  },
+  "001-180": {
+    "integerValue": "2"
+  },
+  "001-019:foil": {
+    "integerValue": "1"
+  },
+  "001-096:foil": {
+    "integerValue": "1"
+  },
+  "001-051:foil": {
+    "integerValue": "1"
+  },
+  "001-076": {
+    "integerValue": "1"
+  },
+  "001-197": {
+    "integerValue": "6"
+  },
+  "001-075": {
+    "integerValue": "6"
+  },
+  "001-196": {
+    "integerValue": "4"
+  },
+  "001-074": {
+    "integerValue": "4"
+  },
+  "001-195": {
+    "integerValue": "2"
+  },
+  "001-073": {
+    "integerValue": "5"
+  },
+  "001-194": {
+    "integerValue": "6"
+  },
+  "001-079": {
+    "integerValue": "10"
+  },
+  "001-078": {
+    "integerValue": "0"
+  },
+  "001-199": {
+    "integerValue": "5"
+  },
+  "001-077": {
+    "integerValue": "7"
+  },
+  "001-198": {
+    "integerValue": "4"
+  },
+  "001-072": {
+    "integerValue": "2"
+  },
+  "001-193": {
+    "integerValue": "2"
+  },
+  "001-071": {
+    "integerValue": "5"
+  },
+  "001-192": {
+    "integerValue": "2"
+  },
+  "001-191": {
+    "integerValue": "5"
+  },
+  "001-070": {
+    "integerValue": "1"
+  },
+  "001-190": {
+    "integerValue": "6"
+  },
+  "001-022:foil": {
+    "integerValue": "1"
+  },
+  "001-164:foil": {
+    "integerValue": "1"
+  },
+  "001-049": {
+    "integerValue": "8"
+  },
+  "001-169": {
+    "integerValue": "8"
+  },
+  "001-048": {
+    "integerValue": "3"
+  },
+  "001-032:foil": {
+    "integerValue": "2"
+  },
+  "001-077:foil": {
+    "integerValue": "1"
+  },
+  "001-043": {
+    "integerValue": "3"
+  },
+  "001-164": {
+    "integerValue": "5"
+  },
+  "001-042": {
+    "integerValue": "2"
+  },
+  "001-163": {
+    "integerValue": "5"
+  },
+  "001-215:foil": {
+    "integerValue": "0"
+  },
+  "001-041": {
+    "integerValue": "4"
+  },
+  "001-162": {
+    "integerValue": "1"
+  },
+  "001-040": {
+    "integerValue": "4"
+  },
+  "001-161": {
+    "integerValue": "13"
+  },
+  "001-047": {
+    "integerValue": "9"
+  },
+  "001-168": {
+    "integerValue": "1"
+  },
+  "001-046": {
+    "integerValue": "9"
+  },
+  "001-167": {
+    "integerValue": "2"
+  },
+  "001-107:foil": {
+    "integerValue": "1"
+  },
+  "001-045": {
+    "integerValue": "6"
+  },
+  "001-166": {
+    "integerValue": "6"
+  },
+  "001-044": {
+    "integerValue": "3"
+  },
+  "001-165": {
+    "integerValue": "5"
+  },
+  "001-102:foil": {
+    "integerValue": "1"
+  },
+  "001-160": {
+    "integerValue": "5"
+  },
+  "001-108:foil": {
+    "integerValue": "1"
+  },
+  "001-140:foil": {
+    "integerValue": "1"
+  },
+  "001-059": {
+    "integerValue": "4"
+  },
+  "001-054": {
+    "integerValue": "7"
+  },
+  "001-053": {
+    "integerValue": "7"
+  },
+  "001-174": {
+    "integerValue": "8"
+  },
+  "001-052": {
+    "integerValue": "6"
+  },
+  "001-173": {
+    "integerValue": "2"
+  },
+  "001-051": {
+    "integerValue": "1"
+  },
+  "001-172": {
+    "integerValue": "4"
+  },
+  "001-136:foil": {
+    "integerValue": "1"
+  },
+  "001-179": {
+    "integerValue": "9"
+  },
+  "001-058": {
+    "integerValue": "8"
+  },
+  "001-057": {
+    "integerValue": "7"
+  },
+  "001-178": {
+    "integerValue": "1"
+  },
+  "001-177": {
+    "integerValue": "4"
+  },
+  "001-056": {
+    "integerValue": "3"
+  },
+  "001-055": {
+    "integerValue": "9"
+  },
+  "001-176": {
+    "integerValue": "6"
+  },
+  "001-050": {
+    "integerValue": "3"
+  },
+  "001-171": {
+    "integerValue": "6"
+  },
+  "001-170": {
+    "integerValue": "5"
+  },
+  "001-061:foil": {
+    "integerValue": "2"
+  },
+  "001-067:foil": {
+    "integerValue": "1"
+  },
+  "001-029": {
+    "integerValue": "2"
+  },
+  "001-028": {
+    "integerValue": "5"
+  },
+  "001-149": {
+    "integerValue": "2"
+  },
+  "001-027": {
+    "integerValue": "9"
+  },
+  "001-148": {
+    "integerValue": "6"
+  },
+  "001-026": {
+    "integerValue": "10"
+  },
+  "001-142": {
+    "integerValue": "2"
+  },
+  "001-013:foil": {
+    "integerValue": "1"
+  },
+  "001-021": {
+    "integerValue": "1"
+  },
+  "001-141": {
+    "integerValue": "5"
+  },
+  "001-020": {
+    "integerValue": "5"
+  },
+  "001-140": {
+    "integerValue": "8"
+  },
+  "001-025": {
+    "integerValue": "5"
+  },
+  "001-146": {
+    "integerValue": "6"
+  },
+  "001-024": {
+    "integerValue": "10"
+  },
+  "001-145": {
+    "integerValue": "7"
+  },
+  "001-144": {
+    "integerValue": "4"
+  },
+  "001-023": {
+    "integerValue": "1"
+  },
+  "001-022": {
+    "integerValue": "8"
+  },
+  "001-143": {
+    "integerValue": "4"
+  },
+  "001-090:foil": {
+    "integerValue": "1"
+  },
+  "001-188:foil": {
+    "integerValue": "2"
+  },
+  "001-039": {
+    "integerValue": "3"
+  },
+  "001-038": {
+    "integerValue": "10"
+  },
+  "001-159": {
+    "integerValue": "4"
+  },
+  "001-037": {
+    "integerValue": "3"
+  },
+  "001-158": {
+    "integerValue": "4"
+  },
+  "001-145:foil": {
+    "integerValue": "1"
+  },
+  "001-032": {
+    "integerValue": "8"
+  },
+  "001-153": {
+    "integerValue": "5"
+  },
+  "001-152": {
+    "integerValue": "3"
+  },
+  "001-031": {
+    "integerValue": "6"
+  },
+  "001-030": {
+    "integerValue": "3"
+  },
+  "001-151": {
+    "integerValue": "4"
+  },
+  "001-150": {
+    "integerValue": "9"
+  },
+  "001-036": {
+    "integerValue": "5"
+  },
+  "001-157": {
+    "integerValue": "2"
+  },
+  "001-035": {
+    "integerValue": "4"
+  },
+  "001-156": {
+    "integerValue": "7"
+  },
+  "001-155": {
+    "integerValue": "7"
+  },
+  "001-034": {
+    "integerValue": "3"
+  },
+  "001-033": {
+    "integerValue": "3"
+  },
+  "001-154": {
+    "integerValue": "10"
+  },
+  "001-030:foil": {
+    "integerValue": "1"
+  },
+  "001-172:foil": {
+    "integerValue": "1"
+  },
+  "001-007": {
+    "integerValue": "9"
+  },
+  "001-128": {
+    "integerValue": "6"
+  },
+  "001-006": {
+    "integerValue": "4"
+  },
+  "001-127": {
+    "integerValue": "6"
+  },
+  "001-005": {
+    "integerValue": "5"
+  },
+  "001-138:foil": {
+    "integerValue": "2"
+  },
+  "001-126": {
+    "integerValue": "1"
+  },
+  "001-004": {
+    "integerValue": "6"
+  },
+  "001-125": {
+    "integerValue": "5"
+  },
+  "001-201:foil": {
+    "integerValue": "2"
+  },
+  "001-009": {
+    "integerValue": "1"
+  },
+  "001-129": {
+    "integerValue": "4"
+  },
+  "001-008": {
+    "integerValue": "4"
+  },
+  "001-120": {
+    "integerValue": "8"
+  },
+  "001-003": {
+    "integerValue": "9"
+  },
+  "001-124": {
+    "integerValue": "6"
+  },
+  "001-002": {
+    "integerValue": "2"
+  },
+  "001-123": {
+    "integerValue": "1"
+  },
+  "001-063:foil": {
+    "integerValue": "1"
+  },
+  "001-001": {
+    "integerValue": "8"
+  },
+  "001-122": {
+    "integerValue": "11"
+  },
+  "001-121": {
+    "integerValue": "7"
+  },
+  "001-068:foil": {
+    "integerValue": "1"
+  },
+  "001-018": {
+    "integerValue": "1"
+  },
+  "001-139": {
+    "integerValue": "2"
+  },
+  "001-017": {
+    "integerValue": "7"
+  },
+  "001-138": {
+    "integerValue": "12"
+  },
+  "001-137": {
+    "integerValue": "3"
+  },
+  "001-016": {
+    "integerValue": "3"
+  },
+  "001-015": {
+    "integerValue": "4"
+  },
+  "001-136": {
+    "integerValue": "3"
+  },
+  "001-128:foil": {
+    "integerValue": "1"
+  },
+  "001-019": {
+    "integerValue": "8"
+  },
+  "001-010": {
+    "integerValue": "5"
+  },
+  "001-131": {
+    "integerValue": "5"
+  },
+  "001-130": {
+    "integerValue": "9"
+  },
+  "001-034:foil": {
+    "integerValue": "1"
+  },
+  "001-014": {
+    "integerValue": "3"
+  },
+  "001-135": {
+    "integerValue": "5"
+  },
+  "001-013": {
+    "integerValue": "10"
+  },
+  "001-134": {
+    "integerValue": "3"
+  },
+  "001-012": {
+    "integerValue": "9"
+  },
+  "001-133": {
+    "integerValue": "8"
+  },
+  "001-011": {
+    "integerValue": "6"
+  },
+  "001-132": {
+    "integerValue": "8"
+  },
+  "001-122:foil": {
+    "integerValue": "1"
+  },
+  "001-075:foil": {
+    "integerValue": "1"
+  },
+  "001-106": {
+    "integerValue": "5"
+  },
+  "001-105": {
+    "integerValue": "8"
+  },
+  "001-104": {
+    "integerValue": "2"
+  },
+  "001-103": {
+    "integerValue": "10"
+  },
+  "001-109": {
+    "integerValue": "6"
+  },
+  "001-104:foil": {
+    "integerValue": "1"
+  },
+  "001-108": {
+    "integerValue": "6"
+  },
+  "001-107": {
+    "integerValue": "3"
+  },
+  "001-102": {
+    "integerValue": "13"
+  },
+  "001-101": {
+    "integerValue": "7"
+  },
+  "001-100": {
+    "integerValue": "7"
+  },
+  "001-105:foil": {
+    "integerValue": "2"
+  },
+  "001-119:foil": {
+    "integerValue": "2"
+  },
+  "001-196:foil": {
+    "integerValue": "1"
+  },
+  "001-117": {
+    "integerValue": "5"
+  },
+  "001-017:foil": {
+    "integerValue": "1"
+  },
+  "001-116": {
+    "integerValue": "8"
+  },
+  "001-115": {
+    "integerValue": "5"
+  },
+  "001-114": {
+    "integerValue": "3"
+  },
+  "001-119": {
+    "integerValue": "4"
+  },
+  "001-118": {
+    "integerValue": "1"
+  },
+  "001-134:foil": {
+    "integerValue": "0"
+  },
+  "001-113": {
+    "integerValue": "1"
+  },
+  "001-036:foil": {
+    "integerValue": "1"
+  },
+  "001-112": {
+    "integerValue": "2"
+  },
+  "001-111": {
+    "integerValue": "5"
+  },
+  "001-110": {
+    "integerValue": "8"
+  },
+  "001-167:foil": {
+    "integerValue": "2"
+  },
+  "001-006:foil": {
+    "integerValue": "0"
+  },
+  "001-180:foil": {
+    "integerValue": "1"
+  },
+  "001-204": {
+    "integerValue": "3"
+  },
+  "001-203": {
+    "integerValue": "2"
+  },
+  "001-202": {
+    "integerValue": "6"
+  },
+  "001-010:foil": {
+    "integerValue": "2"
+  },
+  "001-201": {
+    "integerValue": "5"
+  },
+  "001-200": {
+    "integerValue": "6"
+  },
+  "001-123:foil": {
+    "integerValue": "1"
+  },
+  "001-093:foil": {
+    "integerValue": "1"
+  },
+  "001-001:foil": {
+    "integerValue": "2"
+  },
+  "001-124:foil": {
+    "integerValue": "4"
+  },
+  "001-016:foil": {
+    "integerValue": "1"
+  },
+  "001-215": {
+    "integerValue": "0"
+  },
+  "001-181:foil": {
+    "integerValue": "1"
+  },
+  "001-045:foil": {
+    "integerValue": "1"
+  },
+  "001-139:foil": {
+    "integerValue": "1"
+  },
+  "001-133:foil": {
+    "integerValue": "4"
+  },
+  "001-064:foil": {
+    "integerValue": "1"
+  }
+}
