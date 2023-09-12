@@ -36,25 +36,25 @@
     "integerValue": "1"
   },
   "001-087": {
-    "integerValue": "8"
-  },
-  "001-086": {
     "integerValue": "9"
   },
+  "001-086": {
+    "integerValue": "8"
+  },
   "001-085": {
-    "integerValue": "3"
+    "integerValue": "4"
   },
   "001-084": {
-    "integerValue": "3"
+    "integerValue": "4"
   },
   "001-163:foil": {
     "integerValue": "1"
   },
   "001-089": {
-    "integerValue": "9"
+    "integerValue": "8"
   },
   "001-088": {
-    "integerValue": "2"
+    "integerValue": "3"
   },
   "001-083": {
     "integerValue": "5"
@@ -65,8 +65,11 @@
   "001-062:foil": {
     "integerValue": "1"
   },
+  "001-082": {
+    "integerValue": "1"
+  },
   "001-081": {
-    "integerValue": "6"
+    "integerValue": "7"
   },
   "001-080": {
     "integerValue": "3"
@@ -74,38 +77,41 @@
   "001-069:foil": {
     "integerValue": "1"
   },
+  "001-125:foil": {
+    "integerValue": "1"
+  },
   "001-098": {
-    "integerValue": "7"
-  },
-  "001-097": {
-    "integerValue": "5"
-  },
-  "001-096": {
     "integerValue": "8"
   },
-  "001-095": {
+  "001-097": {
     "integerValue": "6"
   },
+  "001-096": {
+    "integerValue": "9"
+  },
+  "001-095": {
+    "integerValue": "7"
+  },
   "001-099": {
-    "integerValue": "4"
+    "integerValue": "5"
   },
   "001-090": {
     "integerValue": "2"
   },
   "001-179:foil": {
-    "integerValue": "2"
+    "integerValue": "3"
   },
   "001-094": {
     "integerValue": "3"
   },
   "001-093": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-092": {
-    "integerValue": "4"
+    "integerValue": "5"
   },
   "001-091": {
-    "integerValue": "10"
+    "integerValue": "8"
   },
   "001-078:foil": {
     "integerValue": "1"
@@ -114,22 +120,22 @@
     "integerValue": "2"
   },
   "001-072:foil": {
-    "integerValue": "2"
+    "integerValue": "3"
   },
   "001-066:foil": {
     "integerValue": "3"
   },
   "001-166:foil": {
-    "integerValue": "1"
+    "integerValue": "2"
   },
   "001-065": {
-    "integerValue": "6"
+    "integerValue": "7"
   },
   "001-186": {
     "integerValue": "5"
   },
   "001-118:foil": {
-    "integerValue": "1"
+    "integerValue": "2"
   },
   "001-064": {
     "integerValue": "9"
@@ -141,55 +147,55 @@
     "integerValue": "8"
   },
   "001-184": {
-    "integerValue": "7"
+    "integerValue": "8"
   },
   "001-097:foil": {
     "integerValue": "1"
   },
   "001-062": {
-    "integerValue": "5"
+    "integerValue": "7"
   },
   "001-183": {
-    "integerValue": "4"
+    "integerValue": "5"
   },
   "001-069": {
     "integerValue": "7"
   },
   "001-068": {
-    "integerValue": "2"
+    "integerValue": "3"
   },
   "001-189": {
-    "integerValue": "2"
+    "integerValue": "3"
   },
   "001-067": {
     "integerValue": "4"
   },
   "001-188": {
-    "integerValue": "3"
+    "integerValue": "6"
   },
   "001-066": {
-    "integerValue": "1"
+    "integerValue": "2"
   },
   "001-187": {
-    "integerValue": "9"
+    "integerValue": "10"
   },
   "001-005:foil": {
     "integerValue": "1"
   },
   "001-061": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-182": {
-    "integerValue": "10"
+    "integerValue": "12"
   },
   "001-060": {
-    "integerValue": "9"
-  },
-  "001-181": {
     "integerValue": "8"
   },
+  "001-181": {
+    "integerValue": "9"
+  },
   "001-180": {
-    "integerValue": "2"
+    "integerValue": "3"
   },
   "001-019:foil": {
     "integerValue": "1"
@@ -200,38 +206,41 @@
   "001-051:foil": {
     "integerValue": "1"
   },
-  "001-076": {
+  "001-095:foil": {
     "integerValue": "1"
   },
+  "001-076": {
+    "integerValue": "2"
+  },
   "001-197": {
-    "integerValue": "6"
+    "integerValue": "8"
   },
   "001-075": {
     "integerValue": "6"
   },
   "001-196": {
-    "integerValue": "4"
-  },
-  "001-074": {
-    "integerValue": "4"
-  },
-  "001-195": {
-    "integerValue": "2"
-  },
-  "001-073": {
-    "integerValue": "5"
-  },
-  "001-194": {
     "integerValue": "6"
   },
+  "001-074": {
+    "integerValue": "5"
+  },
+  "001-195": {
+    "integerValue": "3"
+  },
+  "001-073": {
+    "integerValue": "7"
+  },
+  "001-194": {
+    "integerValue": "7"
+  },
   "001-079": {
-    "integerValue": "10"
+    "integerValue": "9"
   },
   "001-078": {
-    "integerValue": "0"
+    "integerValue": "1"
   },
   "001-199": {
-    "integerValue": "5"
+    "integerValue": "7"
   },
   "001-077": {
     "integerValue": "7"
@@ -246,13 +255,13 @@
     "integerValue": "2"
   },
   "001-071": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-192": {
     "integerValue": "2"
   },
   "001-191": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-070": {
     "integerValue": "1"
@@ -270,10 +279,10 @@
     "integerValue": "8"
   },
   "001-169": {
-    "integerValue": "8"
+    "integerValue": "9"
   },
   "001-048": {
-    "integerValue": "3"
+    "integerValue": "4"
   },
   "001-032:foil": {
     "integerValue": "2"
@@ -297,85 +306,88 @@
     "integerValue": "0"
   },
   "001-041": {
-    "integerValue": "4"
+    "integerValue": "6"
   },
   "001-162": {
-    "integerValue": "1"
+    "integerValue": "2"
   },
   "001-040": {
-    "integerValue": "4"
+    "integerValue": "6"
   },
   "001-161": {
-    "integerValue": "13"
+    "integerValue": "14"
   },
   "001-047": {
-    "integerValue": "9"
+    "integerValue": "8"
   },
   "001-168": {
-    "integerValue": "1"
+    "integerValue": "4"
   },
   "001-046": {
-    "integerValue": "9"
+    "integerValue": "8"
   },
   "001-167": {
-    "integerValue": "2"
+    "integerValue": "4"
   },
   "001-107:foil": {
     "integerValue": "1"
   },
   "001-045": {
-    "integerValue": "6"
+    "integerValue": "7"
   },
   "001-166": {
-    "integerValue": "6"
+    "integerValue": "7"
   },
   "001-044": {
     "integerValue": "3"
   },
   "001-165": {
-    "integerValue": "5"
+    "integerValue": "7"
   },
   "001-102:foil": {
     "integerValue": "1"
   },
   "001-160": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-108:foil": {
-    "integerValue": "1"
+    "integerValue": "2"
   },
   "001-140:foil": {
     "integerValue": "1"
   },
   "001-059": {
-    "integerValue": "4"
+    "integerValue": "5"
   },
   "001-054": {
-    "integerValue": "7"
+    "integerValue": "9"
+  },
+  "001-175": {
+    "integerValue": "1"
   },
   "001-053": {
-    "integerValue": "7"
-  },
-  "001-174": {
     "integerValue": "8"
   },
+  "001-174": {
+    "integerValue": "9"
+  },
   "001-052": {
-    "integerValue": "6"
+    "integerValue": "8"
   },
   "001-173": {
-    "integerValue": "2"
+    "integerValue": "3"
   },
   "001-051": {
     "integerValue": "1"
   },
   "001-172": {
-    "integerValue": "4"
+    "integerValue": "6"
   },
   "001-136:foil": {
     "integerValue": "1"
   },
   "001-179": {
-    "integerValue": "9"
+    "integerValue": "11"
   },
   "001-058": {
     "integerValue": "8"
@@ -384,28 +396,28 @@
     "integerValue": "7"
   },
   "001-178": {
-    "integerValue": "1"
+    "integerValue": "2"
   },
   "001-177": {
-    "integerValue": "4"
+    "integerValue": "5"
   },
   "001-056": {
-    "integerValue": "3"
+    "integerValue": "4"
   },
   "001-055": {
-    "integerValue": "9"
+    "integerValue": "8"
   },
   "001-176": {
-    "integerValue": "6"
+    "integerValue": "7"
   },
   "001-050": {
     "integerValue": "3"
   },
   "001-171": {
-    "integerValue": "6"
+    "integerValue": "8"
   },
   "001-170": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-061:foil": {
     "integerValue": "2"
@@ -414,22 +426,25 @@
     "integerValue": "1"
   },
   "001-029": {
-    "integerValue": "2"
+    "integerValue": "3"
+  },
+  "001-174:foil": {
+    "integerValue": "1"
   },
   "001-028": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-149": {
     "integerValue": "2"
   },
   "001-027": {
-    "integerValue": "9"
+    "integerValue": "8"
   },
   "001-148": {
-    "integerValue": "6"
+    "integerValue": "7"
   },
   "001-026": {
-    "integerValue": "10"
+    "integerValue": "9"
   },
   "001-142": {
     "integerValue": "2"
@@ -441,10 +456,10 @@
     "integerValue": "1"
   },
   "001-141": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-020": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-140": {
     "integerValue": "8"
@@ -453,25 +468,25 @@
     "integerValue": "5"
   },
   "001-146": {
-    "integerValue": "6"
-  },
-  "001-024": {
-    "integerValue": "10"
-  },
-  "001-145": {
     "integerValue": "7"
   },
+  "001-024": {
+    "integerValue": "9"
+  },
+  "001-145": {
+    "integerValue": "8"
+  },
   "001-144": {
-    "integerValue": "4"
+    "integerValue": "5"
   },
   "001-023": {
-    "integerValue": "1"
+    "integerValue": "2"
   },
   "001-022": {
     "integerValue": "8"
   },
   "001-143": {
-    "integerValue": "4"
+    "integerValue": "6"
   },
   "001-090:foil": {
     "integerValue": "1"
@@ -483,13 +498,13 @@
     "integerValue": "3"
   },
   "001-038": {
-    "integerValue": "10"
+    "integerValue": "11"
   },
   "001-159": {
-    "integerValue": "4"
+    "integerValue": "5"
   },
   "001-037": {
-    "integerValue": "3"
+    "integerValue": "4"
   },
   "001-158": {
     "integerValue": "4"
@@ -498,49 +513,52 @@
     "integerValue": "1"
   },
   "001-032": {
-    "integerValue": "8"
+    "integerValue": "9"
   },
   "001-153": {
-    "integerValue": "5"
+    "integerValue": "7"
   },
   "001-152": {
     "integerValue": "3"
   },
   "001-031": {
-    "integerValue": "6"
+    "integerValue": "8"
   },
   "001-030": {
-    "integerValue": "3"
-  },
-  "001-151": {
     "integerValue": "4"
   },
+  "001-151": {
+    "integerValue": "5"
+  },
   "001-150": {
-    "integerValue": "9"
+    "integerValue": "10"
   },
   "001-036": {
     "integerValue": "5"
   },
   "001-157": {
-    "integerValue": "2"
+    "integerValue": "3"
   },
   "001-035": {
-    "integerValue": "4"
+    "integerValue": "5"
   },
   "001-156": {
-    "integerValue": "7"
+    "integerValue": "8"
   },
   "001-155": {
-    "integerValue": "7"
+    "integerValue": "8"
   },
   "001-034": {
     "integerValue": "3"
+  },
+  "001-039:foil": {
+    "integerValue": "1"
   },
   "001-033": {
     "integerValue": "3"
   },
   "001-154": {
-    "integerValue": "10"
+    "integerValue": "12"
   },
   "001-030:foil": {
     "integerValue": "1"
@@ -549,16 +567,16 @@
     "integerValue": "1"
   },
   "001-007": {
-    "integerValue": "9"
+    "integerValue": "8"
   },
   "001-128": {
     "integerValue": "6"
   },
   "001-006": {
-    "integerValue": "4"
+    "integerValue": "5"
   },
   "001-127": {
-    "integerValue": "6"
+    "integerValue": "7"
   },
   "001-005": {
     "integerValue": "5"
@@ -573,7 +591,7 @@
     "integerValue": "6"
   },
   "001-125": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-201:foil": {
     "integerValue": "2"
@@ -582,22 +600,22 @@
     "integerValue": "1"
   },
   "001-129": {
-    "integerValue": "4"
+    "integerValue": "5"
   },
   "001-008": {
-    "integerValue": "4"
+    "integerValue": "5"
   },
   "001-120": {
     "integerValue": "8"
   },
   "001-003": {
-    "integerValue": "9"
+    "integerValue": "10"
   },
   "001-124": {
-    "integerValue": "6"
+    "integerValue": "7"
   },
   "001-002": {
-    "integerValue": "2"
+    "integerValue": "3"
   },
   "001-123": {
     "integerValue": "1"
@@ -606,52 +624,61 @@
     "integerValue": "1"
   },
   "001-001": {
-    "integerValue": "8"
+    "integerValue": "6"
   },
   "001-122": {
-    "integerValue": "11"
+    "integerValue": "12"
   },
   "001-121": {
-    "integerValue": "7"
+    "integerValue": "8"
   },
   "001-068:foil": {
     "integerValue": "1"
   },
-  "001-018": {
+  "001-169:foil": {
     "integerValue": "1"
   },
-  "001-139": {
+  "001-018": {
     "integerValue": "2"
+  },
+  "001-139": {
+    "integerValue": "3"
+  },
+  "001-195:foil": {
+    "integerValue": "1"
   },
   "001-017": {
     "integerValue": "7"
   },
   "001-138": {
-    "integerValue": "12"
+    "integerValue": "13"
   },
   "001-137": {
-    "integerValue": "3"
-  },
-  "001-016": {
-    "integerValue": "3"
-  },
-  "001-015": {
     "integerValue": "4"
   },
+  "001-016": {
+    "integerValue": "4"
+  },
+  "001-015": {
+    "integerValue": "6"
+  },
   "001-136": {
-    "integerValue": "3"
+    "integerValue": "4"
   },
   "001-128:foil": {
     "integerValue": "1"
   },
+  "001-100:foil": {
+    "integerValue": "1"
+  },
   "001-019": {
-    "integerValue": "8"
+    "integerValue": "7"
   },
   "001-010": {
     "integerValue": "5"
   },
   "001-131": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-130": {
     "integerValue": "9"
@@ -660,16 +687,16 @@
     "integerValue": "1"
   },
   "001-014": {
-    "integerValue": "3"
-  },
-  "001-135": {
     "integerValue": "5"
   },
+  "001-135": {
+    "integerValue": "6"
+  },
   "001-013": {
-    "integerValue": "10"
+    "integerValue": "7"
   },
   "001-134": {
-    "integerValue": "3"
+    "integerValue": "4"
   },
   "001-012": {
     "integerValue": "9"
@@ -678,7 +705,7 @@
     "integerValue": "8"
   },
   "001-011": {
-    "integerValue": "6"
+    "integerValue": "7"
   },
   "001-132": {
     "integerValue": "8"
@@ -690,34 +717,37 @@
     "integerValue": "1"
   },
   "001-106": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-105": {
-    "integerValue": "8"
+    "integerValue": "7"
   },
   "001-104": {
-    "integerValue": "2"
+    "integerValue": "3"
   },
   "001-103": {
-    "integerValue": "10"
+    "integerValue": "8"
   },
   "001-109": {
-    "integerValue": "6"
+    "integerValue": "7"
   },
   "001-104:foil": {
     "integerValue": "1"
   },
   "001-108": {
-    "integerValue": "6"
+    "integerValue": "7"
   },
   "001-107": {
-    "integerValue": "3"
+    "integerValue": "4"
+  },
+  "001-152:foil": {
+    "integerValue": "1"
   },
   "001-102": {
-    "integerValue": "13"
+    "integerValue": "12"
   },
   "001-101": {
-    "integerValue": "7"
+    "integerValue": "8"
   },
   "001-100": {
     "integerValue": "7"
@@ -732,7 +762,7 @@
     "integerValue": "1"
   },
   "001-117": {
-    "integerValue": "5"
+    "integerValue": "7"
   },
   "001-017:foil": {
     "integerValue": "1"
@@ -741,16 +771,16 @@
     "integerValue": "8"
   },
   "001-115": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-114": {
     "integerValue": "3"
   },
   "001-119": {
-    "integerValue": "4"
+    "integerValue": "6"
   },
   "001-118": {
-    "integerValue": "1"
+    "integerValue": "3"
   },
   "001-134:foil": {
     "integerValue": "0"
@@ -762,10 +792,10 @@
     "integerValue": "1"
   },
   "001-112": {
-    "integerValue": "2"
+    "integerValue": "4"
   },
   "001-111": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-110": {
     "integerValue": "8"
@@ -786,22 +816,28 @@
     "integerValue": "2"
   },
   "001-202": {
-    "integerValue": "6"
+    "integerValue": "7"
+  },
+  "001-177:foil": {
+    "integerValue": "1"
   },
   "001-010:foil": {
     "integerValue": "2"
   },
   "001-201": {
-    "integerValue": "5"
+    "integerValue": "6"
   },
   "001-200": {
-    "integerValue": "6"
+    "integerValue": "7"
+  },
+  "001-007:foil": {
+    "integerValue": "1"
   },
   "001-123:foil": {
     "integerValue": "1"
   },
   "001-093:foil": {
-    "integerValue": "1"
+    "integerValue": "2"
   },
   "001-001:foil": {
     "integerValue": "2"
@@ -810,7 +846,7 @@
     "integerValue": "4"
   },
   "001-016:foil": {
-    "integerValue": "1"
+    "integerValue": "2"
   },
   "001-215": {
     "integerValue": "0"
@@ -822,6 +858,9 @@
     "integerValue": "1"
   },
   "001-139:foil": {
+    "integerValue": "1"
+  },
+  "001-026:foil": {
     "integerValue": "1"
   },
   "001-133:foil": {

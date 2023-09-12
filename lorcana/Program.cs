@@ -1,4 +1,6 @@
-﻿using lorcana.Cards;
+﻿using System.Net;
+using lorcana.Cards;
+using SkiaSharp;
 
 namespace lorcana
 {
@@ -82,11 +84,99 @@ namespace lorcana
             WriteList(noAlbum);
             Console.WriteLine();
 
-            var tradeables = cardsList.Where(x => x.Total > 5);
-            Console.WriteLine("Total Tradeable Cards (>5): " + tradeables.Count());
-            Console.WriteLine("Total Tradeable Card count: " + tradeables.Sum(x => x.Total - 5));
-            WriteList(tradeables, (c) => ": " + (c.Total - 5));
+            int tradeWithholdValue = 8;
+
+            var tradeables = cardsList.Where(x => x.Total > tradeWithholdValue);
+            Console.WriteLine($"Total Tradeable Cards (>{tradeWithholdValue}): " + tradeables.Count());
+            Console.WriteLine("Total Tradeable Card count: " + tradeables.Sum(x => x.Total - tradeWithholdValue));
+            WriteList(tradeables, (c) => ": " + (c.Total - tradeWithholdValue) + $" ({c.Foils})");
+
+            DrawListToImageFiles(tradeables, (c) => (c.Total - tradeWithholdValue) + $" ({c.Foils})", 5, 3, 250, 350, "tradeables_");
+
             Console.ReadKey();
+        }
+
+        private static void DrawListToImageFiles(IEnumerable<Card> cardList, Func<Card, string> txtFunc, uint cols, uint rows, uint cardWidth, uint cardHeight, string filePrefix)
+        {
+            int padding = 4;
+
+            for (int i = 0; i < cardList.Count(); i += (int)(cols * rows))
+            {
+                SKBitmap bmp = new SKBitmap((int)(cols * cardWidth),(int)(rows * cardHeight));
+                using (SKCanvas canvas = new SKCanvas(bmp))
+                {
+                    canvas.Clear(SKColors.White);
+                    for (int index = i; index < i + (cols * rows) && index < cardList.Count(); index++)
+                    {
+                        Card c = cardList.ElementAt(index);
+                        int colIndex = (int)((index - i) % cols);
+                        int rowIndex = (int)((index - i) / cols);
+
+                        float x = colIndex * cardWidth;
+                        float y = rowIndex * cardHeight;
+
+                        var img = DownloadImage(c.Image);
+                        canvas.DrawBitmap(img, new SKRect(x + padding, y + padding, x + cardWidth - padding, y + cardHeight - padding));
+                        canvas.DrawRect(new SKRect(x + padding, y + padding + cardHeight - 40, x + (cardWidth * 0.4f) - padding, y + cardHeight - padding), new SKPaint { Color = SKColors.Black.WithAlpha(200) });
+                        if (txtFunc != null)
+                        {
+                            canvas.DrawText(txtFunc.Invoke(c), x + padding + 8, y + padding + cardHeight - 18, new SKPaint { IsAntialias = true, Color = SKColors.White, TextSize = 24, FakeBoldText = true });
+                        }
+                    }
+                }
+                using (SKImage img = SKImage.FromBitmap(bmp))
+                {
+                    using (var encodedImage = img.Encode(SKEncodedImageFormat.Png, 100))
+                    {
+                        string filePath = $"{filePrefix}{i}.png";
+
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+
+                        using (var stream = File.OpenWrite(filePath))
+                        {
+                            encodedImage.SaveTo(stream);
+                        }
+                    }
+                }
+            }
+        }
+
+        private static SKBitmap? DownloadImage(string url)
+        {
+            HttpWebResponse response = null;
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "HEAD";
+
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    byte[] stream = null;
+                    using (var webClient = new WebClient())
+                    {
+                        stream = webClient.DownloadData(url);
+                    }
+                    return SKBitmap.Decode(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    response.Close();
+                }
+            }
+            return null;
         }
 
         private static void WriteList(IEnumerable<Card> list, Func<Card, string> postString = null)

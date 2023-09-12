@@ -109,7 +109,7 @@ namespace lorcana.Cards
         }
 
         private const string filledCircle = "\u25CF";
-        private const string openBook = "\u1F4D6";
+        private const string filledRectangle = "\u25A0";
         private const string filledTriangle = "\u25B2";
         private const string filledSquare = "\u25C6";
         private const string filledPentagon = "\u2B23";
@@ -123,7 +123,7 @@ namespace lorcana.Cards
                 case Rarity.Common:
                     return unicode ? filledCircle : "C";
                 case Rarity.Uncommon:
-                    return unicode ? openBook : "U";
+                    return unicode ? filledRectangle : "U";
                 case Rarity.Rare:
                     return unicode ? filledTriangle : "R";
                 case Rarity.SuperRare:
