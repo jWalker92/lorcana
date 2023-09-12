@@ -91,7 +91,12 @@ namespace lorcana
             Console.WriteLine("Total Tradeable Card count: " + tradeables.Sum(x => x.Total - tradeWithholdValue));
             WriteList(tradeables, (c) => ": " + (c.Total - tradeWithholdValue) + $" ({c.Foils})");
 
-            DrawListToImageFiles(tradeables, (c) => (c.Total - tradeWithholdValue) + $" ({c.Foils})", 5, 3, 250, 350, "tradeables_");
+
+            //DrawListToImageFiles(cardsList.Where(x => x.Total < 4), (c) => (4 - c.Total).ToString(), 4, 3, 250, 350, "missing_");
+
+            //DrawListToImageFiles(CardLibrary.List.Where(x => x.Rarity == Rarity.Legendary), null, 3, 3, 250, 350, "legendaries_");
+
+            //DrawListToImageFiles(tradeables, (c) => (c.Total - tradeWithholdValue) + $" ({c.Foils})", 5, 3, 250, 350, "tradeables_");
 
             Console.ReadKey();
         }
@@ -117,9 +122,9 @@ namespace lorcana
 
                         var img = DownloadImage(c.Image);
                         canvas.DrawBitmap(img, new SKRect(x + padding, y + padding, x + cardWidth - padding, y + cardHeight - padding));
-                        canvas.DrawRect(new SKRect(x + padding, y + padding + cardHeight - 40, x + (cardWidth * 0.4f) - padding, y + cardHeight - padding), new SKPaint { Color = SKColors.Black.WithAlpha(200) });
                         if (txtFunc != null)
                         {
+                            canvas.DrawRect(new SKRect(x + padding, y + padding + cardHeight - 40, x + (cardWidth * 0.4f) - padding, y + cardHeight - padding), new SKPaint { Color = SKColors.Black.WithAlpha(200) });
                             canvas.DrawText(txtFunc.Invoke(c), x + padding + 8, y + padding + cardHeight - 18, new SKPaint { IsAntialias = true, Color = SKColors.White, TextSize = 24, FakeBoldText = true });
                         }
                     }
