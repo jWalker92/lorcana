@@ -2,20 +2,39 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+    xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms" xmlns:lorcanaapp="clr-namespace:lorcanaApp"
     x:Class="lorcanaApp.CardDetailPage">
     <Grid ColumnDefinitions="Auto,*,Auto">
         <skia:SKCanvasView Grid.ColumnSpan="3" x:Name="skiaView" VerticalOptions="Start" InputTransparent="True"/>
-        <ScrollView x:Name="scrollView" Grid.ColumnSpan="3" Padding="32">
+        <lorcanaapp:GestureScrollView x:Name="scrollView" Grid.ColumnSpan="3" Padding="32">
             <StackLayout>
                 <BoxView x:Name="skSpacer"/>
-                <Label Text="{Binding CurrentCard.Title}" FontSize="Title"/>
-                <Label Text="{Binding CurrentCard.SubTitle}" FontSize="Subtitle"/>
+                <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto,Auto">
+                    <Label Text="{Binding CurrentCard.Title}" FontSize="Title"/>
+                    <Label Text="{Binding CurrentCard.SubTitle}" FontSize="Subtitle" Grid.Row="1"/>
+                    <Frame Grid.Row="0" Grid.Column="1" WidthRequest="32" HeightRequest="32" HasShadow="False"
+                            BorderColor="Black" Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#44A0A0A0">
+                        <Label Text="{Binding CurrentCard.Normals}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
+                    </Frame>
+                    <Frame Grid.Row="0" Grid.Column="2" WidthRequest="32" HeightRequest="32" HasShadow="False"
+                            BorderColor="Black" CornerRadius="8" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
+                        <ContentView>
+                            <Label Text="{Binding CurrentCard.Foils}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
+                            <ContentView.Background>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#FFC1A1" Offset="0" /> <!-- Rosa -->
+                                    <GradientStop Color="#FFE8A1" Offset="0.2" /> <!-- Orange -->
+                                    <GradientStop Color="#FFFFC1" Offset="0.4" /> <!-- Gelb -->
+                                    <GradientStop Color="#C1FFC1" Offset="0.6" /> <!-- Hellgrün -->
+                                    <GradientStop Color="#A1E8FF" Offset="0.8" /> <!-- Hellblau -->
+                                    <GradientStop Color="#C1A1FF" Offset="1" /> <!-- Lavendel -->
+                                </LinearGradientBrush>
+                            </ContentView.Background>
+                        </ContentView>
+                    </Frame>
+                </Grid>
                 <Label Text="{Binding CurrentCard.Body}"/>
             </StackLayout>
-        </ScrollView>
-        <Button Text="&lt;" Clicked="Prev_Clicked" VerticalOptions="Center" BackgroundColor="#AAF0F0F0"/>
-        <Button Text="&gt;" Clicked="Next_Clicked" VerticalOptions="Center" BackgroundColor="#AAF0F0F0" Grid.Column="2"/>
+        </lorcanaapp:GestureScrollView>
     </Grid>
 </ContentPage>
-

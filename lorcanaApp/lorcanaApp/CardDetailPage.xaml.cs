@@ -7,6 +7,7 @@ using SkiaSharp;
 using SkiaSharp.Views.Forms;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+
 namespace lorcanaApp
 {
     public partial class CardDetailPage : ContentPage
@@ -38,9 +39,11 @@ namespace lorcanaApp
             BindingContext = this;
             lastReading = DateTime.Now;
             CurrentCard = cards[index];
-            Title = CurrentCard.NumberDisplay;
+            Title = CurrentCard.NumberDisplay + " - " + CurrentCard.Title;
             Gyroscope.ReadingChanged += Gyroscope_ReadingChanged;
             InitializeComponent();
+            scrollView.SwipeLeft += ScrollView_SwipeLeft;
+            scrollView.SwipeRight += ScrollView_SwipeRight;
             scrollView.Scrolled += ScrollView_Scrolled;
             skiaView.PaintSurface += SkiaView_PaintSurface;
             Task.Run(() => {
@@ -52,6 +55,16 @@ namespace lorcanaApp
             });
             this.cards = cards;
             this.index = index;
+        }
+
+        private void ScrollView_SwipeRight(object sender, EventArgs e)
+        {
+            SwipeRight();
+        }
+
+        private void ScrollView_SwipeLeft(object sender, EventArgs e)
+        {
+            SwipeLeft();
         }
 
         private void ScrollView_Scrolled(object sender, ScrolledEventArgs e)
@@ -107,7 +120,7 @@ namespace lorcanaApp
             oldResourceX = 0;
             oldResourceBitmap = resourceBitmap;
             resourceBitmap = null;
-            Title = CurrentCard.NumberDisplay;
+            Title = CurrentCard.NumberDisplay + " - " + CurrentCard.Title;
             Task.Run(() => DownloadImage(CurrentCard.Image));
         }
 
@@ -130,8 +143,8 @@ namespace lorcanaApp
                         stream = webClient.DownloadData(url);
                     }
                     resBitmapAlpha = 0;
-                    resourceBitmap = ResizeBitmap(SKBitmap.Decode(stream), (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
-                    yRotation = 0.003f;
+                    var resized = ResizeBitmap(SKBitmap.Decode(stream), (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f)); ;
+                    resourceBitmap = AddRoundedCorners(resized, resized.Width * 0.055f);
                 }
             }
             catch (Exception ex)
@@ -145,6 +158,44 @@ namespace lorcanaApp
                     response.Close();
                 }
             }
+        }
+
+        public SKBitmap AddRoundedCorners(SKBitmap sourceBitmap, float cornerRadius)
+        {
+            int width = sourceBitmap.Width;
+            int height = sourceBitmap.Height;
+
+            // Erstellen einer leeren Bitmap für das Ergebnis
+            SKBitmap roundedBitmap = new SKBitmap(width, height);
+
+            using (SKCanvas canvas = new SKCanvas(roundedBitmap))
+            {
+                canvas.Clear(SKColors.Transparent);
+
+                // Erstellen eines abgerundeten Rechtecks mit dem gewünschten Eckradius
+                SKRect rect = new SKRect(0, 0, width, height);
+
+                // Festlegen der Farbe und des Pinsels für das abgerundete Rechteck
+                using (SKPaint paint = new SKPaint())
+                {
+                    paint.IsAntialias = true;
+                    paint.Color = SKColors.Black; // Farbe für das Rechteck ändern, falls gewünscht
+                    paint.Style = SKPaintStyle.Fill;
+                    canvas.DrawRoundRect(rect, cornerRadius, cornerRadius, paint);
+                }
+
+                // Zeichnen Sie die ursprüngliche Bitmap auf die abgerundete Bitmap, wobei nur der Bereich innerhalb des abgerundeten Rechtecks sichtbar ist.
+                using (SKPaint sourcePaint = new SKPaint())
+                {
+                    sourcePaint.IsAntialias = true;
+                    sourcePaint.BlendMode = SKBlendMode.SrcIn;
+                    sourcePaint.FilterQuality = SKFilterQuality.High; // Anpassen der Filterqualität nach Bedarf
+
+                    canvas.DrawBitmap(sourceBitmap, rect, sourcePaint);
+                }
+            }
+
+            return roundedBitmap;
         }
 
         public SKBitmap ResizeBitmap(SKBitmap sourceBitmap, int maxWidth, int maxHeight)
@@ -283,23 +334,23 @@ namespace lorcanaApp
                     canvas.DrawBitmap(resourceBitmap, x + resourceX, y, new SKPaint { IsAntialias = true, Color = SKColors.White.WithAlpha((byte)resBitmapAlpha) });
                 }
 
-                // Definieren Sie den Farbverlauf
                 SKPoint startPoint = new SKPoint(x, y);
                 SKPoint endPoint = new SKPoint(currentBitmap.Width + x, currentBitmap.Height + y);
                 SKColor.TryParse("#00FFFFFF", out SKColor transparent);
                 SKColor.TryParse("#FFFFFF", out SKColor highlight);
                 float shineAddition = (xRotation + yRotation) * 100;
-                SKColor[] colors = { transparent, highlight.WithAlpha(Convert.ToByte(Math.Max(0, Math.Min(120, 120 - (Math.Abs(shineAddition) * 50))))), transparent };
-                float[] colorPos = { 0.1f + shineAddition, 0.2f + shineAddition, 0.32f + shineAddition };
+                SKColor[] colors = { transparent, highlight.WithAlpha(Convert.ToByte(Math.Max(0, Math.Min(50, 50 - (Math.Abs(shineAddition) * 30))))), transparent };
+                float[] colorPos = { 0.05f + shineAddition, 0.4f + shineAddition, 0.9f + shineAddition };
                 SKShader shader = SKShader.CreateLinearGradient(startPoint, endPoint, colors, colorPos, SKShaderTileMode.Clamp);
 
-                // Zeichnen Sie einen Rechteck mit dem Farbverlauf
                 SKPaint paint = new SKPaint
                 {
                     Shader = shader
                 };
 
-                canvas.DrawRect(new SKRect(x + resourceX, y, currentBitmap.Width + x + resourceX, currentBitmap.Height + y), paint);
+                SKRect rect = new SKRect(x + resourceX, y, currentBitmap.Width + x + resourceX, currentBitmap.Height + y);
+                var cornerRadius = currentBitmap.Width * 0.055f;
+                canvas.DrawRoundRect(rect, cornerRadius, cornerRadius, paint);
             }
 
             xRotation = Lerp(xRotation, 0, 0.03f);

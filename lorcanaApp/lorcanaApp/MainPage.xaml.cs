@@ -22,7 +22,8 @@ namespace lorcanaApp
             "Owned Twice",
             "Owned Thrice",
             "Full Play Set",
-            "Tradeable",
+            "Tradeable (>=5)",
+            "Tradeable (>8)",
             "Missing"
         };
         private CardCollection collection;
@@ -92,6 +93,9 @@ namespace lorcanaApp
                         filteredList = collection.List.Where(x => x.Total >= 5).ToList();
                         break;
                     case 7:
+                        filteredList = collection.List.Where(x => x.Total > 8).ToList();
+                        break;
+                    case 8:
                         filteredList = CardLibrary.List.Where(x => !collection.List.Any(y => y.Number == x.Number)).ToList();
                         break;
                 }
