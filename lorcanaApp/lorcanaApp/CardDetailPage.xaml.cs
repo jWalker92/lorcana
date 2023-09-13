@@ -21,6 +21,9 @@ namespace lorcanaApp
         private double skiaViewHeight;
         private float skiaViewCanvasHeight;
         private float canvasHeight;
+        private float updateDelta;
+        private float gyroX;
+        private float gyroY;
         private DateTime lastReading;
         private List<Card> cards;
         private int index;
@@ -31,6 +34,9 @@ namespace lorcanaApp
         private double oldHeight;
         private float resBitmapAlpha;
         private Card currentCard;
+
+        const int fps = 60;
+        const float maxRot = 0.01f;
 
         public Card CurrentCard { get => currentCard; set { currentCard = value; OnPropertyChanged(); } }
 
@@ -49,7 +55,7 @@ namespace lorcanaApp
             Task.Run(() => {
                 placeholderBitmap = SKBitmap.Decode(EmbeddedResources.GetResourceStream("Resources.card.png"));
                 DownloadImage(cards[index].Image); });
-            Device.StartTimer(TimeSpan.FromMilliseconds(16), () =>
+            Device.StartTimer(TimeSpan.FromMilliseconds(1000 / fps), () =>
             {
                 skiaView.InvalidateSurface(); return true;
             });
@@ -243,6 +249,8 @@ namespace lorcanaApp
             return resizedBitmap;
         }
 
+        private float Clamp(float value, float min, float max) => Math.Min(max, Math.Max(min, value));
+
         private void SkiaView_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
             var canvas = e.Surface.Canvas;
@@ -262,6 +270,14 @@ namespace lorcanaApp
 
             canvas.Clear(SKColors.White);
 
+            var ms = DateTime.Now.Subtract(lastReading).TotalMilliseconds;
+            updateDelta = (float)ms / (1000 / fps);
+            lastReading = DateTime.Now;
+
+            xRotation = Clamp(xRotation + (gyroY * -0.0004f * updateDelta), -maxRot, maxRot);
+            yRotation = Clamp(yRotation + (gyroX * -0.0004f * updateDelta), -maxRot, maxRot);
+
+            
             {
                 // Definieren Sie den Farbverlauf
                 SKPoint startPoint = new SKPoint(0, 0);
@@ -366,18 +382,15 @@ namespace lorcanaApp
 
         private void Gyroscope_ReadingChanged(object sender, GyroscopeChangedEventArgs e)
         {
-            var ms = DateTime.Now.Subtract(lastReading).TotalMilliseconds;
-            float delta = (float)ms / 16f;
-            xRotation += e.Reading.AngularVelocity.Y * -0.0004f * delta;
-            yRotation += e.Reading.AngularVelocity.X * -0.0004f * delta;
-            lastReading = DateTime.Now;
+            gyroX = e.Reading.AngularVelocity.X;
+            gyroY = e.Reading.AngularVelocity.Y;
         }
 
         protected override void OnAppearing()
         {
             try
             {
-                Gyroscope.Start(SensorSpeed.Game);
+                Gyroscope.Start(SensorSpeed.UI);
             }
             catch (Exception ex)
             {
