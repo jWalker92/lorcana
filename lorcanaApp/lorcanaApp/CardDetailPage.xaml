@@ -6,7 +6,7 @@
     x:Class="lorcanaApp.CardDetailPage">
     <Grid RowDefinitions="*,Auto">
         <skia:SKCanvasView x:Name="skiaView" VerticalOptions="Start" InputTransparent="True"/>
-        <lorcanaapp:GestureScrollView x:Name="scrollView" Padding="0">
+        <lorcanaapp:GestureScrollView x:Name="scrollView" Padding="0" x:DataType="lorcanaapp:CardDetailPage">
             <StackLayout>
                 <Grid>
                     <BoxView x:Name="skSpacer"/>
@@ -41,6 +41,9 @@
                         <Label Text="{Binding CurrentCard.SubTitle}" FontSize="Subtitle" Grid.Row="1"/>
                     </Grid>
                     <Label Text="{Binding CurrentCard.Body}"/>
+                    <BoxView HorizontalOptions="FillAndExpand" Margin="0,16" HeightRequest="1" Color="{AppThemeBinding Light='#20212121', Dark='#20E0E0E0'}"/>
+                    <Label Text="{Binding CurrentCard.FlavorText}" FontAttributes="Italic"/>
+                    <Label Text="{Binding CurrentCard.Artist, StringFormat='{}Artist: {0}'}" FontSize="12"/>
                 </StackLayout>
             </StackLayout>
         </lorcanaapp:GestureScrollView>

@@ -50,6 +50,13 @@ namespace lorcana.Cards
                     Image = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "large"),
                     SmallImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "small"),
                     ArtImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "art-crop"),
+                    Strength = Helpers.GetPropertyValue<int?>(item, "strength"),
+                    Willpower = Helpers.GetPropertyValue<int?>(item, "willpower"),
+                    LoreValue = Helpers.GetPropertyValue<int?>(item, "lore-value"),
+                    FlavorText = Helpers.GetPropertyValue<string>(item, "flavor-text"),
+                    InkCost = Helpers.GetPropertyValue<int>(item, "ink-cost"),
+                    Inkable = Helpers.GetPropertyValue<bool>(item, "inkable"),
+                    Artist = Helpers.GetPropertyValue<string>(item, "artist"),
                     Body = Helpers.GetPropertyValue<string>(item, "body-text")
                 };
                 allCardsInfo.Add(infoCard);

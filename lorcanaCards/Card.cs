@@ -28,6 +28,13 @@ namespace lorcana.Cards
         public string SubTitle { get; set; }
         public string Body { get; set; }
         public int Number { get; set; }
+        public string Artist { get; set; }
+        public int? Strength { get; set; }
+        public int? Willpower { get; set; }
+        public int? LoreValue { get; set; }
+        public int InkCost { get; set; }
+        public bool Inkable { get; set; }
+        public string FlavorText { get; set; }
         public int Normals { get; set; }
         public int Foils { get; set; }
         public int Total { get => Normals + Foils; }

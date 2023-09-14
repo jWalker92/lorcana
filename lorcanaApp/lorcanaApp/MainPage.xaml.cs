@@ -29,6 +29,7 @@ namespace lorcanaApp
         };
         private CardCollection collection;
         private List<Card> filteredList;
+        private List<Card> filteredAndSearchedList;
         private bool isLoading = false;
 
         public MainPage()
@@ -128,16 +129,17 @@ namespace lorcanaApp
 
         private void SetListData(IEnumerable<Card> enumerable)
         {
+            filteredAndSearchedList = enumerable.ToList();
             Device.BeginInvokeOnMainThread(() => { cardsList.ItemsSource = enumerable; headerLabel.Text = enumerable.Count() + " Cards"; });
         }
 
-        async void Import_Clicked(System.Object sender, System.EventArgs e)
+        async void Import_Clicked(object sender, EventArgs e)
         {
             grid.RaiseChild(importView);
             importView.IsVisible = true;
         }
 
-        void Save_Clicked(System.Object sender, System.EventArgs e)
+        void Save_Clicked(object sender, EventArgs e)
         {
             var importContent = importEditor.Text;
             if (!string.IsNullOrWhiteSpace(importContent))
@@ -157,13 +159,13 @@ namespace lorcanaApp
             }
         }
 
-        void Cancel_Clicked(System.Object sender, System.EventArgs e)
+        void Cancel_Clicked(object sender, EventArgs e)
         {
             importEditor.Text = null;
             importView.IsVisible = false;
         }
 
-        void cardsList_SelectionChanged(System.Object sender, Xamarin.Forms.SelectionChangedEventArgs e)
+        void cardsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cardsList.SelectedItem == null)
             {
@@ -171,8 +173,11 @@ namespace lorcanaApp
             }
             if (cardsList.SelectedItem is Card card)
             {
-                int index = filteredList.IndexOf(card);
-                Navigation.PushAsync(new CardDetailPage(filteredList, index));
+                int index = filteredAndSearchedList.IndexOf(card);
+                if (index >= 0)
+                {
+                    Navigation.PushAsync(new CardDetailPage(filteredAndSearchedList, index));
+                }
             }
             cardsList.SelectedItem = null;
         }
@@ -198,14 +203,14 @@ namespace lorcanaApp
         {
             List<string> substrings = new List<string>();
 
-            string pattern = @"\w+|""[^""]*""";
+            string pattern = @"[^\s""']+|""([^""]*)""|'([^']*)'";
             Regex regex = new Regex(pattern);
 
             MatchCollection matches = regex.Matches(searchPhrase);
 
             foreach (Match match in matches)
             {
-                substrings.Add(match.Value.Trim('"')); // Remove quotes if present
+                substrings.Add(match.Value.Trim('"'));
             }
 
             List<string> strChecks = new List<string>
@@ -214,12 +219,27 @@ namespace lorcanaApp
                 card.Body,
                 Helpers.StringFromColor(card.Color),
                 card.RarityStr,
-                card.NumberDisplay
+                card.NumberDisplay,
+                card.Artist,
+                card.Inkable ? "%%inkable" : "%%uninkable",
+                "%%cost:" + card.InkCost
             };
+            if (card.Strength.HasValue)
+            {
+                strChecks.Add("%%str:" + card.Strength.Value);
+            }
+            if (card.Willpower.HasValue)
+            {
+                strChecks.Add("%%will:" + card.Willpower.Value);
+            }
+            if (card.LoreValue.HasValue)
+            {
+                strChecks.Add("%%lore:" + card.LoreValue.Value);
+            }
 
             foreach (var strCheck in strChecks)
             {
-                if (strCheck != null && substrings.All(x => strCheck.ToLower().Contains(x.ToLower())))
+                if (strCheck != null && substrings.All(x => strCheck.StartsWith("%%") ? strCheck.Remove(0, 2).ToLower().Equals(x.ToLower()) : strCheck.ToLower().Contains(x.ToLower())))
                 {
                     return true;
                 }
