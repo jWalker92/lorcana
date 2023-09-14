@@ -24,6 +24,7 @@ namespace lorcanaApp
             "Full Play Set",
             "Tradeable (>=5)",
             "Tradeable (>8)",
+            "Missing for Play Set",
             "Missing"
         };
         private CardCollection collection;
@@ -96,6 +97,11 @@ namespace lorcanaApp
                         filteredList = collection.List.Where(x => x.Total > 8).ToList();
                         break;
                     case 8:
+                        filteredList = collection.List.Where(x => x.Total < 4).ToList();
+                        filteredList.AddRange(CardLibrary.List.Where(x => !collection.List.Any(y => y.Number == x.Number)));
+                        filteredList = filteredList.OrderBy(x => x.Number).ToList();
+                        break;
+                    case 9:
                         filteredList = CardLibrary.List.Where(x => !collection.List.Any(y => y.Number == x.Number)).ToList();
                         break;
                 }

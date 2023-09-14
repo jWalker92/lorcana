@@ -4,9 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms" xmlns:lorcanaapp="clr-namespace:lorcanaApp"
     x:Class="lorcanaApp.CardDetailPage">
-    <Grid ColumnDefinitions="Auto,*,Auto">
-        <skia:SKCanvasView Grid.ColumnSpan="3" x:Name="skiaView" VerticalOptions="Start" InputTransparent="True"/>
-        <lorcanaapp:GestureScrollView x:Name="scrollView" Grid.ColumnSpan="3" Padding="32">
+    <Grid>
+        <skia:SKCanvasView x:Name="skiaView" VerticalOptions="Start" InputTransparent="True"/>
+        <lorcanaapp:GestureScrollView x:Name="scrollView" Padding="32">
             <StackLayout>
                 <BoxView x:Name="skSpacer"/>
                 <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto,Auto">
@@ -36,5 +36,6 @@
                 <Label Text="{Binding CurrentCard.Body}"/>
             </StackLayout>
         </lorcanaapp:GestureScrollView>
+        <Switch x:Name="enableGyro" HorizontalOptions="End" VerticalOptions="Start" Margin="8"/>
     </Grid>
 </ContentPage>

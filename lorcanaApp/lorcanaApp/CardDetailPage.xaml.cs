@@ -12,6 +12,10 @@ namespace lorcanaApp
 {
     public partial class CardDetailPage : ContentPage
     {
+        const int fps = 60;
+        const float maxRot = 0.01f;
+        const string KEY_ENABLE_GYRO = "KEY_ENABLE_GYRO";
+
         private SKBitmap placeholderBitmap;
         private SKBitmap resourceBitmap;
         private SKBitmap oldResourceBitmap;
@@ -24,7 +28,7 @@ namespace lorcanaApp
         private float updateDelta;
         private float gyroX;
         private float gyroY;
-        private DateTime lastReading;
+        private DateTime lastUpdate;
         private List<Card> cards;
         private int index;
         private bool forwardSwitch;
@@ -34,33 +38,63 @@ namespace lorcanaApp
         private double oldHeight;
         private float resBitmapAlpha;
         private Card currentCard;
-
-        const int fps = 60;
-        const float maxRot = 0.01f;
+        private bool gyroEnabled;
+        private int drawsLeft = 100;
 
         public Card CurrentCard { get => currentCard; set { currentCard = value; OnPropertyChanged(); } }
 
         public CardDetailPage(List<Card> cards, int index)
         {
+            this.cards = cards;
+            this.index = index;
             BindingContext = this;
-            lastReading = DateTime.Now;
+            lastUpdate = DateTime.Now;
             CurrentCard = cards[index];
-            Title = CurrentCard.NumberDisplay + " - " + CurrentCard.Title;
-            Gyroscope.ReadingChanged += Gyroscope_ReadingChanged;
+            SwitchImage();
+
             InitializeComponent();
+
             scrollView.SwipeLeft += ScrollView_SwipeLeft;
             scrollView.SwipeRight += ScrollView_SwipeRight;
             scrollView.Scrolled += ScrollView_Scrolled;
             skiaView.PaintSurface += SkiaView_PaintSurface;
-            Task.Run(() => {
-                placeholderBitmap = SKBitmap.Decode(EmbeddedResources.GetResourceStream("Resources.card.png"));
-                DownloadImage(cards[index].Image); });
+
+            gyroEnabled = Preferences.Get(KEY_ENABLE_GYRO, false);
+            enableGyro.IsToggled = gyroEnabled;
+            enableGyro.Toggled += EnableGyro_Toggled;
+            Gyroscope.ReadingChanged += Gyroscope_ReadingChanged;
+
+            placeholderBitmap = SKBitmap.Decode(EmbeddedResources.GetResourceStream("Resources.card.png"));
+
             Device.StartTimer(TimeSpan.FromMilliseconds(1000 / fps), () =>
             {
-                skiaView.InvalidateSurface(); return true;
+                var ms = DateTime.Now.Subtract(lastUpdate).TotalMilliseconds;
+                updateDelta = (float)ms / (1000 / fps);
+                lastUpdate = DateTime.Now;
+                if (drawsLeft > 0)
+                {
+                    drawsLeft--;
+                    xRotation = Clamp(xRotation + (gyroY * -0.0004f * updateDelta), -maxRot, maxRot);
+                    yRotation = Clamp(yRotation + (gyroX * -0.0004f * updateDelta), -maxRot, maxRot);
+                    skiaView.InvalidateSurface();
+                } return true;
             });
-            this.cards = cards;
-            this.index = index;
+        }
+
+        private void EnableGyro_Toggled(object sender, ToggledEventArgs e)
+        {
+            gyroEnabled = !gyroEnabled;
+            Preferences.Set(KEY_ENABLE_GYRO, gyroEnabled);
+            if (gyroEnabled)
+            {
+                TryStartGyro();
+            }
+            else
+            {
+                gyroX = 0;
+                gyroY = 0;
+                TryStopGyro();
+            }
         }
 
         private void ScrollView_SwipeRight(object sender, EventArgs e)
@@ -101,6 +135,7 @@ namespace lorcanaApp
             {
                 return;
             }
+            drawsLeft = 60;
             index++;
             CurrentCard = cards[index];
             forwardSwitch = true;
@@ -114,6 +149,7 @@ namespace lorcanaApp
             {
                 return;
             }
+            drawsLeft = 60;
             index--;
             CurrentCard = cards[index];
             forwardSwitch = false;
@@ -253,6 +289,7 @@ namespace lorcanaApp
 
         private void SkiaView_PaintSurface(object sender, SKPaintSurfaceEventArgs e)
         {
+
             var canvas = e.Surface.Canvas;
 
             if (canvasWidth != canvas.LocalClipBounds.Width || canvasHeight != canvas.LocalClipBounds.Height)
@@ -269,17 +306,8 @@ namespace lorcanaApp
             }
 
             canvas.Clear(SKColors.White);
-
-            var ms = DateTime.Now.Subtract(lastReading).TotalMilliseconds;
-            updateDelta = (float)ms / (1000 / fps);
-            lastReading = DateTime.Now;
-
-            xRotation = Clamp(xRotation + (gyroY * -0.0004f * updateDelta), -maxRot, maxRot);
-            yRotation = Clamp(yRotation + (gyroX * -0.0004f * updateDelta), -maxRot, maxRot);
-
             
             {
-                // Definieren Sie den Farbverlauf
                 SKPoint startPoint = new SKPoint(0, 0);
                 SKPoint endPoint = new SKPoint(e.Info.Width * 0.8f, e.Info.Height);
                 SKColor.TryParse("#181A3D", out SKColor blue);
@@ -288,7 +316,6 @@ namespace lorcanaApp
                 float[] colorPos = { 0.0f, 0.6f, 1.0f };
                 SKShader shader = SKShader.CreateLinearGradient(startPoint, endPoint, colors, colorPos, SKShaderTileMode.Clamp);
 
-                // Zeichnen Sie einen Rechteck mit dem Farbverlauf
                 SKPaint paint = new SKPaint
                 {
                     Shader = shader
@@ -371,22 +398,50 @@ namespace lorcanaApp
 
             xRotation = Lerp(xRotation, 0, 0.03f);
             yRotation = Lerp(yRotation, 0, 0.03f);
+
+            if (Math.Abs(xRotation) > 0f ||
+                Math.Abs(yRotation) > 0f ||
+                Math.Abs(resourceX) > 0f ||
+                Math.Abs(resBitmapAlpha) < 250)
+            {
+                drawsLeft = 60;
+            }
+
+            canvas.ResetMatrix();
+
+            //canvas.DrawText(drawsLeft.ToString(), 8, 40, new SKPaint { Color = SKColors.White, TextSize = 40 });
+            //canvas.DrawText(gyroX .ToString(), 8, 90, new SKPaint { Color = SKColors.White, TextSize = 40 });
+            //canvas.DrawText(gyroY.ToString(), 8, 140, new SKPaint { Color = SKColors.White, TextSize = 40 });
+            //canvas.DrawText(resourceX.ToString(), 8, 190, new SKPaint { Color = SKColors.White, TextSize = 40 });
+            //canvas.DrawText(xRotation.ToString(), 8, 240, new SKPaint { Color = SKColors.White, TextSize = 40 });
+            //canvas.DrawText(yRotation.ToString(), 8, 190, new SKPaint { Color = SKColors.White, TextSize = 40 });
         }
 
         public static float Lerp(float start, float end, float t)
         {
             t = Math.Max(0, Math.Min(1, t));
-
-            return start + (end - start) * t;
+            var change = (end - start) * t;
+            if (Math.Abs(change) < 0.000001f) return end;
+            return start + change;
         }
 
         private void Gyroscope_ReadingChanged(object sender, GyroscopeChangedEventArgs e)
         {
+            if (!gyroEnabled)
+            {
+                gyroX = 0;
+                gyroY = 0;
+                return;
+            }
             gyroX = e.Reading.AngularVelocity.X;
             gyroY = e.Reading.AngularVelocity.Y;
+            if (Math.Abs(gyroX) > 0.1f || Math.Abs(gyroY) > 0.1f)
+            {
+                drawsLeft = 60;
+            }
         }
 
-        protected override void OnAppearing()
+        private void TryStartGyro()
         {
             try
             {
@@ -398,7 +453,7 @@ namespace lorcanaApp
             }
         }
 
-        protected override void OnDisappearing()
+        private void TryStopGyro()
         {
             try
             {
@@ -408,6 +463,24 @@ namespace lorcanaApp
             {
 
             }
+        }
+
+        protected override void OnAppearing()
+        {
+            if (!gyroEnabled)
+            {
+                return;
+            }
+            TryStartGyro();
+        }
+
+        protected override void OnDisappearing()
+        {
+            if (!gyroEnabled)
+            {
+                return;
+            }
+            TryStopGyro();
         }
 
         void Prev_Clicked(System.Object sender, System.EventArgs e)
