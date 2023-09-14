@@ -15,6 +15,9 @@
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="2.88.5" />
+    <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lorcanaCards\lorcanaCards.csproj" />
@@ -24,15 +27,41 @@
     <None Remove="Resources\Raw\" />
     <None Remove="Resources\Raw\update.json" />
     <None Remove="Resources\karte.png" />
+    <None Remove="Resources\Rarity\" />
+    <None Remove="Resources\Rarity\Common.svg" />
+    <None Remove="Resources\Rarity\Legendary.svg" />
+    <None Remove="Resources\Rarity\Rare.svg" />
+    <None Remove="Resources\Rarity\Super Rare.svg" />
+    <None Remove="Resources\Rarity\Uncommon.svg" />
+    <None Remove="Resources\Inks\" />
+    <None Remove="Resources\Inks\Amber.svg" />
+    <None Remove="Resources\Inks\Amethyst.svg" />
+    <None Remove="Resources\Inks\Emerald.svg" />
+    <None Remove="Resources\Inks\Ruby.svg" />
+    <None Remove="Resources\Inks\Sapphire.svg" />
+    <None Remove="Resources\Inks\Steel.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Resources\Raw\" />
+    <Folder Include="Resources\Rarity\" />
+    <Folder Include="Resources\Inks\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Raw\update.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\card.png" />
+    <EmbeddedResource Include="Resources\Rarity\Common.svg" />
+    <EmbeddedResource Include="Resources\Rarity\Legendary.svg" />
+    <EmbeddedResource Include="Resources\Rarity\Rare.svg" />
+    <EmbeddedResource Include="Resources\Rarity\SuperRare.svg" />
+    <EmbeddedResource Include="Resources\Rarity\Uncommon.svg" />
+    <EmbeddedResource Include="Resources\Inks\Amber.svg" />
+    <EmbeddedResource Include="Resources\Inks\Amethyst.svg" />
+    <EmbeddedResource Include="Resources\Inks\Emerald.svg" />
+    <EmbeddedResource Include="Resources\Inks\Ruby.svg" />
+    <EmbeddedResource Include="Resources\Inks\Sapphire.svg" />
+    <EmbeddedResource Include="Resources\Inks\Steel.svg" />
   </ItemGroup>
 </Project>

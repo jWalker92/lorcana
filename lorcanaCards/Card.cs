@@ -18,7 +18,8 @@ namespace lorcana.Cards
         Rare,
         SuperRare,
         Legendary,
-        Enchanted
+        Enchanted,
+        Unknown
     }
 
     public class Card

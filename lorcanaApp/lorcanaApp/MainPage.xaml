@@ -3,35 +3,58 @@
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:cards="clr-namespace:lorcana.Cards;assembly=lorcanaCards"
     x:Class="lorcanaApp.MainPage"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms" xmlns:lorcanaapp="clr-namespace:lorcanaApp"
     Title="Lorcana Collection">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Import" Clicked="Import_Clicked"/>
-
     </ContentPage.ToolbarItems>
-    <Grid RowDefinitions="Auto,*" x:Name="grid">
-        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,*,Auto" Padding="16"
-              IsVisible="False" x:Name="importView" Grid.RowSpan="2" BackgroundColor="White">
+    <Grid RowDefinitions="Auto,*" x:Name="grid" RowSpacing="0">
+        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,*" Padding="16"
+              IsVisible="False" x:Name="importView" Grid.RowSpan="2" BackgroundColor="{AppThemeBinding Light='White', Dark='Black'}">
             <Label Text="Paste the update you captured from dreamborn.ink into this field and click save." Grid.ColumnSpan="2"/>
-            <Editor x:Name="importEditor" Grid.ColumnSpan="2" Grid.Row="1" BackgroundColor="#F1F1F1"/>
-            <Button Text="Cancel" Grid.Row="2" Clicked="Cancel_Clicked"/>
-            <Button Text="Save" Grid.Row="2" Grid.Column="1" Clicked="Save_Clicked"/>
+            <Button Text="Cancel" Grid.Row="1" Clicked="Cancel_Clicked"/>
+            <Button Text="Save" Grid.Row="1" Grid.Column="1" Clicked="Save_Clicked"/>
+            <Editor x:Name="importEditor" Grid.ColumnSpan="2" Grid.Row="2" BackgroundColor="#60F1F1F1"/>
         </Grid>
-        <Picker x:Name="listPicker" HorizontalOptions="FillAndExpand"/>
+        <Frame Padding="8" CornerRadius="0">
+            <Frame.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#2E3192" Offset="0.0" />
+                    <GradientStop Color="#540D6E" Offset="1.0" />
+                </LinearGradientBrush>
+            </Frame.Background>
+            <Grid ColumnDefinitions="*,*">
+                <SearchBar x:Name="searchBar" Placeholder="Search..." Grid.Column="0" PlaceholderColor="LightSlateGray" TextColor="White" TextChanged="SearchBar_TextChanged" CancelButtonColor="White"
+                           BackgroundColor="Transparent" VerticalOptions="Center" ios:SearchBar.SearchBarStyle="Minimal"/>
+                <Picker x:Name="listPicker" HorizontalOptions="FillAndExpand" Grid.Column="1" TextColor="LightGray" Title="Filter" BackgroundColor="#33FFFFFF" VerticalOptions="Center"/>
+            </Grid>
+        </Frame>
         <CollectionView Grid.Row="1" x:Name="cardsList" SelectionMode="Single" SelectionChanged="cardsList_SelectionChanged">
+            <CollectionView.Header>
+                <Grid Padding="8,16,8,8" ColumnDefinitions="*,Auto">
+                    <Label x:Name="headerLabel" HorizontalOptions="Center" TextColor="#666666" VerticalOptions="Center"/>
+                    <Button BackgroundColor="#2E3192" TextColor="WhiteSmoke" Padding="8" Text="Refresh Cards" Clicked="Rebuild_Clicked" Grid.Column="1" VerticalOptions="Center"/>
+                </Grid>
+            </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="cards:Card">
-                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto" Padding="8,4">
+                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" Padding="8,4">
                         <Frame Grid.RowSpan="2" CornerRadius="4" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
                             <Image Source="{Binding SmallImage}"/>
                         </Frame>
                         <StackLayout Grid.Column="1" Orientation="Vertical" VerticalOptions="Start" Spacing="0" Grid.RowSpan="2">
-                            <Label Text="{Binding Title}" FontSize="18" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
-                            <Label Text="{Binding SubTitle}" FontSize="Subtitle"/>
-                            <Label Text="{Binding Body}" MaxLines="3" LineBreakMode="TailTruncation"/>
+                            <StackLayout Orientation="Horizontal">
+                                <Frame Padding="2" BackgroundColor="Black" HasShadow="False">
+                                    <ffimageloadingsvg:SvgCachedImage Source="{Binding Rarity, Converter={StaticResource rarityImgConverter}}" HeightRequest="16" WidthRequest="16"/>
+                                </Frame>
+                                <Label Text="{Binding Title}" FontSize="20" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
+                            </StackLayout>
+                            <Label Text="{Binding SubTitle}" FontSize="16" FontAttributes="Italic"/>
+                            <Label Text="{Binding Body}" MaxLines="2" FontSize="14" LineBreakMode="TailTruncation"/>
                         </StackLayout>
-                        <Label Text="{Binding Number, StringFormat='{}#{0:000}'}" FontSize="20" Grid.Column="2" Grid.ColumnSpan="2" HorizontalOptions="End"/>
+                        <Label Text="{Binding Number, StringFormat='{}#{0:000}'}" FontSize="18" Grid.Column="2" Grid.ColumnSpan="2" HorizontalOptions="End"/>
                         <Frame Grid.Row="1" Grid.Column="2" WidthRequest="32" HeightRequest="32" HasShadow="False"
-                               BorderColor="Black" Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#44A0A0A0">
+                               BorderColor="Transparent" Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#33A0A0A0">
                             <Label Text="{Binding Normals}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
                         </Frame>
                         <Frame Grid.Row="1" Grid.Column="3" WidthRequest="32" HeightRequest="32" HasShadow="False"
@@ -40,12 +63,12 @@
                                 <Label Text="{Binding Foils}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
                                 <ContentView.Background>
                                     <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#FFC1A1" Offset="0" /> <!-- Rosa -->
-                                        <GradientStop Color="#FFE8A1" Offset="0.2" /> <!-- Orange -->
-                                        <GradientStop Color="#FFFFC1" Offset="0.4" /> <!-- Gelb -->
-                                        <GradientStop Color="#C1FFC1" Offset="0.6" /> <!-- Hellgrün -->
-                                        <GradientStop Color="#A1E8FF" Offset="0.8" /> <!-- Hellblau -->
-                                        <GradientStop Color="#C1A1FF" Offset="1" /> <!-- Lavendel -->
+                                        <GradientStop Color="#FFC1A1" Offset="0" />
+                                        <GradientStop Color="#FFE8A1" Offset="0.2" />
+                                        <GradientStop Color="#FFFFC1" Offset="0.4" />
+                                        <GradientStop Color="#C1FFC1" Offset="0.6" />
+                                        <GradientStop Color="#A1E8FF" Offset="0.8" />
+                                        <GradientStop Color="#C1A1FF" Offset="1" />
                                     </LinearGradientBrush>
                                 </ContentView.Background>
                             </ContentView>
@@ -55,7 +78,6 @@
             </CollectionView.ItemTemplate>
             <CollectionView.ItemsLayout>
                 <GridItemsLayout Span="1" Orientation="Vertical" VerticalItemSpacing="8" HorizontalItemSpacing="8"/>
-
             </CollectionView.ItemsLayout>
         </CollectionView>
     </Grid> 

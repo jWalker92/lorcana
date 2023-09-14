@@ -26,6 +26,27 @@ namespace lorcana.Cards
             }
         }
 
+        public static string HexStringFromColor(CardColor color)
+        {
+            switch (color)
+            {
+                case CardColor.Amber:
+                    return "#F4B400";
+                case CardColor.Amethyst:
+                    return "#81377B";
+                case CardColor.Emerald:
+                    return "#298A34";
+                case CardColor.Ruby:
+                    return "#D30A2E";
+                case CardColor.Sapphire:
+                    return "#0089C3";
+                case CardColor.Steel:
+                    return "#9FA9B3";
+                default:
+                    return "#A0A0A0";
+            }
+        }
+
         public static string StringFromColor(CardColor color)
         {
             switch (color)
@@ -49,13 +70,13 @@ namespace lorcana.Cards
 
         public static Rarity RarityFromString(string str)
         {
-            if (str == "Uncommon") return Rarity.Common;
-            if (str == "Common") return Rarity.Uncommon;
+            if (str == "Common") return Rarity.Common;
+            if (str == "Uncommon") return Rarity.Uncommon;
             if (str == "Rare") return Rarity.Rare;
             if (str == "Super Rare") return Rarity.SuperRare;
             if (str == "Legendary") return Rarity.Legendary;
             if (str == "Enchanted") return Rarity.Enchanted;
-            return Rarity.Common;
+            return Rarity.Unknown;
         }
 
 

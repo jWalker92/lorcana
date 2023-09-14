@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using lorcana.Cards;
 using Xamarin.Essentials;
@@ -29,28 +29,41 @@ namespace lorcanaApp
         };
         private CardCollection collection;
         private List<Card> filteredList;
+        private bool isLoading = false;
 
         public MainPage()
         {
             InitializeComponent();
+            headerLabel.Text = "Loading...";
             listPicker.ItemsSource = pickerItems;
             listPicker.SelectedIndex = 0;
             listPicker.SelectedIndexChanged += ListPicker_SelectedIndexChanged;
-            Task.Run(async () => { await BuildLibraryAndCollection(); await LoadData(); });
+            Task.Run(async () => {
+                if (isLoading) return;
+                isLoading = true;
+                await BuildLibraryAndCollection(false);
+                await LoadData();
+                isLoading = false;
+            });
         }
 
         private void ListPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Task.Run(LoadData);
+            Task.Run(async () => {
+                if (isLoading) return;
+                isLoading = true;
+                headerLabel.Text = "Loading...";
+                await LoadData();
+                isLoading = false;
+            });
         }
 
-        private async Task BuildLibraryAndCollection()
+        private async Task BuildLibraryAndCollection(bool forceRefresh)
         {
             try
             {
-
-                string allCardsJson = Preferences.Get(allCardsCache, "");
-                string allCardsInfoJson = Preferences.Get(allCardsInfoCache, "");
+                string allCardsJson = forceRefresh ? null : Preferences.Get(allCardsCache, "");
+                string allCardsInfoJson = forceRefresh ? null : Preferences.Get(allCardsInfoCache, "");
                 await CardLibrary.BuildLibrary(allCardsJson, allCardsInfoJson);
                 Preferences.Set(allCardsCache, CardLibrary.AllCardsJson);
                 Preferences.Set(allCardsInfoCache, CardLibrary.AllCardsInfoJson);
@@ -105,12 +118,17 @@ namespace lorcanaApp
                         filteredList = CardLibrary.List.Where(x => !collection.List.Any(y => y.Number == x.Number)).ToList();
                         break;
                 }
-                Device.BeginInvokeOnMainThread(() => cardsList.ItemsSource = filteredList);
+                SetListData(SearchedList(filteredList, searchBar.Text));
             }
             catch (Exception ex)
             {
 
             }
+        }
+
+        private void SetListData(IEnumerable<Card> enumerable)
+        {
+            Device.BeginInvokeOnMainThread(() => { cardsList.ItemsSource = enumerable; headerLabel.Text = enumerable.Count() + " Cards"; });
         }
 
         async void Import_Clicked(System.Object sender, System.EventArgs e)
@@ -157,6 +175,68 @@ namespace lorcanaApp
                 Navigation.PushAsync(new CardDetailPage(filteredList, index));
             }
             cardsList.SelectedItem = null;
+        }
+
+        void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SetListData(SearchedList(filteredList, searchBar.Text));
+        }
+
+        private IEnumerable<Card> SearchedList(IEnumerable<Card> cardList, string searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                return cardList;
+            }
+            else
+            {
+                return cardList.Where(x => MatchSearchPhrase(x, searchText));
+            }
+        }
+
+        private bool MatchSearchPhrase(Card card, string searchPhrase)
+        {
+            List<string> substrings = new List<string>();
+
+            string pattern = @"\w+|""[^""]*""";
+            Regex regex = new Regex(pattern);
+
+            MatchCollection matches = regex.Matches(searchPhrase);
+
+            foreach (Match match in matches)
+            {
+                substrings.Add(match.Value.Trim('"')); // Remove quotes if present
+            }
+
+            List<string> strChecks = new List<string>
+            {
+                card.Title,
+                card.Body,
+                Helpers.StringFromColor(card.Color),
+                card.RarityStr,
+                card.NumberDisplay
+            };
+
+            foreach (var strCheck in strChecks)
+            {
+                if (strCheck != null && substrings.All(x => strCheck.ToLower().Contains(x.ToLower())))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        void Rebuild_Clicked(object sender, EventArgs e)
+        {
+            Task.Run(async () => {
+                if (isLoading) return;
+                SetListData(new List<Card>());
+                isLoading = true;
+                await BuildLibraryAndCollection(true);
+                await LoadData();
+                isLoading = false;
+            });
         }
     }
 }
