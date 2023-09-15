@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -216,6 +217,7 @@ namespace lorcanaApp
             List<string> strChecks = new List<string>
             {
                 card.Title,
+                card.SubTitle,
                 card.Body,
                 Helpers.StringFromColor(card.Color),
                 card.RarityStr,
@@ -237,14 +239,16 @@ namespace lorcanaApp
                 strChecks.Add("%%lore:" + card.LoreValue.Value);
             }
 
-            foreach (var strCheck in strChecks)
+            bool allHit = true;
+            foreach (var subStr in substrings)
             {
-                if (strCheck != null && substrings.All(x => strCheck.StartsWith("%%") ? strCheck.Remove(0, 2).ToLower().Equals(x.ToLower()) : strCheck.ToLower().Contains(x.ToLower())))
+                if (!strChecks.Where(x => x != null).Any(x => x.StartsWith("%%") ? x.Remove(0, 2).ToLower().Equals(subStr.ToLower()) : x.ToLower().Contains(subStr.ToLower())))
                 {
-                    return true;
+                    allHit = false;
+                    continue;
                 }
             }
-            return false;
+            return allHit;
         }
 
         void Rebuild_Clicked(object sender, EventArgs e)

@@ -44,7 +44,7 @@
                         </Frame>
                         <StackLayout Grid.Column="1" Orientation="Vertical" VerticalOptions="Start" Spacing="0" Grid.RowSpan="2">
                             <StackLayout Orientation="Horizontal">
-                                <Frame Padding="2" BackgroundColor="Black" HasShadow="False">
+                                <Frame Padding="2" BackgroundColor="Black" HasShadow="False" CornerRadius="4">
                                     <ffimageloadingsvg:SvgCachedImage Source="{Binding Rarity, Converter={StaticResource rarityImgConverter}}" HeightRequest="16" WidthRequest="16"/>
                                 </Frame>
                                 <Label Text="{Binding Title}" FontSize="20" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
