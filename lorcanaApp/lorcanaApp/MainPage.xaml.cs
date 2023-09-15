@@ -239,16 +239,14 @@ namespace lorcanaApp
                 strChecks.Add("%%lore:" + card.LoreValue.Value);
             }
 
-            bool allHit = true;
             foreach (var subStr in substrings)
             {
                 if (!strChecks.Where(x => x != null).Any(x => x.StartsWith("%%") ? x.Remove(0, 2).ToLower().Equals(subStr.ToLower()) : x.ToLower().Contains(subStr.ToLower())))
                 {
-                    allHit = false;
-                    continue;
+                    return false;
                 }
             }
-            return allHit;
+            return true;
         }
 
         void Rebuild_Clicked(object sender, EventArgs e)
