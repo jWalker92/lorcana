@@ -14,7 +14,7 @@
   <ItemGroup>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
-    <PackageReference Include="SkiaSharp.Views.Forms" Version="2.88.5" />
+    <PackageReference Include="SkiaSharp.Views.Forms" Version="2.88.6-preview.1.2" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
@@ -40,6 +40,8 @@
     <None Remove="Resources\Inks\Ruby.svg" />
     <None Remove="Resources\Inks\Sapphire.svg" />
     <None Remove="Resources\Inks\Steel.svg" />
+    <None Remove="Resources\card.svg" />
+    <None Remove="Resources\rotate.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -63,5 +65,7 @@
     <EmbeddedResource Include="Resources\Inks\Ruby.svg" />
     <EmbeddedResource Include="Resources\Inks\Sapphire.svg" />
     <EmbeddedResource Include="Resources\Inks\Steel.svg" />
+    <EmbeddedResource Include="Resources\card.svg" />
+    <EmbeddedResource Include="Resources\rotate.svg" />
   </ItemGroup>
 </Project>

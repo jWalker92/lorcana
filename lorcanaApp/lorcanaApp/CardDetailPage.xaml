@@ -2,51 +2,150 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms" xmlns:lorcanaapp="clr-namespace:lorcanaApp" xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
+    xmlns:lorcanaapp="clr-namespace:lorcanaApp"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     x:Class="lorcanaApp.CardDetailPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Label" x:Key="titleLabel">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Source={x:Reference enableViewer}, Path=IsToggled}" Value="false" TargetType="Label">
+                        <Setter Property="TextColor" Value="WhiteSmoke"/> 
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Source={x:Reference enableViewer}, Path=IsToggled}" Value="true" TargetType="Label">
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="Label" x:Key="subtitleLabel">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Source={x:Reference enableViewer}, Path=IsToggled}" Value="false" TargetType="Label">
+                        <Setter Property="TextColor" Value="WhiteSmoke"/> 
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Source={x:Reference enableViewer}, Path=IsToggled}" Value="true" TargetType="Label">
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="Label" x:Key="countLabel">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Source={x:Reference enableViewer}, Path=IsToggled}" Value="false" TargetType="Label">
+                        <Setter Property="TextColor" Value="WhiteSmoke"/> 
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Source={x:Reference enableViewer}, Path=IsToggled}" Value="true" TargetType="Label">
+                        <Setter Property="TextColor" Value="#212121"/> 
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <Grid RowDefinitions="*,Auto">
         <skia:SKCanvasView x:Name="skiaView" VerticalOptions="Start" InputTransparent="True"/>
         <lorcanaapp:GestureScrollView x:Name="scrollView" Padding="0" x:DataType="lorcanaapp:CardDetailPage">
-            <StackLayout>
-                <Grid>
-                    <BoxView x:Name="skSpacer"/>
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="End" VerticalOptions="End" Padding="8">
-                        <Frame WidthRequest="32" HeightRequest="32" HasShadow="False"
-                                BorderColor="Black" Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#44A0A0A0">
-                            <Label Text="{Binding CurrentCard.Normals}" TextColor="WhiteSmoke" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
-                        </Frame>
-                        <Frame WidthRequest="32" HeightRequest="32" HasShadow="False"
-                                BorderColor="Black" CornerRadius="8" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
-                            <ContentView>
-                                <Label Text="{Binding CurrentCard.Foils}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
-                                <ContentView.Background>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#FFC1A1" Offset="0" />
-                                        <GradientStop Color="#FFE8A1" Offset="0.2" />
-                                        <GradientStop Color="#FFFFC1" Offset="0.4" />
-                                        <GradientStop Color="#C1FFC1" Offset="0.6" />
-                                        <GradientStop Color="#A1E8FF" Offset="0.8" />
-                                        <GradientStop Color="#C1A1FF" Offset="1" />
-                                    </LinearGradientBrush>
-                                </ContentView.Background>
-                            </ContentView>
-                        </Frame>
-                    </StackLayout>
-                </Grid>
-                <StackLayout Padding="16">
-                    <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*">
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding CurrentCard.Title}" FontSize="Title" FontAttributes="Bold"/>
-                        </StackLayout>
-                        <Label Text="{Binding CurrentCard.SubTitle}" FontSize="Subtitle" Grid.Row="1"/>
-                    </Grid>
+            <StackLayout Spacing="0">
+                <BoxView x:Name="skSpacer"/>
+                <StackLayout Padding="16" Spacing="0">
+                    <Frame CornerRadius="0">
+                        <Frame.Triggers>
+                            <DataTrigger Binding="{Binding Source={x:Reference enableViewer}, Path=IsToggled}" Value="false" TargetType="Frame">
+                                <Setter Property="BackgroundColor" Value="{Binding CurrentCard.Color, Converter={StaticResource cardColorConverter}}"/>
+                                <Setter Property="Margin" Value="-16,-16,-16,0"/>
+                                <Setter Property="Padding" Value="16,64,16,12"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Source={x:Reference enableViewer}, Path=IsToggled}" Value="true" TargetType="Frame">
+                                <Setter Property="BackgroundColor" Value="Transparent"/> 
+                                <Setter Property="Margin" Value="0,0,0,32"/>
+                                <Setter Property="Padding" Value="0"/>
+                            </DataTrigger>
+                        </Frame.Triggers>
+                        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding CurrentCard.Title}" FontSize="Title" FontAttributes="Bold" Style="{StaticResource titleLabel}"/>
+                            </StackLayout>
+                    
+                            <StackLayout Grid.Column="1" Grid.RowSpan="2" VerticalOptions="Start" Orientation="Horizontal" Padding="0">
+                                <Frame WidthRequest="32" HeightRequest="32" HasShadow="False" BorderColor="#44000000"
+                                        Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#44A0A0A0">
+                                    <Label Text="{Binding CurrentCard.Normals}" Style="{StaticResource countLabel}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                </Frame>
+                                <Frame WidthRequest="32" HeightRequest="32" HasShadow="False"
+                                        BorderColor="Black" CornerRadius="8" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
+                                    <ContentView>
+                                        <Label Text="{Binding CurrentCard.Foils}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                        <ContentView.Background>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                <GradientStop Color="#FFC1A1" Offset="0" />
+                                                <GradientStop Color="#FFE8A1" Offset="0.2" />
+                                                <GradientStop Color="#FFFFC1" Offset="0.4" />
+                                                <GradientStop Color="#C1FFC1" Offset="0.6" />
+                                                <GradientStop Color="#A1E8FF" Offset="0.8" />
+                                                <GradientStop Color="#C1A1FF" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </ContentView.Background>
+                                    </ContentView>
+                                </Frame>
+                            </StackLayout>
+                            <Label Text="{Binding CurrentCard.SubTitle}" FontSize="Subtitle" Grid.Row="1" Style="{StaticResource subtitleLabel}"/>
+                        </Grid>
+                    </Frame>
+                    <Frame Padding="0" Margin="-16,0,-16,32" IsVisible="{Binding Source={x:Reference enableViewer}, Path=IsToggled, Converter={lorcanaapp:InverseBoolConverter}}">
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" RowDefinitions="Auto" Padding="16,8">
+                            <BoxView Color="{Binding CurrentCard.Color, Converter={StaticResource cardColorConverter}}" Opacity=".6" Grid.ColumnSpan="5" Margin="-16,-8"/>
+                            <StackLayout Grid.Column="0" Spacing="4">
+                                <Frame Margin="-5" Padding="5" CornerRadius="20">
+                                    <Frame.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentCard.Inkable}" Value="true" TargetType="Frame">
+                                            <Setter Property="BackgroundColor" Value="#CDB482"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentCard.Inkable}" Value="false" TargetType="Frame">
+                                            <Setter Property="BackgroundColor" Value="Transparent"/> 
+                                        </DataTrigger>
+                                    </Frame.Triggers>
+                                    <Frame Padding="4" BackgroundColor="Black" BorderColor="#88000000" VerticalOptions="Center" WidthRequest="24" HeightRequest="24" CornerRadius="16">
+                                        <Label Text="{Binding CurrentCard.InkCost}" TextColor="WhiteSmoke" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                    </Frame>
+                                </Frame>
+                                <Label Text="INK" FontSize="12" HorizontalOptions="Center"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="2" Spacing="4" IsVisible="{Binding CurrentCard.Strength, Converter={lorcanaapp:NullToBoolConverter}}">
+                                <Frame Padding="4" BackgroundColor="Transparent" BorderColor="#44000000" VerticalOptions="Center" WidthRequest="24" HeightRequest="24" CornerRadius="16">
+                                    <Label Text="{Binding CurrentCard.Strength}" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Frame>
+                                <Label Text="STR" FontSize="12" HorizontalOptions="Center"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="3" Spacing="4" IsVisible="{Binding CurrentCard.Willpower, Converter={lorcanaapp:NullToBoolConverter}}">
+                                <Frame Padding="4" BorderColor="#44000000" BackgroundColor="#40000000" VerticalOptions="Center" WidthRequest="24" HeightRequest="24" CornerRadius="4">
+                                    <Label Text="{Binding CurrentCard.Willpower}" TextColor="WhiteSmoke" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Frame>
+                                <Label Text="WILL" FontSize="12" HorizontalOptions="Center"/>
+                            </StackLayout>
+                            <StackLayout Grid.Column="4" Spacing="4" IsVisible="{Binding CurrentCard.LoreValue, Converter={lorcanaapp:NullToBoolConverter}}">
+                                <Frame Padding="4" BorderColor="#44000000" BackgroundColor="#000" VerticalOptions="Center" WidthRequest="24" HeightRequest="24" CornerRadius="4">
+                                    <Label Text="{Binding CurrentCard.LoreValue}" TextColor="WhiteSmoke" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                </Frame>
+                                <Label Text="LORE" FontSize="12" HorizontalOptions="Center"/>
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
                     <Label Text="{Binding CurrentCard.Body}"/>
                     <BoxView HorizontalOptions="FillAndExpand" Margin="0,16" HeightRequest="1" Color="{AppThemeBinding Light='#20212121', Dark='#20E0E0E0'}"/>
                     <Label Text="{Binding CurrentCard.FlavorText}" FontAttributes="Italic"/>
-                    <Label Text="{Binding CurrentCard.Artist, StringFormat='{}Artist: {0}'}" FontSize="12"/>
+                    <Label Text="{Binding CurrentCard.Artist, StringFormat='{}Artist: {0}'}" FontSize="12" Margin="0,16"/>
                 </StackLayout>
             </StackLayout>
         </lorcanaapp:GestureScrollView>
-        <Switch x:Name="enableGyro" HorizontalOptions="End" VerticalOptions="Start" Margin="8"/>
+        <StackLayout HorizontalOptions="End" VerticalOptions="Start" Padding="16,8" x:Name="viewerSettings">
+            <Frame BackgroundColor="#88FFFFFF" Padding="4" CornerRadius="8">
+                <StackLayout Orientation="Horizontal">
+                    <ffimageloadingsvg:SvgCachedImage Source="{lorcanaapp:ImageResource Source='lorcanaApp.Resources.card.svg'}" HeightRequest="20" WidthRequest="20"/>
+                    <Switch x:Name="enableViewer"/>
+                </StackLayout>
+            </Frame>
+            <Frame BackgroundColor="#88FFFFFF" Padding="4" CornerRadius="8" IsVisible="{Binding Source={x:Reference enableViewer}, Path=IsToggled}">
+                <StackLayout Orientation="Horizontal">
+                    <ffimageloadingsvg:SvgCachedImage Source="{lorcanaapp:ImageResource Source='lorcanaApp.Resources.rotate.svg'}" HeightRequest="20" WidthRequest="20"/>
+                    <Switch x:Name="enableGyro"/>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
     </Grid>
 </ContentPage>

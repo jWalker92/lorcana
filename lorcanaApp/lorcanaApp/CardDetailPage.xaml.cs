@@ -14,9 +14,12 @@ namespace lorcanaApp
     {
         const int fps = 60;
         const float maxRot = 0.01f;
+        const string KEY_ENABLE_VIEWER = "KEY_ENABLE_VIEWER";
         const string KEY_ENABLE_GYRO = "KEY_ENABLE_GYRO";
 
+        private SKBitmap rawPlaceholderBitmap;
         private SKBitmap placeholderBitmap;
+        private SKBitmap rawResourceBitmap;
         private SKBitmap resourceBitmap;
         private SKBitmap oldResourceBitmap;
         private float xRotation;
@@ -38,6 +41,7 @@ namespace lorcanaApp
         private double oldHeight;
         private float resBitmapAlpha;
         private Card currentCard;
+        private bool viewerEnabled;
         private bool gyroEnabled;
         private int drawsLeft = 100;
 
@@ -50,7 +54,6 @@ namespace lorcanaApp
             BindingContext = this;
             lastUpdate = DateTime.Now;
             CurrentCard = cards[index];
-            SwitchImage();
 
             InitializeComponent();
 
@@ -59,13 +62,24 @@ namespace lorcanaApp
             scrollView.Scrolled += ScrollView_Scrolled;
             skiaView.PaintSurface += SkiaView_PaintSurface;
 
+            viewerEnabled = Preferences.Get(KEY_ENABLE_VIEWER, true);
+            skiaView.Opacity = viewerEnabled ? 1 : 0;
+            enableViewer.IsToggled = viewerEnabled;
+            enableViewer.Toggled += EnableViewer_Toggled;
+
             gyroEnabled = Preferences.Get(KEY_ENABLE_GYRO, false);
             enableGyro.IsToggled = gyroEnabled;
             enableGyro.Toggled += EnableGyro_Toggled;
             Gyroscope.ReadingChanged += Gyroscope_ReadingChanged;
 
-            placeholderBitmap = SKBitmap.Decode(EmbeddedResources.GetResourceStream("Resources.card.png"));
+            SwitchImage();
+            rawPlaceholderBitmap = SKBitmap.Decode(EmbeddedResources.GetResourceStream("Resources.card.png"));
 
+            if (viewerEnabled) StartDrawing();
+        }
+
+        private void StartDrawing()
+        {
             Device.StartTimer(TimeSpan.FromMilliseconds(1000 / fps), () =>
             {
                 var ms = DateTime.Now.Subtract(lastUpdate).TotalMilliseconds;
@@ -77,8 +91,32 @@ namespace lorcanaApp
                     xRotation = Clamp(xRotation + (gyroY * -0.0004f * updateDelta), -maxRot, maxRot);
                     yRotation = Clamp(yRotation + (gyroX * -0.0004f * updateDelta), -maxRot, maxRot);
                     skiaView.InvalidateSurface();
-                } return true;
+                }
+                return viewerEnabled;
             });
+        }
+
+        private void EnableViewer_Toggled(object sender, ToggledEventArgs e)
+        {
+            viewerEnabled = !viewerEnabled;
+            Preferences.Set(KEY_ENABLE_VIEWER, viewerEnabled);
+            if (viewerEnabled)
+            {
+                Task.Run(() => DownloadImage(CurrentCard.Image));
+                skiaView.FadeTo(1);
+                StartDrawing();
+            }
+            else
+            {
+                skiaView.FadeTo(0);
+                enableGyro.IsToggled = false;
+            }
+            SetSpacerHeight();
+        }
+
+        private void SetSpacerHeight()
+        {
+            skSpacer.HeightRequest = viewerEnabled ? skiaView.HeightRequest : 0;
         }
 
         private void EnableGyro_Toggled(object sender, ToggledEventArgs e)
@@ -125,7 +163,7 @@ namespace lorcanaApp
             {
                 skiaView.HeightRequest = height * 0.8;
                 skiaViewHeight = -1;
-                skSpacer.HeightRequest = skiaView.HeightRequest;
+                SetSpacerHeight();
             }
         }
 
@@ -168,6 +206,10 @@ namespace lorcanaApp
 
         private void DownloadImage(string url)
         {
+            if (!viewerEnabled)
+            {
+                return;
+            }
             HttpWebResponse response = null;
 
             var request = (HttpWebRequest)WebRequest.Create(url);
@@ -185,7 +227,8 @@ namespace lorcanaApp
                         stream = webClient.DownloadData(url);
                     }
                     resBitmapAlpha = 0;
-                    var resized = ResizeBitmap(SKBitmap.Decode(stream), (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f)); ;
+                    rawResourceBitmap = SKBitmap.Decode(stream);
+                    var resized = ResizeBitmap(rawResourceBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f)); ;
                     resourceBitmap = AddRoundedCorners(resized, resized.Width * 0.055f);
                 }
             }
@@ -300,8 +343,8 @@ namespace lorcanaApp
                 {
                     skiaViewHeight = skiaView.Height;
                     skiaViewCanvasHeight = skiaView.CanvasSize.Height;
-                    resourceBitmap = ResizeBitmap(resourceBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
-                    placeholderBitmap = ResizeBitmap(placeholderBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
+                    resourceBitmap = ResizeBitmap(rawResourceBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
+                    placeholderBitmap = ResizeBitmap(rawPlaceholderBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
                 }
             }
 

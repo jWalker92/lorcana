@@ -54,7 +54,7 @@
                         </StackLayout>
                         <Label Text="{Binding Number, StringFormat='{}#{0:000}'}" FontSize="18" Grid.Column="2" Grid.ColumnSpan="2" HorizontalOptions="End"/>
                         <Frame Grid.Row="1" Grid.Column="2" WidthRequest="32" HeightRequest="32" HasShadow="False"
-                               BorderColor="Transparent" Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#33A0A0A0">
+                               BorderColor="#44000000" Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#33A0A0A0">
                             <Label Text="{Binding Normals}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
                         </Frame>
                         <Frame Grid.Row="1" Grid.Column="3" WidthRequest="32" HeightRequest="32" HasShadow="False"

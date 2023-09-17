@@ -6,9 +6,16 @@
         <Style TargetType="Label">
             <Setter Property="TextColor" Value="{AppThemeBinding Light='#212121', Dark='#F0F0F0'}"/>
         </Style>
+        <Style TargetType="CollectionView">
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light='#FAFAFA', Dark='#111'}"/>
+        </Style>
+        <Style TargetType="Frame">
+            <Setter Property="HasShadow" Value="False"/>
+        </Style>
         
         <lorcanaapp:RarityImageSourceConverter x:Key="rarityImgConverter"/>
         <lorcanaapp:InkColorImageSourceConverter x:Key="inkColorImgConverter"/>
         <lorcanaapp:CardColorToColorConverter x:Key="cardColorConverter"/>
+        <lorcanaapp:NullToBoolConverter x:Key="nullToBoolConverter"/>
     </Application.Resources>
 </Application>
