@@ -54,7 +54,7 @@
     "integerValue": "10"
   },
   "001-088": {
-    "integerValue": "3"
+    "integerValue": "4"
   },
   "001-047:foil": {
     "integerValue": "1"
@@ -66,10 +66,10 @@
     "integerValue": "6"
   },
   "001-154:foil": {
-    "integerValue": "1"
+    "integerValue": "0"
   },
   "001-062:foil": {
-    "integerValue": "1"
+    "integerValue": "0"
   },
   "001-082": {
     "integerValue": "1"
@@ -102,7 +102,7 @@
     "integerValue": "6"
   },
   "001-090": {
-    "integerValue": "2"
+    "integerValue": "3"
   },
   "001-144:foil": {
     "integerValue": "1"
@@ -126,7 +126,7 @@
     "integerValue": "2"
   },
   "001-106:foil": {
-    "integerValue": "2"
+    "integerValue": "1"
   },
   "001-072:foil": {
     "integerValue": "3"
@@ -276,7 +276,7 @@
     "integerValue": "7"
   },
   "001-070": {
-    "integerValue": "1"
+    "integerValue": "2"
   },
   "001-190": {
     "integerValue": "7"
@@ -285,7 +285,7 @@
     "integerValue": "2"
   },
   "001-164:foil": {
-    "integerValue": "2"
+    "integerValue": "1"
   },
   "001-049": {
     "integerValue": "10"
@@ -375,7 +375,7 @@
     "integerValue": "11"
   },
   "001-175": {
-    "integerValue": "1"
+    "integerValue": "2"
   },
   "001-053": {
     "integerValue": "9"
@@ -396,7 +396,7 @@
     "integerValue": "8"
   },
   "001-136:foil": {
-    "integerValue": "2"
+    "integerValue": "1"
   },
   "001-179": {
     "integerValue": "14"
@@ -507,7 +507,7 @@
     "integerValue": "2"
   },
   "001-027:foil": {
-    "integerValue": "1"
+    "integerValue": "0"
   },
   "001-039": {
     "integerValue": "4"
@@ -582,7 +582,7 @@
     "integerValue": "1"
   },
   "001-172:foil": {
-    "integerValue": "1"
+    "integerValue": "0"
   },
   "001-007": {
     "integerValue": "10"
@@ -612,7 +612,7 @@
     "integerValue": "6"
   },
   "001-201:foil": {
-    "integerValue": "2"
+    "integerValue": "1"
   },
   "001-009": {
     "integerValue": "4"
@@ -702,7 +702,7 @@
     "integerValue": "9"
   },
   "001-034:foil": {
-    "integerValue": "1"
+    "integerValue": "0"
   },
   "001-014": {
     "integerValue": "5"
@@ -732,7 +732,7 @@
     "integerValue": "1"
   },
   "001-075:foil": {
-    "integerValue": "2"
+    "integerValue": "1"
   },
   "001-106": {
     "integerValue": "8"
@@ -759,7 +759,7 @@
     "integerValue": "5"
   },
   "001-152:foil": {
-    "integerValue": "1"
+    "integerValue": "2"
   },
   "001-102": {
     "integerValue": "14"
@@ -888,7 +888,7 @@
     "integerValue": "1"
   },
   "001-202:foil": {
-    "integerValue": "1"
+    "integerValue": "0"
   },
   "001-026:foil": {
     "integerValue": "1"
@@ -897,6 +897,18 @@
     "integerValue": "4"
   },
   "001-064:foil": {
+    "integerValue": "1"
+  },
+  "001-056:foil": {
+    "integerValue": "1"
+  },
+  "001-109:foil": {
+    "integerValue": "1"
+  },
+  "001-071:foil": {
+    "integerValue": "1"
+  },
+  "001-141:foil": {
     "integerValue": "1"
   }
 }
