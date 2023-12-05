@@ -68,21 +68,6 @@ namespace lorcana.Cards
             }
         }
 
-        public static int SetcodeToNumber(string setCode)
-        {
-            switch (setCode)
-            {
-                case "TFC":
-                    return 1;
-                case "ROTF":
-                    return 2;
-                case "RFB":
-                    return 2;
-                default:
-                    return 0;
-            }
-        }
-
         public static string NumberToSetcode(int number)
         {
             switch (number)
@@ -155,6 +140,19 @@ namespace lorcana.Cards
                 }
             }
             return null;
+        }
+
+        public static string ReplaceLastOccurrence(string input, string searchString, string replaceString)
+        {
+            int lastIndexOfSearchString = input.LastIndexOf(searchString);
+
+            if (lastIndexOfSearchString >= 0)
+            {
+                input = input.Remove(lastIndexOfSearchString, searchString.Length)
+                                         .Insert(lastIndexOfSearchString, replaceString);
+            }
+
+            return input;
         }
 
         private const string filledCircle = "\u25CF";

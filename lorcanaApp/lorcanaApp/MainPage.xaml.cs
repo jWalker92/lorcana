@@ -50,8 +50,8 @@ namespace lorcanaApp
         {
             Task.Run(async () => {
                 if (isLoading) return;
-                isLoading = true;
-                headerLabel.Text = "Loading...";
+                Device.BeginInvokeOnMainThread(() => headerLabel.Text = "Loading...");
+                isLoading = true;                
                 await LoadData();
                 isLoading = false;
             });
@@ -83,7 +83,7 @@ namespace lorcanaApp
                 {
                     case 0:
                         filteredList = collection.List.ToList();
-                        filteredList = filteredList.OrderBy(x => x.NumberAsInt).ToList();
+                        filteredList = filteredList.ToList();
                         break;
                     case 1:
                         filteredList = collection.List.ToList();
@@ -108,13 +108,12 @@ namespace lorcanaApp
                         break;
                     case 8:
                         filteredList = collection.List.Where(x => x.Total < 4).ToList();
-                        filteredList = filteredList.OrderBy(x => x.Number).ToList();
                         break;
                     case 9:
                         filteredList = collection.List.Where(x => x.Total == 0).ToList();
                         break;
                 }
-                SetListData(SearchedList(filteredList, searchBar.Text));
+                SetListData(SearchedList(filteredList.OrderBy(x => x.NumberAsInt), searchBar.Text));
             }
             catch (Exception ex)
             {
@@ -122,13 +121,13 @@ namespace lorcanaApp
             }
         }
 
-        private void SetListData(IEnumerable<Card> enumerable)
+        void SetListData(IEnumerable<Card> enumerable)
         {
             filteredAndSearchedList = enumerable.ToList();
             Device.BeginInvokeOnMainThread(() => { cardsList.ItemsSource = enumerable; headerLabel.Text = enumerable.Count() + " Cards"; });
         }
 
-        async void Import_Clicked(object sender, EventArgs e)
+        void Import_Clicked(object sender, EventArgs e)
         {
             grid.RaiseChild(importView);
             importView.IsVisible = true;
@@ -142,11 +141,11 @@ namespace lorcanaApp
                 try
                 {
                     collection = new CardCollection();
-                    collection.InitializeWithJson(CardLibrary.List, importContent);
+                    collection.InitializeWithCsv(CardLibrary.List, importContent);
                     Preferences.Set("contents", importContent);
-                    Task.Run(LoadData);
                     importEditor.Text = null;
                     importView.IsVisible = false;
+                    Task.Run(LoadData);
                 }
                 catch (Exception ex)
                 {
@@ -214,6 +213,7 @@ namespace lorcanaApp
                 card.Title,
                 card.SubTitle,
                 card.Body,
+                card.SetCode,
                 Helpers.StringFromColor(card.Color),
                 card.RarityStr,
                 card.NumberDisplay,

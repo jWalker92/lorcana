@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using FFImageLoading;
 using lorcana.Cards;
 using SkiaSharp;
 using SkiaSharp.Views.Forms;
@@ -111,7 +113,7 @@ namespace lorcanaApp
             Preferences.Set(KEY_ENABLE_VIEWER, viewerEnabled);
             if (viewerEnabled)
             {
-                Task.Run(() => DownloadImage(CurrentCard.Number, Helpers.SetcodeToNumber(CurrentCard.SetCode)));
+                Task.Run(() => DownloadImage(CurrentCard.Number, CurrentCard.SetNumber));
                 skiaView.FadeTo(1);
                 StartDrawing();
             }
@@ -211,10 +213,27 @@ namespace lorcanaApp
             oldResourceBitmap = resourceBitmap;
             resourceBitmap = null;
             Title = CurrentCard.NumberDisplay + " - " + CurrentCard.Title;
-            Task.Run(() => DownloadImage(CurrentCard.Number, Helpers.SetcodeToNumber(CurrentCard.SetCode)));
+            Task.Run(async () => await DownloadImage(CurrentCard.Number, CurrentCard.SetNumber));
         }
 
-        private void DownloadImage(string numberStr, int setNumber)
+        public async Task<Stream> GetCachedImagePath(string imageUrl)
+        {
+            try
+            {
+                var cacheKey = ImageService.Instance.Config.MD5Helper.MD5(imageUrl);
+                var cacheStream = await ImageService.Instance.Config.DiskCache.TryGetStreamAsync(cacheKey);
+
+                return cacheStream;
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions
+                Console.WriteLine("Error getting cached image stream: " + ex.Message);
+                return null;
+            }
+        }
+
+        private async Task DownloadImage(string numberStr, int setNumber)
         {
             if (!viewerEnabled)
             {
@@ -222,7 +241,15 @@ namespace lorcanaApp
             }
             int.TryParse(numberStr, out int number);
             HttpWebResponse response = null;
-            string url = $"https://images.dreamborn.ink/cards/en/{setNumber:D3}-{number:D3}_1468x2048.webp";
+            string url = Card.GetImageLink(number, setNumber);
+
+            var cachedStream = await GetCachedImagePath(url);
+            if (cachedStream != null)
+            {
+                SetImageFromByteArray(cachedStream.ToByteArray());
+                return;
+            }
+
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
 
@@ -238,9 +265,8 @@ namespace lorcanaApp
                         stream = webClient.DownloadData(url);
                     }
                     resBitmapAlpha = 0;
-                    rawResourceBitmap = SKBitmap.Decode(stream);
-                    var resized = ResizeBitmap(rawResourceBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f)); ;
-                    resourceBitmap = AddRoundedCorners(resized, resized.Width * 0.055f);
+                    await ImageService.Instance.Config.DiskCache.AddToSavingQueueIfNotExistsAsync(ImageService.Instance.Config.MD5Helper.MD5(url), stream, TimeSpan.FromDays(90));
+                    SetImageFromByteArray(stream);
                 }
             }
             catch (Exception ex)
@@ -254,6 +280,13 @@ namespace lorcanaApp
                     response.Close();
                 }
             }
+        }
+
+        private void SetImageFromByteArray(byte[] stream)
+        {
+            rawResourceBitmap = SKBitmap.Decode(stream);
+            var resized = ResizeBitmap(rawResourceBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
+            resourceBitmap = AddRoundedCorners(resized, resized.Width * 0.055f);
         }
 
         public SKBitmap AddRoundedCorners(SKBitmap sourceBitmap, float cornerRadius)
@@ -466,12 +499,13 @@ namespace lorcanaApp
 
             canvas.ResetMatrix();
 #if DEBUG
-            canvas.DrawText(drawsLeft.ToString(), 8, 40, new SKPaint { Color = SKColors.White, TextSize = 40 });
-            canvas.DrawText(gyroX .ToString(), 8, 90, new SKPaint { Color = SKColors.White, TextSize = 40 });
-            canvas.DrawText(gyroY.ToString(), 8, 140, new SKPaint { Color = SKColors.White, TextSize = 40 });
-            canvas.DrawText(resourceX.ToString(), 8, 190, new SKPaint { Color = SKColors.White, TextSize = 40 });
-            canvas.DrawText(xRotation.ToString(), 8, 240, new SKPaint { Color = SKColors.White, TextSize = 40 });
-            canvas.DrawText(yRotation.ToString(), 8, 290, new SKPaint { Color = SKColors.White, TextSize = 40 });
+            var debugPaint = new SKPaint { Color = SKColors.White, TextSize = 28 };
+            canvas.DrawText(drawsLeft.ToString(), 8, 40, debugPaint);
+            canvas.DrawText(gyroX .ToString(), 8, 90, debugPaint);
+            canvas.DrawText(gyroY.ToString(), 8, 140, debugPaint);
+            canvas.DrawText(resourceX.ToString(), 8, 190, debugPaint);
+            canvas.DrawText(xRotation.ToString(), 8, 240, debugPaint);
+            canvas.DrawText(yRotation.ToString(), 8, 290, debugPaint);
 #endif
         }
 

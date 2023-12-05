@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace lorcana.Cards
 {
     public enum CardColor
@@ -27,7 +29,7 @@ namespace lorcana.Cards
         public string Title { get; set; }
         public string SubTitle { get; set; }
         public string Body { get; set; }
-        public string SetCode { get; set; }
+        public int SetNumber { get; set; }
         public string Number { get; set; }
         public string Artist { get; set; }
         public int? Strength { get; set; }
@@ -50,6 +52,12 @@ namespace lorcana.Cards
         public string NumberDisplay => "#" + Number;
         public int NumberAsInt { get { return int.TryParse(Number, out int numAsInt) ? numAsInt : 0; } }
         public string Display => Title + (!string.IsNullOrEmpty(SubTitle) ? " (" + SubTitle + ")" : "");
+        public string SetCode => Helpers.NumberToSetcode(SetNumber);
+
+        public static string GetImageLink(int number, int setNumber)
+        {
+            return $"https://images.dreamborn.ink/cards/en/{setNumber:D3}-{number:D3}_1468x2048.webp";
+        }
     }
 }
 

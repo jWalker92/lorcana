@@ -109,11 +109,10 @@ namespace lorcana.Cards
                         }
                         string number = values[numberIndex];
                         int.TryParse(values[setIndex], out int setCodeNumber);
-                        string setCode = Helpers.NumberToSetcode(setCodeNumber);
-                        Card card = cardsList.FirstOrDefault(x => x.Number == number && x.SetCode == setCode);
+                        Card card = cardsList.FirstOrDefault(x => x.Number == number && x.SetNumber == setCodeNumber);
                         if (card == null)
                         {
-                            card = library.FirstOrDefault(x => x.Number == number && x.SetCode == setCode);
+                            card = library.FirstOrDefault(x => x.Number == number && x.SetNumber == setCodeNumber);
                             if (card != null)
                             {
                                 cardsList.Add(card);
@@ -127,7 +126,8 @@ namespace lorcana.Cards
                                 }
                                 string name = values[nameIndex];
                                 string color = values[colorIndex];
-                                card = new Card() { Title = name, SetCode = setCode, Number = number, Color = Helpers.ColorFromString(color), RarityStr = rarity };
+                                string setCode = Helpers.NumberToSetcode(setCodeNumber);
+                                card = new Card() { Title = name, SetNumber = setCodeNumber, Number = number, Color = Helpers.ColorFromString(color), RarityStr = rarity };
                                 library.Add(card);
                                 cardsList.Add(card);
                             }
@@ -140,7 +140,7 @@ namespace lorcana.Cards
 
                     }
                 }
-                cardsList.AddRange(library.Where(x => !cardsList.Any(y => y.SetCode == x.SetCode && y.Number == x.Number)));
+                cardsList.AddRange(library.Where(x => !cardsList.Any(y => y.SetNumber == x.SetNumber && y.Number == x.Number)));
             }
             catch (System.Exception ex)
             {

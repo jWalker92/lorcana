@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -28,19 +29,22 @@ namespace lorcana.Cards
             allCardsInfo = new List<Card>();
             foreach (var item in allInfo)
             {
-                string number = Helpers.GetPropertyValue<string>(item, "Card_Num");
+                string numberStr = Helpers.GetPropertyValue<string>(item, "Card_Num");
                 string name = Helpers.GetPropertyValue<string>(item, "Name");
+                int setNum = Helpers.GetPropertyValue<int>(item, "Set_Num");
+                int.TryParse(numberStr, out int number);
+                string baseImage = Card.GetImageLink(number, setNum);
                 string rarityStr = Helpers.GetPropertyValue<string>(item, "Rarity");
                 Card infoCard = new Card
                 {
-                    Number = number,
+                    Number = numberStr,
                     Title = name,
-                    SetCode = Helpers.GetPropertyValue<string>(item, "Set_ID"),
+                    SetNumber = setNum,
                     SubTitle = Helpers.GetPropertyValue<string>(item, "Subtitle"),
                     Color = Helpers.ColorFromString(Helpers.GetPropertyValue<string>(item, "Color")),
                     RarityStr = rarityStr,
-                    Image = Helpers.GetPropertyValue<string>(item, "Image"),
-                    //SmallImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "small"),
+                    Image = baseImage,
+                    //SmallImage = Helpers.ReplaceLastOccurrence(baseImage, "large", "small"),
                     //ArtImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "art-crop"),
                     Strength = Helpers.GetPropertyValue<int?>(item, "Strength"),
                     Willpower = Helpers.GetPropertyValue<int?>(item, "Willpower"),

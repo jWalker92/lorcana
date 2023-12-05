@@ -1,9 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:cards="clr-namespace:lorcana.Cards;assembly=lorcanaCards"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:cards="clr-namespace:lorcana.Cards;assembly=lorcanaCards"
     x:Class="lorcanaApp.MainPage"
-    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms" xmlns:lorcanaapp="clr-namespace:lorcanaApp"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:lorcanaapp="clr-namespace:lorcanaApp"
     Title="Lorcana Collection">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Import" Clicked="Import_Clicked"/>
@@ -44,7 +48,7 @@
                 <DataTemplate x:DataType="cards:Card">
                     <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" Padding="8,4">
                         <Frame Grid.RowSpan="2" CornerRadius="4" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
-                            <Image Source="{Binding Image}" WidthRequest="80"/>
+                            <ffimageloading:CachedImage Source="{Binding Image}" HeightRequest="80" DownsampleToViewSize="True"/>
                         </Frame>
                         <StackLayout Grid.Column="1" Orientation="Vertical" VerticalOptions="Start" Spacing="0" Grid.RowSpan="2">
                             <StackLayout Orientation="Horizontal">
