@@ -14,22 +14,13 @@ namespace lorcana.Cards
 
         public static List<Card> List { get => allCardsInfo; }
 
-        public static string AllCardsJson { get; private set; }
-
         public static string AllCardsInfoJson { get; private set; }
 
-        public static async Task BuildLibrary(string allCardsJson, string allCardsInfoJson)
+        public static async Task BuildLibrary(string allCardsInfoJson)
         {
-            if (string.IsNullOrEmpty(allCardsJson))
-            {
-                allCardsJson = await GetAllCards();
-            }
-            AllCardsJson = allCardsJson;
-            var allNames = JsonConvert.DeserializeObject<List<string>>(AllCardsJson);
-
             if (string.IsNullOrEmpty(allCardsInfoJson))
             {
-                allCardsInfoJson = await GetAllCardsInfos(string.Join(";", allNames));
+                allCardsInfoJson = await GetAllCards();
             }
             AllCardsInfoJson = allCardsInfoJson;
             var allInfo = JsonConvert.DeserializeObject<List<JObject>>(AllCardsInfoJson);
@@ -37,65 +28,38 @@ namespace lorcana.Cards
             allCardsInfo = new List<Card>();
             foreach (var item in allInfo)
             {
-                int number = Helpers.GetPropertyValue<int>(item, "card-number");
-                string name = Helpers.GetPropertyValue<string>(item, "name");
-                string rarityStr = Helpers.GetPropertyValue<string>(item, "rarity");
+                string number = Helpers.GetPropertyValue<string>(item, "Card_Num");
+                string name = Helpers.GetPropertyValue<string>(item, "Name");
+                string rarityStr = Helpers.GetPropertyValue<string>(item, "Rarity");
                 Card infoCard = new Card
                 {
                     Number = number,
                     Title = name,
-                    SubTitle = Helpers.GetPropertyValue<string>(item, "subtitle"),
-                    Color = Helpers.ColorFromString(Helpers.GetPropertyValue<string>(item, "color")),
+                    SetCode = Helpers.GetPropertyValue<string>(item, "Set_ID"),
+                    SubTitle = Helpers.GetPropertyValue<string>(item, "Subtitle"),
+                    Color = Helpers.ColorFromString(Helpers.GetPropertyValue<string>(item, "Color")),
                     RarityStr = rarityStr,
-                    Image = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "large"),
-                    SmallImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "small"),
-                    ArtImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "art-crop"),
-                    Strength = Helpers.GetPropertyValue<int?>(item, "strength"),
-                    Willpower = Helpers.GetPropertyValue<int?>(item, "willpower"),
-                    LoreValue = Helpers.GetPropertyValue<int?>(item, "lore-value"),
-                    FlavorText = Helpers.GetPropertyValue<string>(item, "flavor-text"),
-                    InkCost = Helpers.GetPropertyValue<int>(item, "ink-cost"),
-                    Inkable = Helpers.GetPropertyValue<bool>(item, "inkable"),
-                    Artist = Helpers.GetPropertyValue<string>(item, "artist"),
-                    Body = Helpers.GetPropertyValue<string>(item, "body-text")
+                    Image = Helpers.GetPropertyValue<string>(item, "Image"),
+                    //SmallImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "small"),
+                    //ArtImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "art-crop"),
+                    Strength = Helpers.GetPropertyValue<int?>(item, "Strength"),
+                    Willpower = Helpers.GetPropertyValue<int?>(item, "Willpower"),
+                    LoreValue = Helpers.GetPropertyValue<int?>(item, "Lore"),
+                    FlavorText = Helpers.GetPropertyValue<string>(item, "Flavor_Text"),
+                    InkCost = Helpers.GetPropertyValue<int>(item, "Cost"),
+                    Inkable = Helpers.GetPropertyValue<bool>(item, "Inkable"),
+                    Artist = Helpers.GetPropertyValue<string>(item, "Artist"),
+                    Body = Helpers.GetPropertyValue<string>(item, "Body_Text")
                 };
                 allCardsInfo.Add(infoCard);
             }
             allCardsInfo = allCardsInfo.OrderBy(x => x.Number).ToList();
         }
 
-        private static async Task<string> GetAllCardsInfos(string names)
-        {
-
-            string apiUrl = $"https://api.lorcana-api.com/strict/{names}";
-
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    HttpResponseMessage response = await client.GetAsync(apiUrl);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string result = await response.Content.ReadAsStringAsync();
-                        return result;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Fehler beim Aufrufen der API. Statuscode: {response.StatusCode}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-            }
-            return null;
-        }
-
         private static async Task<string> GetAllCards()
         {
 
-            string apiUrl = $"https://api.lorcana-api.com/lists/names";
+            string apiUrl = $"https://api.lorcana-api.com/cards/all";
 
             try
             {

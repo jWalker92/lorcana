@@ -32,7 +32,7 @@
                         <Setter Property="TextColor" Value="WhiteSmoke"/> 
                     </DataTrigger>
                     <DataTrigger Binding="{Binding Source={x:Reference enableViewer}, Path=IsToggled}" Value="true" TargetType="Label">
-                        <Setter Property="TextColor" Value="#212121"/> 
+                        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LabelFgLight}, Dark={StaticResource LabelFgDark}}"/> 
                     </DataTrigger>
                 </Style.Triggers>
             </Style>

@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System;
+using System.Linq;
+using System.Net;
 using lorcana.Cards;
 using SkiaSharp;
 
@@ -6,7 +8,6 @@ namespace lorcana
 {
     internal class Program
     {
-        const string allCardsCache = "allCards.json";
         const string allCardsInfoCache = "allCardsInfo.json";
 
         static async Task Main(string[] args)
@@ -16,24 +17,20 @@ namespace lorcana
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("Building Library...");
 
-            string allCardsJson = null;
-            if (File.Exists(allCardsCache))
-            {
-                allCardsJson = File.ReadAllText(allCardsCache);
-            }
             string allCardsInfoJson = null;
             if (File.Exists(allCardsInfoCache))
             {
                 allCardsInfoJson = File.ReadAllText(allCardsInfoCache);
             }
-            await CardLibrary.BuildLibrary(allCardsJson, allCardsInfoJson);
-            File.WriteAllText(allCardsCache, CardLibrary.AllCardsJson);
+            await CardLibrary.BuildLibrary(allCardsInfoJson);
             File.WriteAllText(allCardsInfoCache, CardLibrary.AllCardsInfoJson);
 
             var json = File.ReadAllText("update.json");
+            var csv = File.ReadAllText("export.csv");
 
             Console.WriteLine("Building Collection...");
-            var collection = new CardCollection(CardLibrary.List, json);
+            var collection = new CardCollection();
+            collection.InitializeWithCsv(CardLibrary.List, csv);
             var cardsList = collection.List;
 
             Console.Clear();
@@ -48,7 +45,7 @@ namespace lorcana
             Console.WriteLine();
 
             Console.WriteLine("YOUR COLLECTION:");
-            Console.WriteLine("Total Unique Cards: " + cardsList.Count);
+            Console.WriteLine("Total Unique Cards: " + cardsList.Where(x => x.Total > 0).Count());
             Console.WriteLine("Total Cards: " + cardsList.Sum(x => x.Total));
             Console.WriteLine("Total Foiled Cards: " + cardsList.Sum(x => x.Foils));
             Console.WriteLine();
@@ -59,7 +56,7 @@ namespace lorcana
             Console.WriteLine("Total Play Set Cards (>=4): " + playSet.Count());
             Console.WriteLine();
 
-            var missingCards = CardLibrary.List.Where(x => !cardsList.Any(y => y.Number == x.Number));
+            var missingCards = cardsList.Where(x => x.Total == 0);
             Console.WriteLine("4 missing: " + missingCards.Count());
             WriteList(missingCards);
             Console.WriteLine();
@@ -89,22 +86,19 @@ namespace lorcana
             var tradeables = cardsList.Where(x => x.Total > tradeWithholdValue);
             Console.WriteLine($"Total Tradeable Cards (>{tradeWithholdValue}): " + tradeables.Count());
             Console.WriteLine("Total Tradeable Card count: " + tradeables.Sum(x => x.Total - tradeWithholdValue));
-            WriteList(tradeables, (c) => ": " + (c.Total - tradeWithholdValue) + $" ({c.Foils})");
+            WriteList(tradeables, (c) => ": " + (c.Total - tradeWithholdValue));
 
-
-            //DrawListToImageFiles(cardsList.Where(x => x.Total < 4), (c) => (4 - c.Total).ToString(), 4, 3, 250, 350, "missing_");
-
-            //DrawListToImageFiles(CardLibrary.List.Where(x => x.Rarity == Rarity.Legendary), null, 3, 3, 250, 350, "legendaries_");
-
-            //DrawListToImageFiles(tradeables, (c) => (c.Total - tradeWithholdValue) + $" ({c.Foils})", 5, 3, 250, 350, "tradeables_");
+            Console.WriteLine();
+            var allMissingCommonUncommon = cardsList.Where(x => (x.Rarity == Rarity.Common || x.Rarity == Rarity.Uncommon) && x.Total < 4);
+            Console.WriteLine("Missing Commons / Uncommons: " + allMissingCommonUncommon.Count());
+            WriteList(allMissingCommonUncommon, (c) => ": " + (4 - c.Total));
 
             Console.ReadKey();
         }
 
-        private static void DrawListToImageFiles(IEnumerable<Card> cardList, Func<Card, string> txtFunc, uint cols, uint rows, uint cardWidth, uint cardHeight, string filePrefix)
+        private static void DrawListToImageFiles(IEnumerable<Card> cardList, Func<Card, string>? txtFunc, uint cols, uint rows, uint cardWidth, uint cardHeight, uint padding, Func<Card, int, string>? fileNameFunction)
         {
-            int padding = 4;
-
+            Console.WriteLine($"Drawing {cardList.Count()} images...");
             for (int i = 0; i < cardList.Count(); i += (int)(cols * rows))
             {
                 SKBitmap bmp = new SKBitmap((int)(cols * cardWidth),(int)(rows * cardHeight));
@@ -120,12 +114,12 @@ namespace lorcana
                         float x = colIndex * cardWidth;
                         float y = rowIndex * cardHeight;
 
-                        var img = DownloadImage(c.Image);
+                        var img = DownloadImage(Helpers.SetcodeToNumber(c.SetCode), c.Number);
                         canvas.DrawBitmap(img, new SKRect(x + padding, y + padding, x + cardWidth - padding, y + cardHeight - padding));
                         if (txtFunc != null)
                         {
-                            canvas.DrawRect(new SKRect(x + padding, y + padding + cardHeight - 40, x + (cardWidth * 0.4f) - padding, y + cardHeight - padding), new SKPaint { Color = SKColors.Black.WithAlpha(200) });
-                            canvas.DrawText(txtFunc.Invoke(c), x + padding + 8, y + padding + cardHeight - 18, new SKPaint { IsAntialias = true, Color = SKColors.White, TextSize = 24, FakeBoldText = true });
+                            canvas.DrawRect(new SKRect(x + padding + cardWidth * 0.3f, y + padding, x + (cardWidth * 0.7f) - padding, y + 40 - padding), new SKPaint { Color = SKColors.Black.WithAlpha(200) });
+                            canvas.DrawText(txtFunc.Invoke(c), x + padding + cardWidth * 0.33f, y + padding + 20, new SKPaint { IsAntialias = true, Color = SKColors.White, TextSize = 24, FakeBoldText = true });
                         }
                     }
                 }
@@ -133,13 +127,21 @@ namespace lorcana
                 {
                     using (var encodedImage = img.Encode(SKEncodedImageFormat.Png, 100))
                     {
-                        string filePath = $"{filePrefix}{i}.png";
+                        string fileName = i.ToString();
+                        if (fileNameFunction != null)
+                        {
+                            fileName = fileNameFunction.Invoke(cardList.ElementAt(i), i);
+                        }
+                        string filePath = $"{fileName}.png";
 
                         if (File.Exists(filePath))
                         {
                             File.Delete(filePath);
                         }
-
+                        else
+                        {
+                            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                        }
                         using (var stream = File.OpenWrite(filePath))
                         {
                             encodedImage.SaveTo(stream);
@@ -147,12 +149,16 @@ namespace lorcana
                     }
                 }
             }
+            Console.WriteLine($"Done.");
         }
 
-        private static SKBitmap? DownloadImage(string url)
+        //https://images.dreamborn.ink/cards/de/001-001_1468x2048.webp
+        private static SKBitmap? DownloadImage(int setNumber, string number)
         {
             HttpWebResponse response = null;
-
+            int numberAsInt = -1;
+            int.TryParse(number, out numberAsInt);
+            string url = $"https://images.dreamborn.ink/cards/de/{setNumber.ToString("D3")}-{(numberAsInt >= 0 ? numberAsInt.ToString("D3") : number)}_1468x2048.webp";
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
 
@@ -186,8 +192,14 @@ namespace lorcana
 
         private static void WriteList(IEnumerable<Card> list, Func<Card, string> postString = null)
         {
-            foreach (var card in list)
+            string currentSetCode = string.Empty;
+            foreach (var card in list.OrderBy(x => Helpers.SetcodeToNumber(x.SetCode)))
             {
+                if (currentSetCode != card.SetCode)
+                {
+                    currentSetCode = card.SetCode;
+                    Console.WriteLine(currentSetCode);
+                }
                 WriteCardDisplay(card);
                 Console.WriteLine(postString == null ? "" : postString.Invoke(card));
             }

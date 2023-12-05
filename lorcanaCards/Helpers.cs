@@ -68,6 +68,32 @@ namespace lorcana.Cards
             }
         }
 
+        public static int SetcodeToNumber(string setCode)
+        {
+            switch (setCode)
+            {
+                case "TFC":
+                    return 1;
+                case "ROTF":
+                    return 2;
+                default:
+                    return 0;
+            }
+        }
+
+        public static string NumberToSetcode(int number)
+        {
+            switch (number)
+            {
+                case 1:
+                    return "TFC";
+                case 2:
+                    return "ROTF";
+                default:
+                    return string.Empty;
+            }
+        }
+
         public static Rarity RarityFromString(string str)
         {
             if (str == "Common") return Rarity.Common;

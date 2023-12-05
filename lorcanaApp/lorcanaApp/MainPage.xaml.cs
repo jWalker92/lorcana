@@ -4,6 +4,7 @@ using System.Data.SqlTypes;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using lorcana.Cards;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -70,7 +71,8 @@ namespace lorcanaApp
                 Preferences.Set(allCardsCache, CardLibrary.AllCardsJson);
                 Preferences.Set(allCardsInfoCache, CardLibrary.AllCardsInfoJson);
                 string contents = Preferences.Get("contents", "{}");
-                collection = new CardCollection(CardLibrary.List, contents);
+                collection = new CardCollection();
+                collection.InitializeWithJson(CardLibrary.List, contents);
             }
             catch (Exception ex)
             {
@@ -147,7 +149,8 @@ namespace lorcanaApp
             {
                 try
                 {
-                    collection = new CardCollection(CardLibrary.List, importContent);
+                    collection = new CardCollection();
+                    collection.InitializeWithJson(CardLibrary.List, importContent);
                     Preferences.Set("contents", importContent);
                     Task.Run(LoadData);
                     importEditor.Text = null;

@@ -3,6 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:lorcanaapp="clr-namespace:lorcanaApp"
              x:Class="lorcanaApp.App">
     <Application.Resources>
+
+        <Color x:Key="LabelFgLight">Black</Color>
+        <Color x:Key="LabelFgDark">WhiteSmoke</Color>
+
         <Style TargetType="Label">
             <Setter Property="TextColor" Value="{AppThemeBinding Light='#212121', Dark='#F0F0F0'}"/>
         </Style>

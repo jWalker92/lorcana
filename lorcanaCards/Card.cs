@@ -27,7 +27,8 @@ namespace lorcana.Cards
         public string Title { get; set; }
         public string SubTitle { get; set; }
         public string Body { get; set; }
-        public int Number { get; set; }
+        public string SetCode { get; set; }
+        public string Number { get; set; }
         public string Artist { get; set; }
         public int? Strength { get; set; }
         public int? Willpower { get; set; }
@@ -46,7 +47,7 @@ namespace lorcana.Cards
         public Rarity Rarity => Helpers.RarityFromString(RarityStr);
         public string RarityIcon;
 
-        public string NumberDisplay => "#" + Number.ToString("D3");
+        public string NumberDisplay => "#" + Number;
         public string Display => Title + (!string.IsNullOrEmpty(SubTitle) ? " (" + SubTitle + ")" : "");
     }
 }

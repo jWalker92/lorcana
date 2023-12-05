@@ -44,6 +44,7 @@ namespace lorcanaApp
         private bool viewerEnabled;
         private bool gyroEnabled;
         private int drawsLeft = 100;
+        private float glareIntensity = 1;
 
         public Card CurrentCard { get => currentCard; set { currentCard = value; OnPropertyChanged(); } }
 
@@ -68,6 +69,14 @@ namespace lorcanaApp
             enableViewer.Toggled += EnableViewer_Toggled;
 
             gyroEnabled = Preferences.Get(KEY_ENABLE_GYRO, false);
+            if (gyroEnabled)
+            {
+                glareIntensity = 1;
+            }
+            else
+            {
+                glareIntensity = 0;
+            }
             enableGyro.IsToggled = gyroEnabled;
             enableGyro.Toggled += EnableGyro_Toggled;
             Gyroscope.ReadingChanged += Gyroscope_ReadingChanged;
@@ -102,7 +111,7 @@ namespace lorcanaApp
             Preferences.Set(KEY_ENABLE_VIEWER, viewerEnabled);
             if (viewerEnabled)
             {
-                Task.Run(() => DownloadImage(CurrentCard.Image));
+                Task.Run(() => DownloadImage(CurrentCard.Number));
                 skiaView.FadeTo(1);
                 StartDrawing();
             }
@@ -123,6 +132,7 @@ namespace lorcanaApp
         {
             gyroEnabled = !gyroEnabled;
             Preferences.Set(KEY_ENABLE_GYRO, gyroEnabled);
+            drawsLeft = 10;
             if (gyroEnabled)
             {
                 TryStartGyro();
@@ -201,17 +211,17 @@ namespace lorcanaApp
             oldResourceBitmap = resourceBitmap;
             resourceBitmap = null;
             Title = CurrentCard.NumberDisplay + " - " + CurrentCard.Title;
-            Task.Run(() => DownloadImage(CurrentCard.Image));
+            Task.Run(() => DownloadImage(CurrentCard.Number));
         }
 
-        private void DownloadImage(string url)
+        private void DownloadImage(int number)
         {
             if (!viewerEnabled)
             {
                 return;
             }
             HttpWebResponse response = null;
-
+            string url = $"https://images.dreamborn.ink/cards/en/001-{number.ToString("D3")}_1468x2048.webp";
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
 
@@ -425,7 +435,7 @@ namespace lorcanaApp
                 SKColor.TryParse("#00FFFFFF", out SKColor transparent);
                 SKColor.TryParse("#FFFFFF", out SKColor highlight);
                 float shineAddition = (xRotation + yRotation) * 100;
-                SKColor[] colors = { transparent, highlight.WithAlpha(Convert.ToByte(Math.Max(0, Math.Min(50, 50 - (Math.Abs(shineAddition) * 30))))), transparent };
+                SKColor[] colors = { transparent, highlight.WithAlpha(Convert.ToByte(glareIntensity * Math.Max(0, Math.Min(50, 50 - (Math.Abs(shineAddition) * 30))))), transparent };
                 float[] colorPos = { 0.05f + shineAddition, 0.4f + shineAddition, 0.9f + shineAddition };
                 SKShader shader = SKShader.CreateLinearGradient(startPoint, endPoint, colors, colorPos, SKShaderTileMode.Clamp);
 
@@ -439,13 +449,16 @@ namespace lorcanaApp
                 canvas.DrawRoundRect(rect, cornerRadius, cornerRadius, paint);
             }
 
+            glareIntensity = Lerp(glareIntensity, gyroEnabled ? 1 : 0, 0.03f);
             xRotation = Lerp(xRotation, 0, 0.03f);
             yRotation = Lerp(yRotation, 0, 0.03f);
 
             if (Math.Abs(xRotation) > 0f ||
                 Math.Abs(yRotation) > 0f ||
                 Math.Abs(resourceX) > 0f ||
-                Math.Abs(resBitmapAlpha) < 250)
+                Math.Abs(resBitmapAlpha) < 250 ||
+                glareIntensity > 0 ||
+                glareIntensity < 1)
             {
                 drawsLeft = 60;
             }

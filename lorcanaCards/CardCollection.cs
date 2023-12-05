@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 
 namespace lorcana.Cards
 {
-	public class CardCollection
+    public class CardCollection
     {
         private List<Card> cardsList = new List<Card>();
 
@@ -22,7 +23,7 @@ namespace lorcana.Cards
             }
         }
 
-        public CardCollection(List<Card> library, string updateJson)
+        public void InitializeWithJson(List<Card> library, string updateJson)
         {
             try
             {
@@ -31,14 +32,14 @@ namespace lorcana.Cards
                 foreach (var item in dict.OrderBy(x => x.Key))
                 {
                     int chapter = 0;
-                    int number = 0;
+                    string number = "";
                     bool foil = false;
 
                     var keyItems = item.Key.Split('-', ':');
                     if (keyItems.Length >= 2)
                     {
                         chapter = int.Parse(keyItems[0]);
-                        number = int.Parse(keyItems[1]);
+                        number = keyItems[1];
                         if (keyItems.Length >= 3 && keyItems[2] == "foil")
                         {
                             foil = true;
@@ -72,6 +73,79 @@ namespace lorcana.Cards
             {
             }
         }
-	}
+
+        public void InitializeWithCsv(List<Card> library, string csv)
+        {
+            try
+            {
+                var lines = csv.Split('\n');
+
+                int normalsIndex = -1;
+                int foilsIndex = -1;
+                int numberIndex = -1;
+                int setIndex = -1;
+                int nameIndex = -1;
+                int colorIndex = -1;
+                int rarityIndex = -1;
+                for (int line = 0; line < lines.Length - 1; line++)
+                {
+                    try
+                    {
+                        var values = lines[line].Split(',');
+                        if (line == 0)
+                        {
+                            normalsIndex = Array.FindIndex(values, x => x.ToLower() == "normal");
+                            foilsIndex = Array.FindIndex(values, x => x.ToLower() == "foil");
+                            numberIndex = Array.FindIndex(values, x => x.ToLower() == "card number");
+                            setIndex = Array.FindIndex(values, x => x.ToLower() == "set");
+                            nameIndex = Array.FindIndex(values, x => x.ToLower() == "name");
+                            colorIndex = Array.FindIndex(values, x => x.ToLower() == "color");
+                            rarityIndex = Array.FindIndex(values, x => x.ToLower() == "rarity");
+                            if (normalsIndex == -1 || foilsIndex == -1 || numberIndex == -1)
+                            {
+                                break;
+                            }
+                            continue;
+                        }
+                        string number = values[numberIndex];
+                        int.TryParse(values[setIndex], out int setCodeNumber);
+                        string setCode = Helpers.NumberToSetcode(setCodeNumber);
+                        Card card = cardsList.FirstOrDefault(x => x.Number == number && x.SetCode == setCode);
+                        if (card == null)
+                        {
+                            card = library.FirstOrDefault(x => x.Number == number && x.SetCode == setCode);
+                            if (card != null)
+                            {
+                                cardsList.Add(card);
+                            }
+                            else
+                            {
+                                string rarity = values[rarityIndex];
+                                if (rarity == "Enchanted" || rarity == "Promo")
+                                {
+                                    continue;
+                                }
+                                string name = values[nameIndex];
+                                string color = values[colorIndex];
+                                card = new Card() { Title = name, SetCode = setCode, Number = number, Color = Helpers.ColorFromString(color), RarityStr = rarity };
+                                library.Add(card);
+                                cardsList.Add(card);
+                            }
+                        }
+                        card.Foils = int.Parse(values[foilsIndex]);
+                        card.Normals = int.Parse(values[normalsIndex]);
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+            }
+        }
+
+    }
 }
 

@@ -24,9 +24,13 @@
                 </LinearGradientBrush>
             </Frame.Background>
             <Grid ColumnDefinitions="*,*">
-                <SearchBar x:Name="searchBar" Placeholder="Search..." Grid.Column="0" PlaceholderColor="LightSlateGray" TextColor="White" TextChanged="SearchBar_TextChanged" CancelButtonColor="White"
-                           BackgroundColor="Transparent" VerticalOptions="Center" ios:SearchBar.SearchBarStyle="Minimal"/>
-                <Picker x:Name="listPicker" HorizontalOptions="FillAndExpand" Grid.Column="1" TextColor="LightGray" Title="Filter" BackgroundColor="#33FFFFFF" VerticalOptions="Center"/>
+                <Frame Padding="0,-8" CornerRadius="8" BackgroundColor="#66FFFFFF">
+                    <SearchBar x:Name="searchBar" Placeholder="Search..." PlaceholderColor="#E0E0E0" TextColor="White" TextChanged="SearchBar_TextChanged" CancelButtonColor="White"
+                               BackgroundColor="Transparent" VerticalOptions="Center" ios:SearchBar.SearchBarStyle="Minimal"/>
+                </Frame>
+                <Frame Grid.Column="1" Padding="0" CornerRadius="8" BackgroundColor="#66FFFFFF">
+                    <Picker x:Name="listPicker" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" TextColor="WhiteSmoke" Title="Filter" VerticalOptions="Center"/>
+                </Frame>
             </Grid>
         </Frame>
         <CollectionView Grid.Row="1" x:Name="cardsList" SelectionMode="Single" SelectionChanged="cardsList_SelectionChanged">
