@@ -14,8 +14,8 @@ namespace lorcanaApp
 {
     public partial class CardDetailPage : ContentPage
     {
-        const int fps = 60;
-        const float maxRot = 0.01f;
+        const int FPS = 60;
+        const float MAX_ROT = 0.01f;
         const string KEY_ENABLE_VIEWER = "KEY_ENABLE_VIEWER";
         const string KEY_ENABLE_GYRO = "KEY_ENABLE_GYRO";
 
@@ -47,6 +47,7 @@ namespace lorcanaApp
         private bool gyroEnabled;
         private int drawsLeft = 100;
         private float glareIntensity = 1;
+        private TaskCompletionSource<bool> sizeAllocatedTaskCompletionSource = new TaskCompletionSource<bool>();
 
         public Card CurrentCard { get => currentCard; set { currentCard = value; OnPropertyChanged(); } }
 
@@ -91,16 +92,16 @@ namespace lorcanaApp
 
         private void StartDrawing()
         {
-            Device.StartTimer(TimeSpan.FromMilliseconds(1000 / fps), () =>
+            Device.StartTimer(TimeSpan.FromMilliseconds(1000 / FPS), () =>
             {
                 var ms = DateTime.Now.Subtract(lastUpdate).TotalMilliseconds;
-                updateDelta = (float)ms / (1000 / fps);
+                updateDelta = (float)ms / (1000 / FPS);
                 lastUpdate = DateTime.Now;
                 if (drawsLeft > 0)
                 {
                     drawsLeft--;
-                    xRotation = Clamp(xRotation + (gyroY * -0.0004f * updateDelta), -maxRot, maxRot);
-                    yRotation = Clamp(yRotation + (gyroX * -0.0004f * updateDelta), -maxRot, maxRot);
+                    xRotation = Clamp(xRotation + (gyroY * -0.0004f * updateDelta), -MAX_ROT, MAX_ROT);
+                    yRotation = Clamp(yRotation + (gyroX * -0.0004f * updateDelta), -MAX_ROT, MAX_ROT);
                     skiaView.InvalidateSurface();
                 }
                 return viewerEnabled;
@@ -240,7 +241,6 @@ namespace lorcanaApp
                 return;
             }
             int.TryParse(numberStr, out int number);
-            HttpWebResponse response = null;
             string url = Card.GetImageLink(number, setNumber);
 
             var cachedStream = await GetCachedImagePath(url);
@@ -253,6 +253,7 @@ namespace lorcanaApp
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
 
+            HttpWebResponse response = null;
             try
             {
                 response = (HttpWebResponse)request.GetResponse();
@@ -282,9 +283,13 @@ namespace lorcanaApp
             }
         }
 
-        private void SetImageFromByteArray(byte[] stream)
+        private async Task SetImageFromByteArray(byte[] stream)
         {
             rawResourceBitmap = SKBitmap.Decode(stream);
+            if (!sizeAllocatedTaskCompletionSource.Task.IsCompleted)
+            {
+                await sizeAllocatedTaskCompletionSource.Task;
+            }
             var resized = ResizeBitmap(rawResourceBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
             resourceBitmap = AddRoundedCorners(resized, resized.Width * 0.055f);
         }
@@ -294,31 +299,26 @@ namespace lorcanaApp
             int width = sourceBitmap.Width;
             int height = sourceBitmap.Height;
 
-            // Erstellen einer leeren Bitmap für das Ergebnis
             SKBitmap roundedBitmap = new SKBitmap(width, height);
 
             using (SKCanvas canvas = new SKCanvas(roundedBitmap))
             {
                 canvas.Clear(SKColors.Transparent);
-
-                // Erstellen eines abgerundeten Rechtecks mit dem gewünschten Eckradius
                 SKRect rect = new SKRect(0, 0, width, height);
 
-                // Festlegen der Farbe und des Pinsels für das abgerundete Rechteck
                 using (SKPaint paint = new SKPaint())
                 {
                     paint.IsAntialias = true;
-                    paint.Color = SKColors.Black; // Farbe für das Rechteck ändern, falls gewünscht
+                    paint.Color = SKColors.Black;
                     paint.Style = SKPaintStyle.Fill;
                     canvas.DrawRoundRect(rect, cornerRadius, cornerRadius, paint);
                 }
 
-                // Zeichnen Sie die ursprüngliche Bitmap auf die abgerundete Bitmap, wobei nur der Bereich innerhalb des abgerundeten Rechtecks sichtbar ist.
                 using (SKPaint sourcePaint = new SKPaint())
                 {
                     sourcePaint.IsAntialias = true;
                     sourcePaint.BlendMode = SKBlendMode.SrcIn;
-                    sourcePaint.FilterQuality = SKFilterQuality.High; // Anpassen der Filterqualität nach Bedarf
+                    sourcePaint.FilterQuality = SKFilterQuality.High;
 
                     canvas.DrawBitmap(sourceBitmap, rect, sourcePaint);
                 }
@@ -331,7 +331,7 @@ namespace lorcanaApp
         {
             if (sourceBitmap == null || maxWidth <= 0 || maxHeight <= 0)
             {
-                return null; // Invalid input
+                return sourceBitmap; // Invalid input
             }
 
             int sourceWidth = sourceBitmap.Width;
@@ -389,6 +389,8 @@ namespace lorcanaApp
                     skiaViewCanvasHeight = skiaView.CanvasSize.Height;
                     resourceBitmap = ResizeBitmap(rawResourceBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
                     placeholderBitmap = ResizeBitmap(rawPlaceholderBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
+                    if (!sizeAllocatedTaskCompletionSource.Task.IsCompleted)
+                        sizeAllocatedTaskCompletionSource.SetResult(true);
                 }
             }
 

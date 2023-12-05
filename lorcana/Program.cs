@@ -114,7 +114,7 @@ namespace lorcana
                         float x = colIndex * cardWidth;
                         float y = rowIndex * cardHeight;
 
-                        var img = DownloadImage(Helpers.SetcodeToNumber(c.SetCode), c.Number);
+                        var img = DownloadImage(c.SetNumber, c.Number);
                         canvas.DrawBitmap(img, new SKRect(x + padding, y + padding, x + cardWidth - padding, y + cardHeight - padding));
                         if (txtFunc != null)
                         {
@@ -192,7 +192,7 @@ namespace lorcana
         private static void WriteList(IEnumerable<Card> list, Func<Card, string> postString = null)
         {
             string currentSetCode = string.Empty;
-            foreach (var card in list.OrderBy(x => Helpers.SetcodeToNumber(x.SetCode)))
+            foreach (var card in list.OrderBy(x => x.SetNumber))
             {
                 if (currentSetCode != card.SetCode)
                 {
