@@ -44,7 +44,7 @@
                 <DataTemplate x:DataType="cards:Card">
                     <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" Padding="8,4">
                         <Frame Grid.RowSpan="2" CornerRadius="4" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
-                            <Image Source="{Binding SmallImage}"/>
+                            <Image Source="{Binding Image}" WidthRequest="80"/>
                         </Frame>
                         <StackLayout Grid.Column="1" Orientation="Vertical" VerticalOptions="Start" Spacing="0" Grid.RowSpan="2">
                             <StackLayout Orientation="Horizontal">

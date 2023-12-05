@@ -156,9 +156,8 @@ namespace lorcana
         private static SKBitmap? DownloadImage(int setNumber, string number)
         {
             HttpWebResponse response = null;
-            int numberAsInt = -1;
-            int.TryParse(number, out numberAsInt);
-            string url = $"https://images.dreamborn.ink/cards/de/{setNumber.ToString("D3")}-{(numberAsInt >= 0 ? numberAsInt.ToString("D3") : number)}_1468x2048.webp";
+            int.TryParse(number, out int numberAsInt);
+            string url = $"https://images.dreamborn.ink/cards/de/{setNumber:D3}-{(numberAsInt >= 0 ? numberAsInt.ToString("D3") : number)}_1468x2048.webp";
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
 

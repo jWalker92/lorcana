@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlTypes;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using lorcana.Cards;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -13,8 +11,6 @@ namespace lorcanaApp
 {
     public partial class MainPage : ContentPage
     {
-
-        const string allCardsCache = "allCards.json";
         const string allCardsInfoCache = "allCardsInfo.json";
 
         List<string> pickerItems = new List<string> {
@@ -65,14 +61,12 @@ namespace lorcanaApp
         {
             try
             {
-                string allCardsJson = forceRefresh ? null : Preferences.Get(allCardsCache, "");
                 string allCardsInfoJson = forceRefresh ? null : Preferences.Get(allCardsInfoCache, "");
-                await CardLibrary.BuildLibrary(allCardsJson, allCardsInfoJson);
-                Preferences.Set(allCardsCache, CardLibrary.AllCardsJson);
+                await CardLibrary.BuildLibrary( allCardsInfoJson);
                 Preferences.Set(allCardsInfoCache, CardLibrary.AllCardsInfoJson);
-                string contents = Preferences.Get("contents", "{}");
+                string contents = Preferences.Get("contents", "");
                 collection = new CardCollection();
-                collection.InitializeWithJson(CardLibrary.List, contents);
+                collection.InitializeWithCsv(CardLibrary.List, contents);
             }
             catch (Exception ex)
             {
@@ -89,8 +83,7 @@ namespace lorcanaApp
                 {
                     case 0:
                         filteredList = collection.List.ToList();
-                        filteredList.AddRange(CardLibrary.List.Where(x => !collection.List.Any(y => y.Number == x.Number)));
-                        filteredList = filteredList.OrderBy(x => x.Number).ToList();
+                        filteredList = filteredList.OrderBy(x => x.NumberAsInt).ToList();
                         break;
                     case 1:
                         filteredList = collection.List.ToList();
@@ -115,11 +108,10 @@ namespace lorcanaApp
                         break;
                     case 8:
                         filteredList = collection.List.Where(x => x.Total < 4).ToList();
-                        filteredList.AddRange(CardLibrary.List.Where(x => !collection.List.Any(y => y.Number == x.Number)));
                         filteredList = filteredList.OrderBy(x => x.Number).ToList();
                         break;
                     case 9:
-                        filteredList = CardLibrary.List.Where(x => !collection.List.Any(y => y.Number == x.Number)).ToList();
+                        filteredList = collection.List.Where(x => x.Total == 0).ToList();
                         break;
                 }
                 SetListData(SearchedList(filteredList, searchBar.Text));

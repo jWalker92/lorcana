@@ -48,6 +48,7 @@ namespace lorcana.Cards
         public string RarityIcon;
 
         public string NumberDisplay => "#" + Number;
+        public int NumberAsInt { get { return int.TryParse(Number, out int numAsInt) ? numAsInt : 0; } }
         public string Display => Title + (!string.IsNullOrEmpty(SubTitle) ? " (" + SubTitle + ")" : "");
     }
 }

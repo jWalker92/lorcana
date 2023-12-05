@@ -76,6 +76,8 @@ namespace lorcana.Cards
                     return 1;
                 case "ROTF":
                     return 2;
+                case "RFB":
+                    return 2;
                 default:
                     return 0;
             }

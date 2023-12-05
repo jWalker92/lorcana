@@ -111,7 +111,7 @@ namespace lorcanaApp
             Preferences.Set(KEY_ENABLE_VIEWER, viewerEnabled);
             if (viewerEnabled)
             {
-                Task.Run(() => DownloadImage(CurrentCard.Number));
+                Task.Run(() => DownloadImage(CurrentCard.Number, Helpers.SetcodeToNumber(CurrentCard.SetCode)));
                 skiaView.FadeTo(1);
                 StartDrawing();
             }
@@ -211,17 +211,18 @@ namespace lorcanaApp
             oldResourceBitmap = resourceBitmap;
             resourceBitmap = null;
             Title = CurrentCard.NumberDisplay + " - " + CurrentCard.Title;
-            Task.Run(() => DownloadImage(CurrentCard.Number));
+            Task.Run(() => DownloadImage(CurrentCard.Number, Helpers.SetcodeToNumber(CurrentCard.SetCode)));
         }
 
-        private void DownloadImage(int number)
+        private void DownloadImage(string numberStr, int setNumber)
         {
             if (!viewerEnabled)
             {
                 return;
             }
+            int.TryParse(numberStr, out int number);
             HttpWebResponse response = null;
-            string url = $"https://images.dreamborn.ink/cards/en/001-{number.ToString("D3")}_1468x2048.webp";
+            string url = $"https://images.dreamborn.ink/cards/en/{setNumber:D3}-{number:D3}_1468x2048.webp";
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
 
@@ -450,34 +451,35 @@ namespace lorcanaApp
             }
 
             glareIntensity = Lerp(glareIntensity, gyroEnabled ? 1 : 0, 0.03f);
-            xRotation = Lerp(xRotation, 0, 0.03f);
-            yRotation = Lerp(yRotation, 0, 0.03f);
+            xRotation = Lerp(xRotation, 0, 0.03f, 0.0000001f);
+            yRotation = Lerp(yRotation, 0, 0.03f, 0.0000001f);
 
             if (Math.Abs(xRotation) > 0f ||
                 Math.Abs(yRotation) > 0f ||
                 Math.Abs(resourceX) > 0f ||
                 Math.Abs(resBitmapAlpha) < 250 ||
-                glareIntensity > 0 ||
-                glareIntensity < 1)
+                (glareIntensity > 0 &&
+                glareIntensity < 1))
             {
                 drawsLeft = 60;
             }
 
             canvas.ResetMatrix();
-
-            //canvas.DrawText(drawsLeft.ToString(), 8, 40, new SKPaint { Color = SKColors.White, TextSize = 40 });
-            //canvas.DrawText(gyroX .ToString(), 8, 90, new SKPaint { Color = SKColors.White, TextSize = 40 });
-            //canvas.DrawText(gyroY.ToString(), 8, 140, new SKPaint { Color = SKColors.White, TextSize = 40 });
-            //canvas.DrawText(resourceX.ToString(), 8, 190, new SKPaint { Color = SKColors.White, TextSize = 40 });
-            //canvas.DrawText(xRotation.ToString(), 8, 240, new SKPaint { Color = SKColors.White, TextSize = 40 });
-            //canvas.DrawText(yRotation.ToString(), 8, 190, new SKPaint { Color = SKColors.White, TextSize = 40 });
+#if DEBUG
+            canvas.DrawText(drawsLeft.ToString(), 8, 40, new SKPaint { Color = SKColors.White, TextSize = 40 });
+            canvas.DrawText(gyroX .ToString(), 8, 90, new SKPaint { Color = SKColors.White, TextSize = 40 });
+            canvas.DrawText(gyroY.ToString(), 8, 140, new SKPaint { Color = SKColors.White, TextSize = 40 });
+            canvas.DrawText(resourceX.ToString(), 8, 190, new SKPaint { Color = SKColors.White, TextSize = 40 });
+            canvas.DrawText(xRotation.ToString(), 8, 240, new SKPaint { Color = SKColors.White, TextSize = 40 });
+            canvas.DrawText(yRotation.ToString(), 8, 290, new SKPaint { Color = SKColors.White, TextSize = 40 });
+#endif
         }
 
-        public static float Lerp(float start, float end, float t)
+        public static float Lerp(float start, float end, float t, float endAccuracy = 0.001f)
         {
             t = Math.Max(0, Math.Min(1, t));
             var change = (end - start) * t;
-            if (Math.Abs(change) < 0.000001f) return end;
+            if (Math.Abs(change) < endAccuracy) return end;
             return start + change;
         }
 
