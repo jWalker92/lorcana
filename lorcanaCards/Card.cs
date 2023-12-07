@@ -54,9 +54,9 @@ namespace lorcana.Cards
         public string Display => Title + (!string.IsNullOrEmpty(SubTitle) ? " (" + SubTitle + ")" : "");
         public string SetCode => Helpers.NumberToSetcode(SetNumber);
 
-        public static string GetImageLink(int number, int setNumber)
+        public static string GetImageLink(int number, int setNumber, string countryCode = "de")
         {
-            return $"https://images.dreamborn.ink/cards/en/{setNumber:D3}-{number:D3}_1468x2048.webp";
+            return $"https://images.dreamborn.ink/cards/{countryCode}/{setNumber:D3}-{number:D3}_1468x2048.webp";
         }
     }
 }

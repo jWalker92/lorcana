@@ -157,7 +157,7 @@ namespace lorcana
         {
             HttpWebResponse response = null;
             int.TryParse(number, out int numberAsInt);
-            string url = $"https://images.dreamborn.ink/cards/de/{setNumber:D3}-{(numberAsInt >= 0 ? numberAsInt.ToString("D3") : number)}_1468x2048.webp";
+            string url = Card.GetImageLink(numberAsInt, setNumber);
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
 
