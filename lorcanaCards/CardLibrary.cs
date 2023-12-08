@@ -30,7 +30,15 @@ namespace lorcana.Cards
             foreach (var item in allInfo)
             {
                 string numberStr = Helpers.GetPropertyValue<string>(item, "Card_Num");
-                string name = Helpers.GetPropertyValue<string>(item, "Name");
+                string nameAndSubtitle = Helpers.GetPropertyValue<string>(item, "Name");
+                var nameSubSplit = nameAndSubtitle.Split(new string[]{ " - "}, StringSplitOptions.RemoveEmptyEntries);
+                string name = nameAndSubtitle;
+                string subtitle = null;
+                if (nameSubSplit.Count() == 2)
+                {
+                    name = nameSubSplit.First();
+                    subtitle = nameSubSplit.Last();
+                }
                 int setNum = Helpers.GetPropertyValue<int>(item, "Set_Num");
                 int.TryParse(numberStr, out int number);
                 string baseImage = Card.GetImageLink(number, setNum);
@@ -40,7 +48,7 @@ namespace lorcana.Cards
                     Number = numberStr,
                     Title = name,
                     SetNumber = setNum,
-                    SubTitle = Helpers.GetPropertyValue<string>(item, "Subtitle"),
+                    SubTitle = subtitle,
                     Color = Helpers.ColorFromString(Helpers.GetPropertyValue<string>(item, "Color")),
                     RarityStr = rarityStr,
                     Image = baseImage,

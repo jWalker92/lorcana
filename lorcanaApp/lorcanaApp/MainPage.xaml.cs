@@ -250,6 +250,7 @@ namespace lorcanaApp
                 if (isLoading) return;
                 SetListData(new List<Card>());
                 isLoading = true;
+                Device.BeginInvokeOnMainThread(() => headerLabel.Text = "Loading...");
                 await BuildLibraryAndCollection(true);
                 await LoadData();
                 isLoading = false;

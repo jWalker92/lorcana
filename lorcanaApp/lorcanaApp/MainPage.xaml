@@ -2,11 +2,9 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:cards="clr-namespace:lorcana.Cards;assembly=lorcanaCards"
+    xmlns:lorcana="clr-namespace:lorcanaApp"
     x:Class="lorcanaApp.MainPage"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     Title="Lorcana Collection">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Import" Clicked="Import_Clicked"/>
@@ -43,49 +41,14 @@
                     <Button BackgroundColor="#2E3192" TextColor="WhiteSmoke" Padding="8" Text="Refresh Cards" Clicked="Rebuild_Clicked" Grid.Column="1" VerticalOptions="Center"/>
                 </Grid>
             </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <lorcana:CardListView/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
             <CollectionView.Footer>
                 <BoxView HeightRequest="40"/>
             </CollectionView.Footer>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="cards:Card">
-                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" Padding="8,4">
-                        <Frame Grid.RowSpan="2" CornerRadius="4" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
-                            <ffimageloading:CachedImage Source="{Binding Image}" HeightRequest="80" DownsampleToViewSize="True"/>
-                        </Frame>
-                        <StackLayout Grid.Column="1" Orientation="Vertical" VerticalOptions="Start" Spacing="0" Grid.RowSpan="2">
-                            <StackLayout Orientation="Horizontal">
-                                <Frame Padding="2" BackgroundColor="Black" HasShadow="False" CornerRadius="4">
-                                    <ffimageloadingsvg:SvgCachedImage Source="{Binding Rarity, Converter={StaticResource rarityImgConverter}}" HeightRequest="16" WidthRequest="16"/>
-                                </Frame>
-                                <Label Text="{Binding Title}" FontSize="20" FontAttributes="Bold" LineBreakMode="TailTruncation"/>
-                            </StackLayout>
-                            <Label Text="{Binding SubTitle}" FontSize="16" FontAttributes="Italic"/>
-                            <Label Text="{Binding Body}" MaxLines="2" FontSize="14" LineBreakMode="TailTruncation"/>
-                        </StackLayout>
-                        <Label Text="{Binding Number, StringFormat='{}#{0:000}'}" FontSize="18" Grid.Column="2" Grid.ColumnSpan="2" HorizontalOptions="End"/>
-                        <Frame Grid.Row="1" Grid.Column="2" WidthRequest="32" HeightRequest="32" HasShadow="False"
-                               BorderColor="#44000000" Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#33A0A0A0">
-                            <Label Text="{Binding Normals}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
-                        </Frame>
-                        <Frame Grid.Row="1" Grid.Column="3" WidthRequest="32" HeightRequest="32" HasShadow="False"
-                               BorderColor="Black" CornerRadius="8" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
-                            <ContentView>
-                                <Label Text="{Binding Foils}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
-                                <ContentView.Background>
-                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                                        <GradientStop Color="#FFC1A1" Offset="0" />
-                                        <GradientStop Color="#FFE8A1" Offset="0.2" />
-                                        <GradientStop Color="#FFFFC1" Offset="0.4" />
-                                        <GradientStop Color="#C1FFC1" Offset="0.6" />
-                                        <GradientStop Color="#A1E8FF" Offset="0.8" />
-                                        <GradientStop Color="#C1A1FF" Offset="1" />
-                                    </LinearGradientBrush>
-                                </ContentView.Background>
-                            </ContentView>
-                        </Frame>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
         </CollectionView>
     </Grid> 
 </ContentPage>
