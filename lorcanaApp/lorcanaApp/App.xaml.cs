@@ -1,24 +1,34 @@
 ﻿using System;
+using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace lorcanaApp
 {
     public partial class App : Application
     {
+        public static NavigationPage NavigationPageInstance { get; internal set; }
+
+        public static FlyoutPage FlyoutInstance { get; internal set; }
+        public static string Language { get => Preferences.Get("language", "English"); set => Preferences.Set("language", value); }
+        public static string CountryCode => GetCountryCode(Language);
+
+        private static string GetCountryCode(string language)
+        {
+            switch (language)
+            {
+                case "English":
+                    return "en";
+                case "German":
+                    return "de";
+                default:
+                    return "en";
+            }
+        }
+
         public App ()
         {
             InitializeComponent();
-            var gradient = new LinearGradientBrush
-            {
-                StartPoint = new Point(0, 0),
-                EndPoint = new Point(1, 1)
-            };
-
-            gradient.GradientStops.Add(new GradientStop { Color = Color.FromHex("#2E3192"), Offset = 0.0f });
-            gradient.GradientStops.Add(new GradientStop { Color = Color.FromHex("#540D6E"), Offset = 1.0f });
-
-            MainPage = new NavigationPage(new MainPage()) { BarBackground = gradient, BarTextColor = Color.WhiteSmoke };
+            MainPage = FlyoutInstance = new MainFlyoutPage();
         }
 
         protected override void OnStart ()

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    ios:Page.UseSafeArea="True"
+    x:Class="lorcanaApp.FlyoutMenu" Title="Menu">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#2E3192" Offset="1.0" />
+            <GradientStop Color="#540D6E" Offset="0.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Button">
+                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="TextColor" Value="WhiteSmoke"/>
+                <Setter Property="BackgroundColor" Value="#20FFFFFF"/>
+                <Setter Property="Margin" Value="16,0"/>
+                <Setter Property="Padding" Value="0,16"/>
+                <Setter Property="CornerRadius" Value="8"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout Spacing="8">
+        <Label Text="DreamCollect" HorizontalOptions="Center" TextColor="WhiteSmoke" FontAttributes="Bold" FontSize="Title" Margin="0,16,0,32"/>
+        <Button Text="Counter" Clicked="Counter_Clicked"/>
+        <Button Text="Language" Clicked="Language_Clicked"/>
+    </StackLayout>
+</ContentPage>

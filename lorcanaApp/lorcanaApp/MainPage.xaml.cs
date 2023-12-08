@@ -62,7 +62,7 @@ namespace lorcanaApp
             try
             {
                 string allCardsInfoJson = forceRefresh ? null : Preferences.Get(allCardsInfoCache, "");
-                await CardLibrary.BuildLibrary( allCardsInfoJson);
+                await CardLibrary.BuildLibrary(allCardsInfoJson, App.CountryCode);
                 Preferences.Set(allCardsInfoCache, CardLibrary.AllCardsInfoJson);
                 string contents = Preferences.Get("contents", "");
                 collection = new CardCollection();

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 564 578" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-1251,-648)">
+        <g transform="matrix(3.21571,0,0,4.32186,2765.71,792.056)">
+            <rect id="Lore" x="-470.942" y="-33.24" width="175.271" height="133.568" style="fill:none;"/>
+            <g id="Lore1" serif:id="Lore">
+                <g transform="matrix(0.310973,0,0,0.231382,-860.061,-183.267)">
+                    <path d="M1533.1,678.354C1590.07,837.785 1624.34,937.047 1715.59,996.702C1624.42,1043.43 1582.22,1090.05 1533.1,1185.96C1483.98,1090.06 1441.81,1043.41 1350.62,996.702C1441.87,937.119 1476.14,837.585 1533.1,678.354ZM1533.09,846.584C1508.59,903.521 1483.24,949.741 1451.13,987.317C1483.52,1010.82 1509.38,1036.84 1533.11,1069.35C1556.83,1036.84 1582.7,1010.83 1615.08,987.329C1582.95,949.757 1557.59,903.557 1533.09,846.584Z"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

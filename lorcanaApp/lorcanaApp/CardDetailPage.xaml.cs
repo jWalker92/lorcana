@@ -241,7 +241,7 @@ namespace lorcanaApp
                 return;
             }
             int.TryParse(numberStr, out int number);
-            string url = Card.GetImageLink(number, setNumber);
+            string url = Card.GetImageLink(number, setNumber, App.CountryCode);
 
             var cachedStream = await GetCachedImagePath(url);
             if (cachedStream != null)

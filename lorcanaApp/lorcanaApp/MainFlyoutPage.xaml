@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<FlyoutPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:lorcana="clr-namespace:lorcanaApp"
+    x:Class="lorcanaApp.MainFlyoutPage">
+    <FlyoutPage.Flyout>
+        <lorcana:FlyoutMenu/>
+    </FlyoutPage.Flyout>
+    <FlyoutPage.Detail>
+        <NavigationPage x:Name="navPage" BarTextColor="WhiteSmoke">
+            <x:Arguments>
+                <lorcana:MainPage />
+            </x:Arguments>
+            <NavigationPage.BarBackground>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#2E3192" Offset="0.0" />
+                    <GradientStop Color="#540D6E" Offset="1.0" />
+                </LinearGradientBrush>
+            </NavigationPage.BarBackground>
+        </NavigationPage>
+    </FlyoutPage.Detail>
+</FlyoutPage>
+

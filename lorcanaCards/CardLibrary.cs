@@ -17,7 +17,7 @@ namespace lorcana.Cards
 
         public static string AllCardsInfoJson { get; private set; }
 
-        public static async Task BuildLibrary(string allCardsInfoJson)
+        public static async Task BuildLibrary(string allCardsInfoJson, string countryCode)
         {
             if (string.IsNullOrEmpty(allCardsInfoJson))
             {
@@ -41,7 +41,7 @@ namespace lorcana.Cards
                 }
                 int setNum = Helpers.GetPropertyValue<int>(item, "Set_Num");
                 int.TryParse(numberStr, out int number);
-                string baseImage = Card.GetImageLink(number, setNum);
+                string baseImage = Card.GetImageLink(number, setNum, countryCode);
                 string rarityStr = Helpers.GetPropertyValue<string>(item, "Rarity");
                 Card infoCard = new Card
                 {

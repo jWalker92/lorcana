@@ -42,6 +42,7 @@
     <None Remove="Resources\Inks\Steel.svg" />
     <None Remove="Resources\card.svg" />
     <None Remove="Resources\rotate.svg" />
+    <None Remove="Resources\Lore.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -67,5 +68,6 @@
     <EmbeddedResource Include="Resources\Inks\Steel.svg" />
     <EmbeddedResource Include="Resources\card.svg" />
     <EmbeddedResource Include="Resources\rotate.svg" />
+    <EmbeddedResource Include="Resources\lore.svg" />
   </ItemGroup>
 </Project>
