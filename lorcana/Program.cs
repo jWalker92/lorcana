@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using lorcana.Cards;
 using SkiaSharp;
 
@@ -22,7 +20,7 @@ namespace lorcana
             {
                 allCardsInfoJson = File.ReadAllText(allCardsInfoCache);
             }
-            await CardLibrary.BuildLibrary(allCardsInfoJson);
+            await CardLibrary.BuildLibrary(allCardsInfoJson, "de");
             File.WriteAllText(allCardsInfoCache, CardLibrary.AllCardsInfoJson);
 
             var json = File.ReadAllText("update.json");
