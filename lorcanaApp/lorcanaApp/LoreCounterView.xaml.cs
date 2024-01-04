@@ -1,10 +1,13 @@
 ﻿using System;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace lorcanaApp
 {	
 	public partial class LoreCounterView : ContentView
 	{
+        private string _id;
+
         public int LoreValue { get; set; }
         public string PlayerDisplay { get => playerDisplay.Text; set => playerDisplay.Text = value; }
 
@@ -32,6 +35,7 @@ namespace lorcanaApp
         void Button_Add_Clicked(System.Object sender, System.EventArgs e)
         {
             LoreValue++;
+            Preferences.Set(_id, LoreValue);
             UpdateLoreText();
             btnAdd.Opacity = 1;
             btnAdd.FadeTo(.1);
@@ -40,6 +44,7 @@ namespace lorcanaApp
         void Button_Sub_Clicked(System.Object sender, System.EventArgs e)
         {
             LoreValue--;
+            Preferences.Set(_id, LoreValue);
             UpdateLoreText();
             btnSub.Opacity = 1;
             btnSub.FadeTo(.1);
@@ -54,6 +59,13 @@ namespace lorcanaApp
         {
             Random rd = new Random();
             return Color.FromHsla(rd.NextDouble(), 0.8, 0.4);
+        }
+
+        internal void SetId(string id)
+        {
+            _id = id;
+            LoreValue = Preferences.Get(_id, 0);
+            UpdateLoreText();
         }
     }
 }
