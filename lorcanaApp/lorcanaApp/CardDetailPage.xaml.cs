@@ -501,13 +501,16 @@ namespace lorcanaApp
 
             canvas.ResetMatrix();
 #if DEBUG
-            var debugPaint = new SKPaint { Color = SKColors.White, TextSize = 28 };
-            canvas.DrawText(drawsLeft.ToString(), 8, 40, debugPaint);
-            canvas.DrawText(gyroX .ToString(), 8, 90, debugPaint);
-            canvas.DrawText(gyroY.ToString(), 8, 140, debugPaint);
-            canvas.DrawText(resourceX.ToString(), 8, 190, debugPaint);
-            canvas.DrawText(xRotation.ToString(), 8, 240, debugPaint);
-            canvas.DrawText(yRotation.ToString(), 8, 290, debugPaint);
+            if (false)
+            {
+                var debugPaint = new SKPaint { Color = SKColors.White, TextSize = 28 };
+                canvas.DrawText(drawsLeft.ToString(), 8, 40, debugPaint);
+                canvas.DrawText(gyroX.ToString(), 8, 90, debugPaint);
+                canvas.DrawText(gyroY.ToString(), 8, 140, debugPaint);
+                canvas.DrawText(resourceX.ToString(), 8, 190, debugPaint);
+                canvas.DrawText(xRotation.ToString(), 8, 240, debugPaint);
+                canvas.DrawText(yRotation.ToString(), 8, 290, debugPaint);
+            }
 #endif
         }
 

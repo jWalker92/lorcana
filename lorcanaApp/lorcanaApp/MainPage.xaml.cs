@@ -83,10 +83,9 @@ namespace lorcanaApp
                 {
                     case 0:
                         filteredList = collection.List.ToList();
-                        filteredList = filteredList.ToList();
                         break;
                     case 1:
-                        filteredList = collection.List.ToList();
+                        filteredList = collection.List.Where(x => x.Total >= 1).ToList();
                         break;
                     case 2:
                         filteredList = collection.List.Where(x => x.Total == 1).ToList();
@@ -255,6 +254,30 @@ namespace lorcanaApp
                 await LoadData();
                 isLoading = false;
             });
+        }
+
+        void searchBar_FocusChanged(System.Object sender, Xamarin.Forms.FocusEventArgs e)
+        {
+            SetSearchBarWidth();
+        }
+
+        void SetSearchBarWidth()
+        {
+            if (searchBar.IsFocused)
+            {
+                searchBar.Animate("widthAnim", new Animation((d) => searchBar.WidthRequest = d, searchBar.WidthRequest, filterGrid.Width), 16, 160, Easing.CubicInOut);
+                pickerFrame.FadeTo(0, 100);
+            }
+            else
+            {
+                searchBar.Animate("widthAnim", new Animation((d) => searchBar.WidthRequest = d, searchBar.WidthRequest, filterGrid.Width / 2), 16, 160, Easing.CubicInOut);
+                pickerFrame.FadeTo(1, 100);
+            }
+        }
+
+        void filterGrid_SizeChanged(System.Object sender, System.EventArgs e)
+        {
+            SetSearchBarWidth();
         }
     }
 }

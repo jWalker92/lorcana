@@ -2,6 +2,9 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
+    xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+    xmlns:lorcanaapp="clr-namespace:lorcanaApp"
     x:Class="lorcanaApp.LoreCounterPage">
     <ContentPage.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -9,6 +12,17 @@
             <GradientStop Color="#540D6E" Offset="0.0" />
         </LinearGradientBrush>
     </ContentPage.Background>
-    <Grid x:Name="counterGrid" Padding="16" RowSpacing="8" ColumnSpacing="8"/>
+    <Grid ColumnDefinitions="*" RowDefinitions="*">
+        <Grid x:Name="counterGrid" Padding="16" RowSpacing="8" ColumnSpacing="8"/>
+        <Frame VerticalOptions="Center" HorizontalOptions="Center" Padding="8" BackgroundColor="#2E3192" BorderColor="#540D6E" CornerRadius="16" HasShadow="True">
+            <Frame.GestureRecognizers>
+                <TapGestureRecognizer Tapped="Menu_Tapped"/>
+            </Frame.GestureRecognizers>
+            <ffimageloadingsvg:SvgCachedImage Source="{lorcanaapp:ImageResource Source='lorcanaApp.Resources.menu.svg'}" HeightRequest="32" WidthRequest="32">
+                <ffimageloadingsvg:SvgCachedImage.Transformations>
+                    <fftransformations:TintTransformation HexColor="#FFFAFAFA" EnableSolidColor="True"/>
+                </ffimageloadingsvg:SvgCachedImage.Transformations>
+            </ffimageloadingsvg:SvgCachedImage>
+        </Frame>
+    </Grid>
 </ContentPage>
-

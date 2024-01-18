@@ -7,8 +7,9 @@ namespace lorcanaApp
 	public partial class LoreCounterView : ContentView
 	{
         private string _id;
+        private int loreValue;
 
-        public int LoreValue { get; set; }
+        public int LoreValue { get => loreValue; set { loreValue = value; OnPropertyChanged(); } }
         public string PlayerDisplay { get => playerDisplay.Text; set => playerDisplay.Text = value; }
 
 		public LoreCounterView()
@@ -32,20 +33,20 @@ namespace lorcanaApp
             }
         }
 
-        void Button_Add_Clicked(System.Object sender, System.EventArgs e)
+        void Button_Add_Clicked(object sender, EventArgs e)
         {
-            LoreValue++;
-            Preferences.Set(_id, LoreValue);
-            UpdateLoreText();
+            SetLoreValue(LoreValue + 1);
             btnAdd.Opacity = 1;
             btnAdd.FadeTo(.1);
         }
 
-        void Button_Sub_Clicked(System.Object sender, System.EventArgs e)
+        void Button_Sub_Clicked(object sender, EventArgs e)
         {
-            LoreValue--;
-            Preferences.Set(_id, LoreValue);
-            UpdateLoreText();
+            if (LoreValue == 0)
+            {
+                return;
+            }
+            SetLoreValue(LoreValue - 1);
             btnSub.Opacity = 1;
             btnSub.FadeTo(.1);
         }
@@ -57,7 +58,7 @@ namespace lorcanaApp
 
         Color GetRandomColor()
         {
-            Random rd = new Random();
+            var rd = new Random();
             return Color.FromHsla(rd.NextDouble(), 0.8, 0.4);
         }
 
@@ -65,6 +66,13 @@ namespace lorcanaApp
         {
             _id = id;
             LoreValue = Preferences.Get(_id, 0);
+            UpdateLoreText();
+        }
+
+        internal void SetLoreValue(int value)
+        {
+            LoreValue = value;
+            Preferences.Set(_id, LoreValue);
             UpdateLoreText();
         }
     }

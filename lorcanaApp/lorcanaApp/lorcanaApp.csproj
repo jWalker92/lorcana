@@ -18,6 +18,7 @@
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lorcanaCards\lorcanaCards.csproj" />
@@ -43,6 +44,8 @@
     <None Remove="Resources\card.svg" />
     <None Remove="Resources\rotate.svg" />
     <None Remove="Resources\Lore.svg" />
+    <None Remove="Resources\menu.svg" />
+    <None Remove="Resources\menu %28copy%29.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -69,5 +72,6 @@
     <EmbeddedResource Include="Resources\card.svg" />
     <EmbeddedResource Include="Resources\rotate.svg" />
     <EmbeddedResource Include="Resources\lore.svg" />
+    <EmbeddedResource Include="Resources\menu.svg" />
   </ItemGroup>
 </Project>

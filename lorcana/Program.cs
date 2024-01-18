@@ -226,7 +226,7 @@ namespace lorcana
         {
             var preColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColorFromRarity(rarity);
-            Console.Write(Helpers.StringFromRarity(rarity, true));
+            Console.Write(Helpers.StringFromRarity(rarity, false));
             Console.ForegroundColor = preColor;
         }
 

@@ -24,13 +24,13 @@
                     <GradientStop Color="#540D6E" Offset="1.0" />
                 </LinearGradientBrush>
             </Frame.Background>
-            <Grid ColumnDefinitions="*,*">
-                <Frame Padding="0,-8" CornerRadius="8" BackgroundColor="#66FFFFFF">
-                    <SearchBar x:Name="searchBar" Placeholder="Search..." PlaceholderColor="#E0E0E0" TextColor="White" TextChanged="SearchBar_TextChanged" CancelButtonColor="White"
-                               BackgroundColor="Transparent" VerticalOptions="Center" ios:SearchBar.SearchBarStyle="Minimal"/>
+            <Grid ColumnDefinitions="*,*" x:Name="filterGrid" SizeChanged="filterGrid_SizeChanged">
+                <Frame Grid.Column="1" Padding="0" CornerRadius="8" BackgroundColor="#66FFFFFF" x:Name="pickerFrame">
+                    <Picker x:Name="listPicker" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" TextColor="WhiteSmoke" Title="Filter" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Center"/>
                 </Frame>
-                <Frame Grid.Column="1" Padding="0" CornerRadius="8" BackgroundColor="#66FFFFFF">
-                    <Picker x:Name="listPicker" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" TextColor="WhiteSmoke" Title="Filter" VerticalOptions="Center"/>
+                <Frame Padding="0,-8" CornerRadius="8" BackgroundColor="#66FFFFFF" Grid.ColumnSpan="2" HorizontalOptions="Start">
+                    <SearchBar x:Name="searchBar" Placeholder="Search..." PlaceholderColor="#E0E0E0" TextColor="White" TextChanged="SearchBar_TextChanged" CancelButtonColor="White"
+                               BackgroundColor="Transparent" VerticalOptions="Center" ios:SearchBar.SearchBarStyle="Minimal" Focused="searchBar_FocusChanged" Unfocused="searchBar_FocusChanged"/>
                 </Frame>
             </Grid>
         </Frame>

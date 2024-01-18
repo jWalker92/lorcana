@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Xamarin.Forms;
 
@@ -21,7 +20,7 @@ namespace lorcanaApp
         void Language_Clicked(System.Object sender, System.EventArgs e)
         {
             Device.BeginInvokeOnMainThread(async () => {
-                var res = await DisplayActionSheet("Choose Language", "Cancel", null, "English", "German");
+                var res = await DisplayActionSheet("Choose Images Language", "Cancel", null, "English", "German");
                 if (res == null)
                 {
                     return;
