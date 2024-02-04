@@ -34,7 +34,7 @@
                 </Frame>
             </Grid>
         </Frame>
-        <CollectionView Grid.Row="1" x:Name="cardsList" SelectionMode="Single" SelectionChanged="cardsList_SelectionChanged">
+        <CollectionView Grid.Row="1" x:Name="cardsList" SelectionMode="None">
             <CollectionView.Header>
                 <Grid Padding="8,16,8,8" ColumnDefinitions="*,Auto">
                     <Label x:Name="headerLabel" HorizontalOptions="Center" TextColor="#666666" VerticalOptions="Center"/>
@@ -43,12 +43,13 @@
             </CollectionView.Header>
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <lorcana:CardListView/>
+                    <lorcana:CardListView OnTap="{Binding OnTap}" OnTapAmounts="{Binding OnTapAmounts}"/>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
             <CollectionView.Footer>
                 <BoxView HeightRequest="40"/>
             </CollectionView.Footer>
         </CollectionView>
+        <lorcana:AmountAdjustView x:Name="adjustView" Grid.Row="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
     </Grid> 
 </ContentPage>

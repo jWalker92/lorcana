@@ -34,7 +34,7 @@ namespace lorcanaApp
         private float gyroX;
         private float gyroY;
         private DateTime lastUpdate;
-        private List<Card> cards;
+        private List<AdjustableCard> cards;
         private int index;
         private bool forwardSwitch;
         private float oldResourceX;
@@ -42,16 +42,16 @@ namespace lorcanaApp
         private double oldWidth;
         private double oldHeight;
         private float resBitmapAlpha;
-        private Card currentCard;
+        private AdjustableCard currentCard;
         private bool viewerEnabled;
         private bool gyroEnabled;
         private int drawsLeft = 100;
         private float glareIntensity = 1;
         private TaskCompletionSource<bool> sizeAllocatedTaskCompletionSource = new TaskCompletionSource<bool>();
 
-        public Card CurrentCard { get => currentCard; set { currentCard = value; OnPropertyChanged(); } }
+        public AdjustableCard CurrentCard { get => currentCard; set { currentCard = value; OnPropertyChanged(); } }
 
-        public CardDetailPage(List<Card> cards, int index)
+        public CardDetailPage(List<AdjustableCard> cards, int index)
         {
             this.cards = cards;
             this.index = index;
@@ -60,6 +60,8 @@ namespace lorcanaApp
             CurrentCard = cards[index];
 
             InitializeComponent();
+
+            adjustView.OnAmountChanged += AdjustView_OnAmountChanged;
 
             scrollView.SwipeLeft += ScrollView_SwipeLeft;
             scrollView.SwipeRight += ScrollView_SwipeRight;
@@ -88,6 +90,12 @@ namespace lorcanaApp
             rawPlaceholderBitmap = SKBitmap.Decode(EmbeddedResources.GetResourceStream("Resources.card.png"));
 
             if (viewerEnabled) StartDrawing();
+        }
+
+        private void AdjustView_OnAmountChanged(object sender, AdjustableCard e)
+        {
+            currentCard.OnPropertyChanged(nameof(AdjustableCard.Normals));
+            currentCard.OnPropertyChanged(nameof(AdjustableCard.Foils));
         }
 
         private void StartDrawing()
@@ -588,6 +596,11 @@ namespace lorcanaApp
         void Next_Clicked(System.Object sender, System.EventArgs e)
         {
             SwipeLeft();
+        }
+
+        void Totals_Tapped(System.Object sender, System.EventArgs e)
+        {
+            adjustView.Card = currentCard;
         }
     }
 }

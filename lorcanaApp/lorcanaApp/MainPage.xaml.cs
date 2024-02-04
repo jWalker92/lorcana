@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using lorcana.Cards;
+using Newtonsoft.Json;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -26,8 +30,8 @@ namespace lorcanaApp
             "Missing"
         };
         private CardCollection collection;
-        private List<Card> filteredList;
-        private List<Card> filteredAndSearchedList;
+        private List<AdjustableCard> filteredList;
+        private List<AdjustableCard> filteredAndSearchedList;
         private bool isLoading = false;
 
         public MainPage()
@@ -37,6 +41,7 @@ namespace lorcanaApp
             listPicker.ItemsSource = pickerItems;
             listPicker.SelectedIndex = 0;
             listPicker.SelectedIndexChanged += ListPicker_SelectedIndexChanged;
+            adjustView.OnAmountChanged += AdjustView_OnAmountChanged;
             Task.Run(async () => {
                 if (isLoading) return;
                 isLoading = true;
@@ -46,12 +51,22 @@ namespace lorcanaApp
             });
         }
 
+        private void AdjustView_OnAmountChanged(object sender, AdjustableCard e)
+        {
+            int index = filteredAndSearchedList.IndexOf(e);
+            if (index >= 0)
+            {
+                filteredAndSearchedList[index].OnPropertyChanged(nameof(AdjustableCard.Normals));
+                filteredAndSearchedList[index].OnPropertyChanged(nameof(AdjustableCard.Foils));
+            }
+        }
+
         private void ListPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
             Task.Run(async () => {
                 if (isLoading) return;
                 Device.BeginInvokeOnMainThread(() => headerLabel.Text = "Loading...");
-                isLoading = true;                
+                isLoading = true;
                 await LoadData();
                 isLoading = false;
             });
@@ -66,7 +81,8 @@ namespace lorcanaApp
                 Preferences.Set(allCardsInfoCache, CardLibrary.AllCardsInfoJson);
                 string contents = Preferences.Get("contents", "");
                 collection = new CardCollection();
-                collection.InitializeWithCsv(CardLibrary.List, contents);
+                collection.InitializeFromList(CardLibrary.List, await Database.Instance.GetCardsAsync(), Database.Instance.AddOrReplaceCardAsync);
+
             }
             catch (Exception ex)
             {
@@ -78,41 +94,42 @@ namespace lorcanaApp
         {
             try
             {
-                filteredList = new List<Card>();
+                filteredList = new List<AdjustableCard>();
+                var adjustableCollectionList = collection.List.Select(x => JsonConvert.DeserializeObject<AdjustableCard>(JsonConvert.SerializeObject(x)));
                 switch (listPicker.SelectedIndex)
                 {
                     case 0:
-                        filteredList = collection.List.ToList();
+                        filteredList = adjustableCollectionList.ToList();
                         break;
                     case 1:
-                        filteredList = collection.List.Where(x => x.Total >= 1).ToList();
+                        filteredList = adjustableCollectionList.Where(x => x.Total >= 1).ToList();
                         break;
                     case 2:
-                        filteredList = collection.List.Where(x => x.Total == 1).ToList();
+                        filteredList = adjustableCollectionList.Where(x => x.Total == 1).ToList();
                         break;
                     case 3:
-                        filteredList = collection.List.Where(x => x.Total == 2).ToList();
+                        filteredList = adjustableCollectionList.Where(x => x.Total == 2).ToList();
                         break;
                     case 4:
-                        filteredList = collection.List.Where(x => x.Total == 3).ToList();
+                        filteredList = adjustableCollectionList.Where(x => x.Total == 3).ToList();
                         break;
                     case 5:
-                        filteredList = collection.List.Where(x => x.Total >= 4).ToList();
+                        filteredList = adjustableCollectionList.Where(x => x.Total >= 4).ToList();
                         break;
                     case 6:
-                        filteredList = collection.List.Where(x => x.Total >= 5).ToList();
+                        filteredList = adjustableCollectionList.Where(x => x.Total >= 5).ToList();
                         break;
                     case 7:
-                        filteredList = collection.List.Where(x => x.Total > 8).ToList();
+                        filteredList = adjustableCollectionList.Where(x => x.Total > 8).ToList();
                         break;
                     case 8:
-                        filteredList = collection.List.Where(x => x.Total < 4).ToList();
+                        filteredList = adjustableCollectionList.Where(x => x.Total < 4).ToList();
                         break;
                     case 9:
-                        filteredList = collection.List.Where(x => x.Total == 0).ToList();
+                        filteredList = adjustableCollectionList.Where(x => x.Total == 0).ToList();
                         break;
                 }
-                SetListData(SearchedList(filteredList.OrderBy(x => x.NumberAsInt), searchBar.Text));
+                SetListData(SearchedList(filteredList.OrderBy(x => x.NumberAsInt).ThenBy(x => x.SetNumber), searchBar.Text));
             }
             catch (Exception ex)
             {
@@ -120,10 +137,31 @@ namespace lorcanaApp
             }
         }
 
-        void SetListData(IEnumerable<Card> enumerable)
+        void SetListData(IEnumerable<AdjustableCard> enumerable)
         {
-            filteredAndSearchedList = enumerable.ToList();
-            Device.BeginInvokeOnMainThread(() => { cardsList.ItemsSource = enumerable; headerLabel.Text = enumerable.Count() + " Cards"; });
+            try
+            {
+                foreach (var card in enumerable)
+                {
+                    card.OnTap = new Command(() => {
+                        int index = filteredAndSearchedList.IndexOf(card);
+                        if (index >= 0)
+                        {
+                            Navigation.PushAsync(new CardDetailPage(filteredAndSearchedList, index));
+                        }
+                    });
+                    card.OnTapAmounts = new Command(() =>
+                    {
+                        adjustView.Card = card;
+                    });
+                }
+                filteredAndSearchedList = enumerable.ToList();
+                Device.BeginInvokeOnMainThread(() => { cardsList.ItemsSource = enumerable; headerLabel.Text = enumerable.Count() + " Cards"; });
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         void Import_Clicked(object sender, EventArgs e)
@@ -132,19 +170,25 @@ namespace lorcanaApp
             importView.IsVisible = true;
         }
 
-        void Save_Clicked(object sender, EventArgs e)
+        async void Save_Clicked(object sender, EventArgs e)
         {
             var importContent = importEditor.Text;
             if (!string.IsNullOrWhiteSpace(importContent))
             {
                 try
                 {
+                    var importedCollection = new CardCollection();
+                    importedCollection.InitializeWithCsv(CardLibrary.List, importContent);
+                    foreach (var card in importedCollection.List)
+                    {
+                        await Database.Instance.AddOrReplaceCardAsync(card);
+                    }
                     collection = new CardCollection();
-                    collection.InitializeWithCsv(CardLibrary.List, importContent);
+                    collection.InitializeFromList(CardLibrary.List, await Database.Instance.GetCardsAsync(), Database.Instance.AddOrReplaceCardAsync);
                     Preferences.Set("contents", importContent);
                     importEditor.Text = null;
                     importView.IsVisible = false;
-                    Task.Run(LoadData);
+                    await LoadData();
                 }
                 catch (Exception ex)
                 {
@@ -159,29 +203,12 @@ namespace lorcanaApp
             importView.IsVisible = false;
         }
 
-        void cardsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (cardsList.SelectedItem == null)
-            {
-                return;
-            }
-            if (cardsList.SelectedItem is Card card)
-            {
-                int index = filteredAndSearchedList.IndexOf(card);
-                if (index >= 0)
-                {
-                    Navigation.PushAsync(new CardDetailPage(filteredAndSearchedList, index));
-                }
-            }
-            cardsList.SelectedItem = null;
-        }
-
         void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
             SetListData(SearchedList(filteredList, searchBar.Text));
         }
 
-        private IEnumerable<Card> SearchedList(IEnumerable<Card> cardList, string searchText)
+        private IEnumerable<AdjustableCard> SearchedList(IEnumerable<AdjustableCard> cardList, string searchText)
         {
             if (string.IsNullOrWhiteSpace(searchText))
             {
@@ -247,7 +274,7 @@ namespace lorcanaApp
         {
             Task.Run(async () => {
                 if (isLoading) return;
-                SetListData(new List<Card>());
+                SetListData(new List<AdjustableCard>());
                 isLoading = true;
                 Device.BeginInvokeOnMainThread(() => headerLabel.Text = "Loading...");
                 await BuildLibraryAndCollection(true);
@@ -278,6 +305,22 @@ namespace lorcanaApp
         void filterGrid_SizeChanged(System.Object sender, System.EventArgs e)
         {
             SetSearchBarWidth();
+        }
+    }
+
+    public class AdjustableCard : Card, INotifyPropertyChanged
+    {
+        public ICommand OnTap { get; set; }
+        public ICommand OnTapAmounts { get; set; }
+
+        public AdjustableCard() : base()
+        {
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

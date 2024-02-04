@@ -26,6 +26,8 @@ namespace lorcana.Cards
 
     public class Card
     {
+        [SQLite.PrimaryKey]
+        public string ID { get; set; }
         public string Title { get; set; }
         public string SubTitle { get; set; }
         public string Body { get; set; }
@@ -57,6 +59,11 @@ namespace lorcana.Cards
         public static string GetImageLink(int number, int setNumber, string countryCode = "de")
         {
             return $"https://images.dreamborn.ink/cards/{countryCode}/{setNumber:D3}-{number:D3}_1468x2048.webp";
+        }
+
+        public string ConstructKey()
+        {
+            return SetNumber + ":" + Number;
         }
     }
 }

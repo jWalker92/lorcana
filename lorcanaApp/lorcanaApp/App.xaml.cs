@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -28,6 +29,7 @@ namespace lorcanaApp
         public App ()
         {
             InitializeComponent();
+            Task.Run(Database.Instance.Init);
             MainPage = FlyoutInstance = new MainFlyoutPage();
         }
 

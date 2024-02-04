@@ -63,6 +63,10 @@
                             </StackLayout>
                     
                             <StackLayout Grid.Column="1" Grid.RowSpan="2" VerticalOptions="Start" Orientation="Horizontal" Padding="0">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="Totals_Tapped"/>
+
+                                </StackLayout.GestureRecognizers>
                                 <Frame WidthRequest="32" HeightRequest="32" HasShadow="False" BorderColor="#44000000"
                                         Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#44A0A0A0">
                                     <Label Text="{Binding CurrentCard.Normals}" Style="{StaticResource countLabel}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
@@ -147,5 +151,6 @@
                 </StackLayout>
             </Frame>
         </StackLayout>
+        <lorcanaapp:AmountAdjustView x:Name="adjustView" Grid.RowSpan="2" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
     </Grid>
 </ContentPage>

@@ -19,6 +19,7 @@
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lorcanaCards\lorcanaCards.csproj" />
@@ -46,12 +47,14 @@
     <None Remove="Resources\Lore.svg" />
     <None Remove="Resources\menu.svg" />
     <None Remove="Resources\menu %28copy%29.svg" />
+    <None Remove="data\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Resources\Raw\" />
     <Folder Include="Resources\Rarity\" />
     <Folder Include="Resources\Inks\" />
+    <Folder Include="data\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Raw\update.json">

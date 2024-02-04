@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -24,6 +23,10 @@ namespace lorcana.Cards
                 allCardsInfoJson = await GetAllCards();
             }
             AllCardsInfoJson = allCardsInfoJson;
+            if (AllCardsInfoJson == null)
+            {
+                return;
+            }
             var allInfo = JsonConvert.DeserializeObject<List<JObject>>(AllCardsInfoJson);
 
             allCardsInfo = new List<Card>();
@@ -77,16 +80,24 @@ namespace lorcana.Cards
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    HttpResponseMessage response = await client.GetAsync(apiUrl);
+                    try
+                    {
+                        client.Timeout = TimeSpan.FromSeconds(10);
+                        HttpResponseMessage response = await client.GetAsync(apiUrl);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string result = await response.Content.ReadAsStringAsync();
-                        return result;
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string result = await response.Content.ReadAsStringAsync();
+                            return result;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Fehler beim Aufrufen der API. Statuscode: {response.StatusCode}");
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        Console.WriteLine($"Fehler beim Aufrufen der API. Statuscode: {response.StatusCode}");
+                        return string.Empty;
                     }
                 }
             }

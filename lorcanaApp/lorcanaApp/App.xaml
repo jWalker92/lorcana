@@ -7,6 +7,21 @@
         <Color x:Key="LabelFgLight">Black</Color>
         <Color x:Key="LabelFgDark">WhiteSmoke</Color>
 
+        <Color x:Key="bgLight">#FAFAFA</Color>
+        <Color x:Key="bgDark">#111</Color>
+
+        <Color x:Key="bgSubLight">#FEFEFE</Color>
+        <Color x:Key="bgSubDark">#161616</Color>
+        
+        <LinearGradientBrush x:Key="gradientBg" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FFC1A1" Offset="0" />
+            <GradientStop Color="#FFE8A1" Offset="0.2" />
+            <GradientStop Color="#FFFFC1" Offset="0.4" />
+            <GradientStop Color="#C1FFC1" Offset="0.6" />
+            <GradientStop Color="#A1E8FF" Offset="0.8" />
+            <GradientStop Color="#C1A1FF" Offset="1" />
+        </LinearGradientBrush>
+
         <Style TargetType="Label">
             <Setter Property="TextColor" Value="{AppThemeBinding Light='#212121', Dark='#F0F0F0'}"/>
         </Style>
