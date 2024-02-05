@@ -14,7 +14,7 @@
               IsVisible="False" x:Name="importView" Grid.RowSpan="2" BackgroundColor="{AppThemeBinding Light='White', Dark='Black'}">
             <Label Text="Paste the whole exported .csv from dreamborn.ink into this field and click save." Grid.ColumnSpan="2"/>
             <Button Text="Cancel" Grid.Row="1" Clicked="Cancel_Clicked"/>
-            <Button Text="Save" Grid.Row="1" Grid.Column="1" Clicked="Save_Clicked"/>
+            <Button Text="Save" Grid.Row="1" Grid.Column="1" TextColor="White" Clicked="Save_Clicked" BackgroundColor="#540D6E"/>
             <Editor x:Name="importEditor" Grid.ColumnSpan="2" Grid.Row="2" BackgroundColor="#60F1F1F1"/>
         </Grid>
         <Frame Padding="8" CornerRadius="0">

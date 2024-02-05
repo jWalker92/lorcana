@@ -106,7 +106,7 @@ namespace lorcana.Cards
 
                     }
                 }
-                cardsList.AddRange(library.Where(x => !cardsList.Any(y => y.SetNumber == x.SetNumber && y.Number == x.Number)));
+                //cardsList.AddRange(library.Where(x => !cardsList.Any(y => y.SetNumber == x.SetNumber && y.Number == x.Number)));
             }
             catch (System.Exception ex)
             {

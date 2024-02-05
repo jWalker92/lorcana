@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using lorcana.Cards;
 using Newtonsoft.Json;
@@ -70,12 +71,13 @@ namespace lorcanaApp
         {
             try
             {
-                return await connection.Table<Card>().FirstOrDefaultAsync(x => x.SetNumber == set && x.NumberAsInt == number);
+                var all = await connection.Table<Card>().ToListAsync();
+                return all.FirstOrDefault(x => x.SetNumber == set && x.NumberAsInt == number);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                throw;
+                return null;
             }
         }
 

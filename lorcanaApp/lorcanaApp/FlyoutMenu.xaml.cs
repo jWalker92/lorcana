@@ -17,7 +17,7 @@ namespace lorcanaApp
             App.FlyoutInstance.IsPresented = false;
         }
 
-        void Language_Clicked(System.Object sender, System.EventArgs e)
+        void Language_Clicked(object sender, EventArgs e)
         {
             Device.BeginInvokeOnMainThread(async () => {
                 var res = await DisplayActionSheet("Choose Images Language", "Cancel", null, "English", "German");
@@ -39,6 +39,12 @@ namespace lorcanaApp
                 App.FlyoutInstance.Detail = App.NavigationPageInstance;
                 App.FlyoutInstance.IsPresented = false;
             });
+        }
+
+        void Booster_Clicked(object sender, EventArgs e)
+        {
+            App.NavigationPageInstance.PushAsync(new BoosterOpenPage());
+            App.FlyoutInstance.IsPresented = false;
         }
     }
 }

@@ -6,8 +6,9 @@
     xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
     x:Class="lorcanaApp.CardListView">
-    <Grid ColumnDefinitions="60,*,Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" Padding="8,4" HeightRequest="90" BackgroundColor="{AppThemeBinding Light={StaticResource bgLight}, Dark={StaticResource bgDark}}">
-        <Frame Grid.RowSpan="2" CornerRadius="4" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
+    <Grid ColumnDefinitions="60,*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" Padding="8,4" HeightRequest="90" BackgroundColor="{AppThemeBinding Light={StaticResource bgLight}, Dark={StaticResource bgDark}}">
+        <ContentView IsVisible="{Binding FoilBackground}" Background="{StaticResource gradientBg}" Margin="-8,-4" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
+        <Frame Grid.RowSpan="2" CornerRadius="4" VerticalOptions="Center" Padding="0" IsClippedToBounds="True" BackgroundColor="Transparent">
             <Grid>
                 <ffimageloading:CachedImage HeightRequest="84" WidthRequest="60" DownsampleToViewSize="True" Source="{lorcanaapp:ImageResource Source='lorcanaApp.Resources.card.png'}"/>
                 <ffimageloading:CachedImage x:Name="cardImage" Aspect="AspectFill" HeightRequest="84" WidthRequest="60" DownsampleToViewSize="True"/>
@@ -23,17 +24,19 @@
             <Label Text="{Binding SubTitle}" FontSize="16" FontAttributes="Italic"/>
             <Label Text="{Binding Body}" MaxLines="2" FontSize="14" LineBreakMode="TailTruncation"/>
         </StackLayout>
-        <Label Text="{Binding Number, StringFormat='{}#{0:000}'}" FontSize="18" Grid.Column="2" Grid.ColumnSpan="2" HorizontalOptions="End"/>
-        <Frame Grid.Row="1" Grid.Column="2" WidthRequest="32" HeightRequest="32" HasShadow="False"
-                BorderColor="#44000000" Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#33A0A0A0">
-            <Label Text="{Binding Normals}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
-        </Frame>
-        <Frame Grid.Row="1" Grid.Column="3" WidthRequest="32" HeightRequest="32" HasShadow="False"
-                BorderColor="Black" CornerRadius="8" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
-            <ContentView Background="{StaticResource gradientBg}">
-                <Label Text="{Binding Foils}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
-            </ContentView>
-        </Frame>
-        <BoxView BackgroundColor="Transparent" x:Name="amountsTapArea" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"/>
+        <Label Text="{Binding Number, StringFormat='{}#{0:000}'}" FontSize="18" Grid.Column="2" HorizontalOptions="End"/>
+        <StackLayout x:Name="amountsTapArea" Orientation="Horizontal" Grid.Row="1" Grid.Column="2" IsVisible="{Binding ShowAmounts}">
+            <Frame WidthRequest="32" HeightRequest="32" HasShadow="False" 
+                    BorderColor="#44000000" Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#33A0A0A0">
+                <Label Text="{Binding Normals}" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
+            </Frame>
+            <Frame WidthRequest="32" HeightRequest="32" HasShadow="False"
+                    BorderColor="Black" CornerRadius="8" VerticalOptions="Center" Padding="0" IsClippedToBounds="True">
+                <ContentView Background="{StaticResource gradientBg}">
+                    <Label Text="{Binding Foils}" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" FontAttributes="Bold"/>
+                </ContentView>
+            </Frame>
+
+        </StackLayout>
     </Grid>
 </ContentView>

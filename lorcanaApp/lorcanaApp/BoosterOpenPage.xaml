@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:lorcana="clr-namespace:lorcanaApp"
+    x:Class="lorcanaApp.BoosterOpenPage">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#2E3192" Offset="1.0" />
+            <GradientStop Color="#540D6E" Offset="0.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
+    <Grid RowDefinitions="Auto,Auto,*" ColumnDefinitions="*,*" Padding="16">
+        <Frame Grid.Row="0" Grid.ColumnSpan="2" BackgroundColor="#11000000">
+            <Grid ColumnDefinitions="Auto,*">
+                <Entry x:Name="setEntry" Placeholder="Set" FontSize="48" HorizontalTextAlignment="Center" Keyboard="Numeric"/>
+                <Entry x:Name="numEntry" Placeholder="Number" FontSize="48" Grid.Column="1" Keyboard="Numeric"/>
+            </Grid>
+        </Frame>
+        <Frame BackgroundColor="#44FFFFFF" Grid.Row="1" Padding="0">
+            <Button Text="Normal" BackgroundColor="Transparent" TextColor="WhiteSmoke" Padding="32" Clicked="Normals_Add"/>
+        </Frame>
+        <Frame Background="{StaticResource gradientBg}" Grid.Row="1" Grid.Column="1" Padding="0">
+            <Button Text="Foil" TextColor="Black" BackgroundColor="Transparent" Padding="32" Clicked="Foils_Add"/>
+        </Frame>
+        <Frame Grid.Row="2" Grid.ColumnSpan="2" Padding="0" CornerRadius="16" IsClippedToBounds="True">
+            <CollectionView x:Name="cardsList">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <lorcana:CardListView OnTap="{Binding OnTap}"/>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Frame>
+    </Grid>
+</ContentPage>
+

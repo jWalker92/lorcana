@@ -12,7 +12,7 @@
 
         <Color x:Key="bgSubLight">#FEFEFE</Color>
         <Color x:Key="bgSubDark">#161616</Color>
-        
+                
         <LinearGradientBrush x:Key="gradientBg" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#FFC1A1" Offset="0" />
             <GradientStop Color="#FFE8A1" Offset="0.2" />
@@ -23,7 +23,7 @@
         </LinearGradientBrush>
 
         <Style TargetType="Label">
-            <Setter Property="TextColor" Value="{AppThemeBinding Light='#212121', Dark='#F0F0F0'}"/>
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource LabelFgLight}, Dark={StaticResource LabelFgDark}}"/>
         </Style>
         <Style TargetType="CollectionView">
             <Setter Property="BackgroundColor" Value="{AppThemeBinding Light='#FAFAFA', Dark='#111'}"/>

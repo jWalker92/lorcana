@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using lorcana.Cards;
-using Newtonsoft.Json;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -51,6 +47,12 @@ namespace lorcanaApp
             });
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            ReloadData();
+        }
+
         private void AdjustView_OnAmountChanged(object sender, AdjustableCard e)
         {
             int index = filteredAndSearchedList.IndexOf(e);
@@ -63,8 +65,15 @@ namespace lorcanaApp
 
         private void ListPicker_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ReloadData();
+        }
+
+        private void ReloadData()
+        {
             Task.Run(async () => {
                 if (isLoading) return;
+                collection = new CardCollection();
+                collection.InitializeFromList(CardLibrary.List, await Database.Instance.GetCardsAsync(), Database.Instance.AddOrReplaceCardAsync);
                 Device.BeginInvokeOnMainThread(() => headerLabel.Text = "Loading...");
                 isLoading = true;
                 await LoadData();
@@ -95,7 +104,7 @@ namespace lorcanaApp
             try
             {
                 filteredList = new List<AdjustableCard>();
-                var adjustableCollectionList = collection.List.Select(x => JsonConvert.DeserializeObject<AdjustableCard>(JsonConvert.SerializeObject(x)));
+                var adjustableCollectionList = collection.List.Select(AdjustableCard.FromCard);
                 switch (listPicker.SelectedIndex)
                 {
                     case 0:
@@ -129,7 +138,7 @@ namespace lorcanaApp
                         filteredList = adjustableCollectionList.Where(x => x.Total == 0).ToList();
                         break;
                 }
-                SetListData(SearchedList(filteredList.OrderBy(x => x.NumberAsInt).ThenBy(x => x.SetNumber), searchBar.Text));
+                SetListData(SearchedList(filteredList, searchBar.Text));
             }
             catch (Exception ex)
             {
@@ -155,8 +164,11 @@ namespace lorcanaApp
                         adjustView.Card = card;
                     });
                 }
-                filteredAndSearchedList = enumerable.ToList();
-                Device.BeginInvokeOnMainThread(() => { cardsList.ItemsSource = enumerable; headerLabel.Text = enumerable.Count() + " Cards"; });
+                Device.BeginInvokeOnMainThread(() => {
+                    filteredAndSearchedList = enumerable.OrderBy(x => x.NumberAsInt).ThenBy(x => x.SetNumber).ToList();
+                    cardsList.ItemsSource = filteredAndSearchedList;
+                    headerLabel.Text = enumerable.Count() + " Cards";
+                });
             }
             catch (Exception ex)
             {
@@ -283,7 +295,7 @@ namespace lorcanaApp
             });
         }
 
-        void searchBar_FocusChanged(System.Object sender, Xamarin.Forms.FocusEventArgs e)
+        void searchBar_FocusChanged(object sender, FocusEventArgs e)
         {
             SetSearchBarWidth();
         }
@@ -302,25 +314,9 @@ namespace lorcanaApp
             }
         }
 
-        void filterGrid_SizeChanged(System.Object sender, System.EventArgs e)
+        void filterGrid_SizeChanged(object sender, EventArgs e)
         {
             SetSearchBarWidth();
-        }
-    }
-
-    public class AdjustableCard : Card, INotifyPropertyChanged
-    {
-        public ICommand OnTap { get; set; }
-        public ICommand OnTapAmounts { get; set; }
-
-        public AdjustableCard() : base()
-        {
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

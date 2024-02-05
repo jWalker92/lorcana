@@ -26,6 +26,7 @@
     <StackLayout Spacing="8">
         <Label Text="DreamCollect" HorizontalOptions="Center" TextColor="WhiteSmoke" FontAttributes="Bold" FontSize="Title" Margin="0,16,0,32"/>
         <Button Text="Counter" Clicked="Counter_Clicked"/>
+        <Button Text="Open Booster" Clicked="Booster_Clicked"/>
         <Button Text="Language" Clicked="Language_Clicked"/>
     </StackLayout>
 </ContentPage>
