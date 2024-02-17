@@ -14,7 +14,7 @@
     </ContentPage.Background>
     <Grid ColumnDefinitions="*" RowDefinitions="*">
         <Grid x:Name="counterGrid" Padding="16" RowSpacing="8" ColumnSpacing="8"/>
-        <Frame VerticalOptions="Center" HorizontalOptions="Center" Padding="8" BackgroundColor="#2E3192" BorderColor="#540D6E" CornerRadius="16" HasShadow="True">
+        <Frame VerticalOptions="Center" HorizontalOptions="Center" Padding="8" BackgroundColor="#2E3192" BorderColor="WhiteSmoke" CornerRadius="16" HasShadow="True">
             <Frame.GestureRecognizers>
                 <TapGestureRecognizer Tapped="Menu_Tapped"/>
             </Frame.GestureRecognizers>

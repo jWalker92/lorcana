@@ -16,14 +16,15 @@
     </ContentView.Resources>
 
     <Frame x:Name="bgFrame" Padding="0" CornerRadius="50" IsClippedToBounds="True">
-        <Grid RowDefinitions="*,*" RowSpacing="0">
+        <Grid x:Name="grid" RowDefinitions="*,*" RowSpacing="0">
             <ffSvg:SvgCachedImage x:Name="bgImg" Scale="1.6" Source="{lorcanaapp:ImageResource Source='lorcanaApp.Resources.lore.svg'}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Opacity="0.2" Grid.RowSpan="2"/>
             <Button x:Name="btnAdd" Clicked="Button_Add_Clicked"/>
             <Button x:Name="btnSub" Clicked="Button_Sub_Clicked" Grid.Row="1"/>
-            <StackLayout Grid.RowSpan="2" VerticalOptions="Center" HorizontalOptions="Center">
+            <StackLayout x:Name="valuesLayout" Grid.RowSpan="2" VerticalOptions="Center" HorizontalOptions="Center" InputTransparent="True">
                 <Label x:Name="playerDisplay" FontSize="20" TextColor="White" HorizontalOptions="Center"/>
-                <Label x:Name="loreDisplay" Text="0" TextColor="White" FontSize="50" HorizontalOptions="Center"/>
+                <Label x:Name="loreDisplay" Text="0" TextColor="White" FontSize="100" FontAttributes="Bold" HorizontalOptions="Center"/>
             </StackLayout>
+            <ContentView Grid.RowSpan="2" x:Name="shimmerBg" InputTransparent="True" Opacity="0"/>
         </Grid>
     </Frame>
 </ContentView>

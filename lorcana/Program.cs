@@ -91,6 +91,21 @@ namespace lorcana
             Console.WriteLine("Missing Commons / Uncommons: " + allMissingCommonUncommon.Count());
             WriteList(allMissingCommonUncommon, (c) => ": " + (4 - c.Total));
 
+            Console.WriteLine();
+            var allFoiled = cardsList.Where(x => x.Foils > 0);
+            Console.WriteLine("Foiled Cards: " + allFoiled.Count());
+            WriteList(allFoiled, (c) => ": " + (c.Foils));
+
+            Console.WriteLine();
+            var allFoiledTradeable = cardsList.Where(x => x.Foils > 0 && x.Total >= 5);
+            Console.WriteLine("Foiled Cards Tradeable: " + allFoiledTradeable.Count());
+            WriteList(allFoiledTradeable, (c) => ": " + (c.Foils));
+
+            Console.WriteLine();
+            var allFoiledTradeable1v1 = cardsList.Where(x => x.Foils > 0 && x.Total <= 4);
+            Console.WriteLine("Foiled Cards Tradeable 1v1: " + allFoiledTradeable1v1.Count());
+            WriteList(allFoiledTradeable1v1, (c) => ": " + (c.Foils));
+
             Console.ReadKey();
         }
 
