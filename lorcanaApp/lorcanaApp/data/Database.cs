@@ -15,6 +15,7 @@ namespace lorcanaApp
         private static Database instance;
 
         public static Database Instance { get => instance ?? new Database(); }
+        public event EventHandler CollectionChanged;
 
         public event EventHandler<bool> DatabaseInitiated;
 
@@ -24,6 +25,11 @@ namespace lorcanaApp
             //File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "lorcana.db3"));
             connection = new SQLiteAsyncConnection(
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "lorcana.db3"));
+        }
+
+        public void FireCollectionChanged()
+        {
+            CollectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public async Task Init()

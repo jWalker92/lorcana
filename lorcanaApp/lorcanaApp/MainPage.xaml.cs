@@ -33,6 +33,7 @@ namespace lorcanaApp
         public MainPage()
         {
             InitializeComponent();
+            Database.Instance.CollectionChanged += Instance_CollectionChanged;
             headerLabel.Text = "Loading...";
             listPicker.ItemsSource = pickerItems;
             listPicker.SelectedIndex = 0;
@@ -45,6 +46,24 @@ namespace lorcanaApp
                 await LoadData();
                 isLoading = false;
             });
+        }
+
+        private void Instance_CollectionChanged(object sender, EventArgs e)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                try
+                {
+                    collection = new CardCollection();
+                    collection.InitializeFromList(CardLibrary.List, await Database.Instance.GetCardsAsync(), Database.Instance.AddOrReplaceCardAsync);
+                    await LoadData();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            });
+
         }
 
         protected override void OnAppearing()
@@ -88,7 +107,6 @@ namespace lorcanaApp
                 string allCardsInfoJson = forceRefresh ? null : Preferences.Get(allCardsInfoCache, "");
                 await CardLibrary.BuildLibrary(allCardsInfoJson, App.CountryCode);
                 Preferences.Set(allCardsInfoCache, CardLibrary.AllCardsInfoJson);
-                string contents = Preferences.Get("contents", "");
                 collection = new CardCollection();
                 collection.InitializeFromList(CardLibrary.List, await Database.Instance.GetCardsAsync(), Database.Instance.AddOrReplaceCardAsync);
 
@@ -176,43 +194,14 @@ namespace lorcanaApp
             }
         }
 
-        void Import_Clicked(object sender, EventArgs e)
+        protected override bool OnBackButtonPressed()
         {
-            grid.RaiseChild(importView);
-            importView.IsVisible = true;
-        }
-
-        async void Save_Clicked(object sender, EventArgs e)
-        {
-            var importContent = importEditor.Text;
-            if (!string.IsNullOrWhiteSpace(importContent))
+            if (adjustView.Card != null)
             {
-                try
-                {
-                    var importedCollection = new CardCollection();
-                    importedCollection.InitializeWithCsv(CardLibrary.List, importContent);
-                    foreach (var card in importedCollection.List)
-                    {
-                        await Database.Instance.AddOrReplaceCardAsync(card);
-                    }
-                    collection = new CardCollection();
-                    collection.InitializeFromList(CardLibrary.List, await Database.Instance.GetCardsAsync(), Database.Instance.AddOrReplaceCardAsync);
-                    Preferences.Set("contents", importContent);
-                    importEditor.Text = null;
-                    importView.IsVisible = false;
-                    await LoadData();
-                }
-                catch (Exception ex)
-                {
-
-                }
+                adjustView.Card = null;
+                return true;
             }
-        }
-
-        void Cancel_Clicked(object sender, EventArgs e)
-        {
-            importEditor.Text = null;
-            importView.IsVisible = false;
+            return base.OnBackButtonPressed();
         }
 
         void SearchBar_TextChanged(object sender, TextChangedEventArgs e)

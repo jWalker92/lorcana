@@ -1,5 +1,9 @@
 ﻿using System;
-
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Xml.Serialization;
+using lorcana.Cards;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace lorcanaApp
@@ -45,6 +49,63 @@ namespace lorcanaApp
         {
             App.NavigationPageInstance.PushAsync(new BoosterOpenPage());
             App.FlyoutInstance.IsPresented = false;
+        }
+
+        async void Export_Clicked(System.Object sender, System.EventArgs e)
+        {
+            App.FlyoutInstance.IsPresented = false;
+            var csvContent = CardCollection.ListToCsv(await Database.Instance.GetCardsAsync());
+
+            var choice = await DisplayActionSheet("Export", "Cancel", null, "Share File", "To Clipboard");
+            if (choice == "Share File")
+            {
+                var fn = "app_export.csv";
+                var file = Path.Combine(FileSystem.CacheDirectory, fn);
+                File.WriteAllText(file, csvContent);
+
+                await Share.RequestAsync(new ShareFileRequest
+                {
+                    Title = "Collection Export",
+                    File = new ShareFile(file)
+                });
+            }
+            else if (choice == "To Clipboard")
+            {
+                await Clipboard.SetTextAsync(csvContent);
+            }
+        }
+
+        void Import_Clicked(System.Object sender, System.EventArgs e)
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                App.FlyoutInstance.IsPresented = false;
+                var importDataStr = string.Empty;
+                var choice = await DisplayActionSheet("Import", "Cancel", null, "From File", "From Text");
+                if (choice == "From File")
+                {
+                    var pickedFile = await FilePicker.PickAsync();
+                    if (pickedFile != null)
+                    {
+                        importDataStr = File.ReadAllText(pickedFile.FullPath);
+                    }
+                }
+                else if (choice == "From Text")
+                {
+                    importDataStr = await PasteTextPage.ShowDialog();
+                }
+                if (string.IsNullOrEmpty(importDataStr))
+                {
+                    return;
+                }
+                var importedCollection = new CardCollection();
+                importedCollection.InitializeWithCsv(CardLibrary.List, importDataStr);
+                foreach (var card in importedCollection.List)
+                {
+                    await Database.Instance.AddOrReplaceCardAsync(card);
+                }
+                Database.Instance.FireCollectionChanged();
+            });
         }
     }
 }

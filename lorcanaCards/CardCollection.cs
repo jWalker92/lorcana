@@ -9,6 +9,14 @@ namespace lorcana.Cards
 {
     public class CardCollection
     {
+        private const string CSV_NORMALS = "normal";
+        private const string CSV_FOILS = "foil";
+        private const string CSV_CARDNUMBER = "card number";
+        private const string CSV_SET = "set";
+        private const string CSV_NAME = "name";
+        private const string CSV_COLOR = "color";
+        private const string CSV_RARITY = "rarity";
+
         private List<Card> cardsList = new List<Card>();
 
         public List<Card> List { get => cardsList; }
@@ -23,6 +31,17 @@ namespace lorcana.Cards
             {
                 return IntegerValue.ToString();
             }
+        }
+
+        public static string ListToCsv(List<Card> list)
+        {
+            string csvOutput = string.Empty;
+            csvOutput += CSV_SET + "," + CSV_CARDNUMBER + "," + CSV_NORMALS + "," + CSV_FOILS + Environment.NewLine;
+            foreach (var item in list)
+            {
+                csvOutput += item.SetNumber + "," + item.NumberAsInt + "," + item.Normals + "," + item.Foils + Environment.NewLine;
+            }
+            return csvOutput;
         }
 
         public void InitializeWithCsv(List<Card> library, string csv)
@@ -50,14 +69,14 @@ namespace lorcana.Cards
                         }
                         if (line == 0)
                         {
-                            normalsIndex = Array.FindIndex(values, x => x.ToLower() == "normal");
-                            foilsIndex = Array.FindIndex(values, x => x.ToLower() == "foil");
-                            numberIndex = Array.FindIndex(values, x => x.ToLower() == "card number");
-                            setIndex = Array.FindIndex(values, x => x.ToLower() == "set");
-                            nameIndex = Array.FindIndex(values, x => x.ToLower() == "name");
-                            colorIndex = Array.FindIndex(values, x => x.ToLower() == "color");
-                            rarityIndex = Array.FindIndex(values, x => x.ToLower() == "rarity");
-                            if (normalsIndex == -1 || foilsIndex == -1 || numberIndex == -1)
+                            normalsIndex = Array.FindIndex(values, x => x.ToLower() == CSV_NORMALS);
+                            foilsIndex = Array.FindIndex(values, x => x.ToLower() == CSV_FOILS);
+                            numberIndex = Array.FindIndex(values, x => x.ToLower() == CSV_CARDNUMBER);
+                            setIndex = Array.FindIndex(values, x => x.ToLower() == CSV_SET);
+                            nameIndex = Array.FindIndex(values, x => x.ToLower() == CSV_NAME);
+                            colorIndex = Array.FindIndex(values, x => x.ToLower() == CSV_COLOR);
+                            rarityIndex = Array.FindIndex(values, x => x.ToLower() == CSV_RARITY);
+                            if (normalsIndex == -1 || foilsIndex == -1 || numberIndex == -1 || setIndex == -1)
                             {
                                 break;
                             }

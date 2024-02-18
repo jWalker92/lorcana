@@ -6,17 +6,7 @@
     x:Class="lorcanaApp.MainPage"
     xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
     Title="Lorcana Collection">
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Import" Clicked="Import_Clicked"/>
-    </ContentPage.ToolbarItems>
     <Grid RowDefinitions="Auto,*" x:Name="grid" RowSpacing="0">
-        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,*" Padding="16"
-              IsVisible="False" x:Name="importView" Grid.RowSpan="2" BackgroundColor="{AppThemeBinding Light='White', Dark='Black'}">
-            <Label Text="Paste the whole exported .csv from dreamborn.ink into this field and click save." Grid.ColumnSpan="2"/>
-            <Button Text="Cancel" Grid.Row="1" Clicked="Cancel_Clicked"/>
-            <Button Text="Save" Grid.Row="1" Grid.Column="1" TextColor="White" Clicked="Save_Clicked" BackgroundColor="#540D6E"/>
-            <Editor x:Name="importEditor" Grid.ColumnSpan="2" Grid.Row="2" BackgroundColor="#60F1F1F1"/>
-        </Grid>
         <Frame Padding="8" CornerRadius="0">
             <Frame.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">

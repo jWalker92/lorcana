@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage Title="Paste CSV"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="lorcanaApp.PasteTextPage">
+        <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,*" Padding="16" BackgroundColor="{AppThemeBinding Light='White', Dark='Black'}">
+            <Label Text="Paste the whole exported .csv from dreamborn.ink into this field and click save." Grid.ColumnSpan="2"/>
+            <Button Text="Cancel" Grid.Row="1" Clicked="Cancel_Clicked"/>
+            <Button Text="Save" Grid.Row="1" Grid.Column="1" TextColor="White" Clicked="Save_Clicked" BackgroundColor="#540D6E"/>
+            <Frame Grid.ColumnSpan="2" Grid.Row="2" Padding="0" CornerRadius="8" IsClippedToBounds="True">
+                <Editor x:Name="importEditor" BackgroundColor="{AppThemeBinding Light='#DDD', Dark='#222'}"/></Frame>
+            </Grid>
+</ContentPage>
+

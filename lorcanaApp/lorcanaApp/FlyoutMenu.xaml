@@ -28,5 +28,7 @@
         <Button Text="Counter" Clicked="Counter_Clicked"/>
         <Button Text="Open Booster" Clicked="Booster_Clicked"/>
         <Button Text="Language" Clicked="Language_Clicked"/>
+        <Button Text="Import" Clicked="Import_Clicked"/>
+        <Button Text="Export" Clicked="Export_Clicked"/>
     </StackLayout>
 </ContentPage>
