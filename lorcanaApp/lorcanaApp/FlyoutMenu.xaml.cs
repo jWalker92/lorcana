@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Xml.Serialization;
 using lorcana.Cards;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace lorcanaApp
-{	
-	public partial class FlyoutMenu : ContentPage
+{
+    public partial class FlyoutMenu : ContentPage
 	{	
 		public FlyoutMenu ()
 		{
@@ -99,7 +97,7 @@ namespace lorcanaApp
                     return;
                 }
                 var importedCollection = new CardCollection();
-                importedCollection.InitializeWithCsv(CardLibrary.List, importDataStr);
+                importedCollection.InitializeWithCsv(MainPage.CardLibrary.List, importDataStr);
                 foreach (var card in importedCollection.List)
                 {
                     await Database.Instance.AddOrReplaceCardAsync(card);

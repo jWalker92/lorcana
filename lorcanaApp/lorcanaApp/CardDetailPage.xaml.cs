@@ -122,7 +122,7 @@ namespace lorcanaApp
             Preferences.Set(KEY_ENABLE_VIEWER, viewerEnabled);
             if (viewerEnabled)
             {
-                Task.Run(() => DownloadImage(CurrentCard.Number, CurrentCard.SetNumber));
+                Task.Run(() => DownloadImage(CurrentCard));
                 skiaView.FadeTo(1);
                 StartDrawing();
             }
@@ -222,7 +222,7 @@ namespace lorcanaApp
             oldResourceBitmap = resourceBitmap;
             resourceBitmap = null;
             Title = CurrentCard.NumberDisplay + " - " + CurrentCard.Title;
-            Task.Run(async () => await DownloadImage(CurrentCard.Number, CurrentCard.SetNumber));
+            Task.Run(async () => await DownloadImage(CurrentCard));
         }
 
         public async Task<Stream> GetCachedImagePath(string imageUrl)
@@ -242,19 +242,22 @@ namespace lorcanaApp
             }
         }
 
-        private async Task DownloadImage(string numberStr, int setNumber)
+        private Task DownloadImage(Card card)
+        {
+            return DownloadImage(card.Image);
+        }
+
+        private async Task DownloadImage(string url)
         {
             if (!viewerEnabled)
             {
                 return;
             }
-            int.TryParse(numberStr, out int number);
-            string url = Card.GetImageLink(number, setNumber, App.CountryCode);
 
             var cachedStream = await GetCachedImagePath(url);
             if (cachedStream != null)
             {
-                SetImageFromByteArray(cachedStream.ToByteArray());
+                await SetImageFromByteArray(cachedStream.ToByteArray());
                 return;
             }
 
@@ -275,7 +278,7 @@ namespace lorcanaApp
                     }
                     resBitmapAlpha = 0;
                     await ImageService.Instance.Config.DiskCache.AddToSavingQueueIfNotExistsAsync(ImageService.Instance.Config.MD5Helper.MD5(url), stream, TimeSpan.FromDays(90));
-                    SetImageFromByteArray(stream);
+                    await SetImageFromByteArray(stream);
                 }
             }
             catch (Exception ex)
@@ -333,6 +336,31 @@ namespace lorcanaApp
             }
 
             return roundedBitmap;
+        }
+
+        public SKBitmap RotateBitmap(SKBitmap originalBitmap, float rotationAngleInDegrees)
+        {
+            // Create a new SKBitmap for the rotated image
+            SKBitmap rotatedBitmap = new SKBitmap(originalBitmap.Width, originalBitmap.Height);
+
+            // Create an SKCanvas for drawing on the rotated bitmap
+            using (SKCanvas canvas = new SKCanvas(rotatedBitmap))
+            {
+                // Specify the rotation angle in degrees
+                float pivotX = originalBitmap.Width / 2.0f;
+                float pivotY = originalBitmap.Height / 2.0f;
+
+                // Create a rotation matrix
+                SKMatrix rotationMatrix = SKMatrix.CreateRotation(rotationAngleInDegrees, pivotX, pivotY);
+
+                // Apply the rotation to the canvas
+                canvas.SetMatrix(rotationMatrix);
+
+                // Draw the original bitmap onto the rotated canvas
+                canvas.DrawBitmap(originalBitmap, 0, 0);
+            }
+
+            return rotatedBitmap;
         }
 
         public SKBitmap ResizeBitmap(SKBitmap sourceBitmap, int maxWidth, int maxHeight)

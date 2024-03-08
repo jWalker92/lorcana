@@ -12,14 +12,19 @@
     <PackageReference Include="SkiaSharp" Version="2.88.6-preview.1.2" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="update.json">
+    <None Update="export.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="export.csv">
+    <None Update="compare.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\lorcanaCards\lorcanaCards.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Condition=" '$(EnableDefaultCompileItems)' == 'true' " Update="Program.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 </Project>

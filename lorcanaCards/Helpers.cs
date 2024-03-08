@@ -76,6 +76,8 @@ namespace lorcana.Cards
                     return "TFC";
                 case 2:
                     return "ROTF";
+                case 3:
+                    return "ITI";
                 default:
                     return string.Empty;
             }
@@ -90,6 +92,16 @@ namespace lorcana.Cards
             if (str == "Legendary") return Rarity.Legendary;
             if (str == "Enchanted") return Rarity.Enchanted;
             return Rarity.Unknown;
+        }
+
+        public static CardType CardTypeFromString(string str)
+        {
+            if (str == "Character") return CardType.Character;
+            if (str == "Action") return CardType.Action;
+            if (str == "Action - Song") return CardType.Song;
+            if (str == "Item") return CardType.Item;
+            if (str == "Location") return CardType.Location;
+            return CardType.Unknown;
         }
 
 

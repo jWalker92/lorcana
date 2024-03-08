@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using lorcana.Cards;
 using SkiaSharp;
 
@@ -20,23 +21,29 @@ namespace lorcana
             {
                 allCardsInfoJson = File.ReadAllText(allCardsInfoCache);
             }
-            await CardLibrary.BuildLibrary(allCardsInfoJson, "de");
-            File.WriteAllText(allCardsInfoCache, CardLibrary.AllCardsInfoJson);
+            CardLibrary lib = new CardLibrary();
+            await lib.BuildLibrary(allCardsInfoJson, "de");
+            File.WriteAllText(allCardsInfoCache, lib.AllCardsInfoJson);
 
-            var json = File.ReadAllText("update.json");
             var csv = File.ReadAllText("export.csv");
+            var csvCompare = File.ReadAllText("compare.csv");
 
             Console.WriteLine("Building Collection...");
             var collection = new CardCollection();
-            collection.InitializeWithCsv(CardLibrary.List, csv);
+            collection.InitializeWithCsv(lib.List, csv);
             var cardsList = collection.List;
+
+            CardLibrary libCompare = new CardLibrary();
+            await libCompare.BuildLibrary(allCardsInfoJson, "de");
+            var collectionCompare = new CardCollection();
+            collectionCompare.InitializeWithCsv(libCompare.List, csvCompare);
 
             Console.Clear();
 
             Console.WriteLine("INFOS: ");
             foreach (CardColor color in (CardColor[])Enum.GetValues(typeof(CardColor)))
             {
-                var cardsInColor = CardLibrary.List.Where(x => x.Color == color);
+                var cardsInColor = lib.List.Where(x => x.Color == color);
                 WriteColorNameColored(color);
                 Console.WriteLine(": " + cardsInColor.Count());
             }
@@ -48,63 +55,91 @@ namespace lorcana
             Console.WriteLine("Total Foiled Cards: " + cardsList.Sum(x => x.Foils));
             Console.WriteLine();
 
-            Console.WriteLine("Total Play Set Cards (>=2): " + cardsList.Where(x => x.Total >= 2).Count());
-            Console.WriteLine("Total Play Set Cards (>=3): " + cardsList.Where(x => x.Total >= 3).Count());
-            var playSet = cardsList.Where(x => x.Total >= 4);
-            Console.WriteLine("Total Play Set Cards (>=4): " + playSet.Count());
+            //Console.WriteLine("Total Play Set Cards (>=2): " + cardsList.Where(x => x.Total >= 2).Count());
+            //Console.WriteLine("Total Play Set Cards (>=3): " + cardsList.Where(x => x.Total >= 3).Count());
+            //var playSet = cardsList.Where(x => x.Total >= 4);
+            //Console.WriteLine("Total Play Set Cards (>=4): " + playSet.Count());
+            //Console.WriteLine();
+
+            //var missingCards = cardsList.Where(x => x.Total == 0);
+            //Console.WriteLine("4 missing: " + missingCards.Count());
+            //WriteList(missingCards);
+            //Console.WriteLine();
+
+            //var oneCards = cardsList.Where(x => x.Total == 1);
+            //Console.WriteLine("3 missing: " + oneCards.Count());
+            //WriteList(oneCards);
+            //Console.WriteLine();
+
+            //var twoCards = cardsList.Where(x => x.Total == 2);
+            //Console.WriteLine("2 missing: " + twoCards.Count());
+            //WriteList(twoCards);
+            //Console.WriteLine();
+
+            //var threeCards = cardsList.Where(x => x.Total == 3);
+            //Console.WriteLine("1 missing: " + threeCards.Count());
+            //WriteList(threeCards);
+            //Console.WriteLine();
+
+            //var noAlbum = cardsList.Where(x => x.Total == 4);
+            //Console.WriteLine("Playable but not in album: " + noAlbum.Count());
+            //WriteList(noAlbum);
+            //Console.WriteLine();
+
+            //int tradeWithholdValue = 8;
+
+            //var tradeables = cardsList.Where(x => x.Total > tradeWithholdValue);
+            //Console.WriteLine($"Total Tradeable Cards (>{tradeWithholdValue}): " + tradeables.Count());
+            //Console.WriteLine("Total Tradeable Card count: " + tradeables.Sum(x => x.Total - tradeWithholdValue));
+            //WriteList(tradeables, (c) => ": " + (c.Total - tradeWithholdValue));
+            //Console.WriteLine();
+
+            var allMissingCommonUncommon = cardsList.Where(x => x.Total > 4); //(x.Rarity == Rarity.Common || x.Rarity == Rarity.Uncommon) && 
+            Console.WriteLine("Missing : " + allMissingCommonUncommon.Count());
+            WriteList(allMissingCommonUncommon, (c) => ": " + (c.Total - 4));
             Console.WriteLine();
+            
+            //var allFoiled = cardsList.Where(x => x.Foils > 0);
+            //Console.WriteLine("Foiled Cards: " + allFoiled.Count());
+            //WriteList(allFoiled, (c) => ": " + (c.Foils));
+            //Console.WriteLine();
 
-            var missingCards = cardsList.Where(x => x.Total == 0);
-            Console.WriteLine("4 missing: " + missingCards.Count());
-            WriteList(missingCards);
-            Console.WriteLine();
-
-            var oneCards = cardsList.Where(x => x.Total == 1);
-            Console.WriteLine("3 missing: " + oneCards.Count());
-            WriteList(oneCards);
-            Console.WriteLine();
-
-            var twoCards = cardsList.Where(x => x.Total == 2);
-            Console.WriteLine("2 missing: " + twoCards.Count());
-            WriteList(twoCards);
-            Console.WriteLine();
-
-            var threeCards = cardsList.Where(x => x.Total == 3);
-            Console.WriteLine("1 missing: " + threeCards.Count());
-            WriteList(threeCards);
-            Console.WriteLine();
-
-            var noAlbum = cardsList.Where(x => x.Total == 4);
-            Console.WriteLine("Playable but not in album: " + noAlbum.Count());
-            WriteList(noAlbum);
-            Console.WriteLine();
-
-            int tradeWithholdValue = 8;
-
-            var tradeables = cardsList.Where(x => x.Total > tradeWithholdValue);
-            Console.WriteLine($"Total Tradeable Cards (>{tradeWithholdValue}): " + tradeables.Count());
-            Console.WriteLine("Total Tradeable Card count: " + tradeables.Sum(x => x.Total - tradeWithholdValue));
-            WriteList(tradeables, (c) => ": " + (c.Total - tradeWithholdValue));
-
-            Console.WriteLine();
-            var allMissingCommonUncommon = cardsList.Where(x => (x.Rarity == Rarity.Common || x.Rarity == Rarity.Uncommon) && x.Total < 4);
-            Console.WriteLine("Missing Commons / Uncommons: " + allMissingCommonUncommon.Count());
-            WriteList(allMissingCommonUncommon, (c) => ": " + (4 - c.Total));
-
-            Console.WriteLine();
-            var allFoiled = cardsList.Where(x => x.Foils > 0);
-            Console.WriteLine("Foiled Cards: " + allFoiled.Count());
-            WriteList(allFoiled, (c) => ": " + (c.Foils));
-
-            Console.WriteLine();
-            var allFoiledTradeable = cardsList.Where(x => x.Foils > 0 && x.Total >= 5);
+            var allFoiledTradeable = cardsList.Where(x => (x.Rarity == Rarity.Common || x.Rarity == Rarity.Uncommon) && x.Foils > 0 && x.Total >= 5);
             Console.WriteLine("Foiled Cards Tradeable: " + allFoiledTradeable.Count());
             WriteList(allFoiledTradeable, (c) => ": " + (c.Foils));
-
             Console.WriteLine();
+
             var allFoiledTradeable1v1 = cardsList.Where(x => x.Foils > 0 && x.Total <= 4);
             Console.WriteLine("Foiled Cards Tradeable 1v1: " + allFoiledTradeable1v1.Count());
             WriteList(allFoiledTradeable1v1, (c) => ": " + (c.Foils));
+            Console.WriteLine();
+
+            //var legendariesIti = cardsList.Where(x => x.Rarity >= Rarity.Legendary && x.Total > 0);
+            //Console.WriteLine("Legendaries: " + legendariesIti.Count());
+            //WriteList(legendariesIti, (c) => ": Normals (" + c.Normals + ") Foils (" + c.Foils + ")");
+            //Console.WriteLine();
+
+            Console.WriteLine("Compared Cards: ");
+            foreach (var card in cardsList)
+            {
+                var compareCard = collectionCompare.List.FirstOrDefault(x => x.ConstructKey() == card.ConstructKey());
+                if (compareCard != null)
+                {
+                    if (compareCard.Normals != card.Normals || compareCard.Foils != card.Foils)
+                    {
+                        WriteCardDisplay(card);
+                        Console.WriteLine($" {card.Normals} -> {compareCard.Normals} | {card.Foils} -> {compareCard.Foils}");
+                    }
+                }
+                else
+                {
+                    WriteCardDisplay(card);
+                    Console.WriteLine(" Not found in compareList");
+                }
+            }
+            Console.WriteLine();
+
+            //DrawListToImageFiles(legendariesIti, (c) => "N(" + c.Normals + ") F(" + c.Foils + ")", 12, 5, 250, 350, 4, null);
 
             Console.ReadKey();
         }
@@ -123,7 +158,7 @@ namespace lorcana
                         Card c = cardList.ElementAt(index);
                         int colIndex = (int)((index - i) % cols);
                         int rowIndex = (int)((index - i) / cols);
-
+                        
                         float x = colIndex * cardWidth;
                         float y = rowIndex * cardHeight;
 
@@ -131,7 +166,7 @@ namespace lorcana
                         canvas.DrawBitmap(img, new SKRect(x + padding, y + padding, x + cardWidth - padding, y + cardHeight - padding));
                         if (txtFunc != null)
                         {
-                            canvas.DrawRect(new SKRect(x + padding + cardWidth * 0.3f, y + padding, x + (cardWidth * 0.7f) - padding, y + 40 - padding), new SKPaint { Color = SKColors.Black.WithAlpha(200) });
+                            canvas.DrawRect(new SKRect(x + padding, y + padding, x + cardWidth - padding, y + 40 - padding), new SKPaint { Color = SKColors.Black.WithAlpha(200) });
                             canvas.DrawText(txtFunc.Invoke(c), x + padding + cardWidth * 0.33f, y + padding + 20, new SKPaint { IsAntialias = true, Color = SKColors.White, TextSize = 24, FakeBoldText = true });
                         }
                     }
@@ -145,15 +180,12 @@ namespace lorcana
                         {
                             fileName = fileNameFunction.Invoke(cardList.ElementAt(i), i);
                         }
-                        string filePath = $"{fileName}.png";
+                        string filePath = Path.Combine(Environment.CurrentDirectory, $"{fileName}.png");
+                        string? directoryName = Path.GetDirectoryName(filePath);
 
                         if (File.Exists(filePath))
                         {
                             File.Delete(filePath);
-                        }
-                        else
-                        {
-                            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
                         }
                         using (var stream = File.OpenWrite(filePath))
                         {
@@ -169,8 +201,7 @@ namespace lorcana
         private static SKBitmap? DownloadImage(int setNumber, string number)
         {
             HttpWebResponse response = null;
-            int.TryParse(number, out int numberAsInt);
-            string url = Card.GetImageLink(numberAsInt, setNumber);
+            string url = Card.GetImageLink(number, null, setNumber);
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
 
@@ -220,7 +251,10 @@ namespace lorcana
         private static void WriteCardDisplay(Card c)
         {
             Console.Write(c.NumberDisplay);
-            Console.Write(" ");
+            for (int i = 0; i < 5 - c.NumberDisplay.Length; i++)
+            {
+                Console.Write(" ");
+            }
             WriteRarityColored(c.Rarity);
             Console.Write("\t");
             var preColor = Console.ForegroundColor;

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace lorcana.Cards
 {
@@ -48,8 +46,8 @@ namespace lorcana.Cards
         {
             try
             {
+                var importedCards = new List<Card>();
                 var lines = csv.Split('\n');
-
                 int normalsIndex = -1;
                 int foilsIndex = -1;
                 int numberIndex = -1;
@@ -107,8 +105,7 @@ namespace lorcana.Cards
                                 string setCode = Helpers.NumberToSetcode(setCodeNumber);
                                 card = new Card() { Title = name, SetNumber = setCodeNumber, Number = number, Color = Helpers.ColorFromString(color), RarityStr = rarity };
 
-                                int.TryParse(number, out int intNumber);
-                                string url = Card.GetImageLink(intNumber, setCodeNumber);
+                                string url = Card.GetImageLink(number, null, setCodeNumber);
                                 card.Image = url;
                                 if (library != null)
                                 {
@@ -117,8 +114,17 @@ namespace lorcana.Cards
                                 cardsList.Add(card);
                             }
                         }
-                        card.Foils = int.Parse(values[foilsIndex]);
-                        card.Normals = int.Parse(values[normalsIndex]);
+                        int foils = int.Parse(values[foilsIndex]);
+                        int normals = int.Parse(values[normalsIndex]);
+                        var alreadyImportedThisRun = importedCards.FirstOrDefault(x => x.ConstructKey() == card.ConstructKey());
+                        if (alreadyImportedThisRun != null)
+                        {
+                            foils += alreadyImportedThisRun.Foils;
+                            normals += alreadyImportedThisRun.Normals;
+                        }
+                        card.Foils = foils;
+                        card.Normals = normals;
+                        importedCards.Add(card);
                     }
                     catch (Exception ex)
                     {
@@ -132,19 +138,27 @@ namespace lorcana.Cards
             }
         }
 
-        public void InitializeFromList(List<Card> list, List<Card> cards, Func<Card, Task> nonExistentCardTask)
+        public void InitializeFromList(List<Card> list, List<Card> cards, Func<Card, Task> updateCardTask)
         {
             cardsList = cards;
             foreach (var libCard in list)
             {
-                if (cardsList.Any(x => x.ConstructKey() == libCard.ConstructKey()))
+                var listCard = cardsList.FirstOrDefault(x => x.ConstructKey() == libCard.ConstructKey());
+                if (listCard != null)
                 {
-                    continue;
+                    int normalsBackup = listCard.Normals;
+                    int foilsBackup = listCard.Foils;
+                    listCard = libCard;
+                    listCard.Normals = normalsBackup;
+                    listCard.Foils = foilsBackup;
                 }
-                cardsList.Add(libCard);
-                if (nonExistentCardTask != null)
+                else
                 {
-                    nonExistentCardTask?.Invoke(libCard);
+                    cardsList.Add(libCard);
+                }
+                if (updateCardTask != null)
+                {
+                    updateCardTask?.Invoke(libCard);
                 }
             }
         }

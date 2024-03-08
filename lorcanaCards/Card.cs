@@ -24,6 +24,16 @@ namespace lorcana.Cards
         Unknown
     }
 
+    public enum CardType
+    {
+        Character,
+        Action,
+        Song,
+        Item,
+        Location,
+        Unknown
+    }
+
     public class Card
     {
         [SQLite.PrimaryKey]
@@ -50,15 +60,22 @@ namespace lorcana.Cards
         public string RarityStr { get; set; }
         public Rarity Rarity => Helpers.RarityFromString(RarityStr);
         public string RarityIcon;
+        public string TypeStr { get; set; }
+        public CardType CardType => Helpers.CardTypeFromString(TypeStr);
 
         public string NumberDisplay => "#" + Number;
         public int NumberAsInt { get { return int.TryParse(Number, out int numAsInt) ? numAsInt : 0; } }
         public string Display => Title + (!string.IsNullOrEmpty(SubTitle) ? " (" + SubTitle + ")" : "");
         public string SetCode => Helpers.NumberToSetcode(SetNumber);
 
-        public static string GetImageLink(int number, int setNumber, string countryCode = "de")
+        public static string GetImageLink(string number, string numberAddition, int setNumber, string countryCode = "de")
         {
-            return $"https://images.dreamborn.ink/cards/{countryCode}/{setNumber:D3}-{number:D3}_1468x2048.webp";
+            int.TryParse(number, out int intNumber);
+            if (numberAddition == null)
+            {
+                numberAddition = "";
+            }
+            return $"https://images.dreamborn.ink/cards/{countryCode}/{setNumber:D3}-{intNumber:D3}{numberAddition}_1468x2048.webp";
         }
 
         public string ConstructKey()

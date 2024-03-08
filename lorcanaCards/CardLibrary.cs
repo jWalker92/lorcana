@@ -8,15 +8,15 @@ using Newtonsoft.Json.Linq;
 
 namespace lorcana.Cards
 {
-    public static class CardLibrary
+    public class CardLibrary
     {
-        private static List<Card> allCardsInfo;
+        private List<Card> allCardsInfo;
 
-        public static List<Card> List { get => allCardsInfo; }
+        public List<Card> List { get => allCardsInfo; }
 
-        public static string AllCardsInfoJson { get; private set; }
+        public string AllCardsInfoJson { get; private set; }
 
-        public static async Task BuildLibrary(string allCardsInfoJson, string countryCode)
+        public async Task BuildLibrary(string allCardsInfoJson, string countryCode)
         {
             if (string.IsNullOrEmpty(allCardsInfoJson))
             {
@@ -42,11 +42,29 @@ namespace lorcana.Cards
                     name = nameSubSplit.First();
                     subtitle = nameSubSplit.Last();
                 }
+                bool hasEnchantedVariant = false;
+                bool hasCardVariants = false;
+                string variantsStr = Helpers.GetPropertyValue<string>(item, "Card_Variants");
+                if (variantsStr != null)
+                {
+                    var variants = variantsStr.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var variant in variants)
+                    {
+                        if (variant.ToLower().Contains("enchanted"))
+                        {
+                            hasEnchantedVariant = true;
+                        }
+                        if (variant.ToLower().Contains("card_num"))
+                        {
+                            hasCardVariants = true;
+                        }
+                    }
+                }
                 int setNum = Helpers.GetPropertyValue<int>(item, "Set_Num");
-                int.TryParse(numberStr, out int number);
-                string baseImage = Card.GetImageLink(number, setNum, countryCode);
+                string baseImage = Card.GetImageLink(numberStr, hasCardVariants ? "a" : null, setNum, countryCode);
                 string rarityStr = Helpers.GetPropertyValue<string>(item, "Rarity");
-                Card infoCard = new Card
+                string typeStr = Helpers.GetPropertyValue<string>(item, "Type");
+                var infoCard = new Card
                 {
                     Number = numberStr,
                     Title = name,
@@ -54,6 +72,7 @@ namespace lorcana.Cards
                     SubTitle = subtitle,
                     Color = Helpers.ColorFromString(Helpers.GetPropertyValue<string>(item, "Color")),
                     RarityStr = rarityStr,
+                    TypeStr = typeStr,
                     Image = baseImage,
                     //SmallImage = Helpers.ReplaceLastOccurrence(baseImage, "large", "small"),
                     //ArtImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "art-crop"),

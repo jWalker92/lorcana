@@ -26,6 +26,7 @@ namespace lorcanaApp
             "Missing"
         };
         private CardCollection collection;
+        internal static CardLibrary CardLibrary;
         private List<AdjustableCard> filteredList;
         private List<AdjustableCard> filteredAndSearchedList;
         private bool isLoading = false;
@@ -33,6 +34,7 @@ namespace lorcanaApp
         public MainPage()
         {
             InitializeComponent();
+            CardLibrary = new CardLibrary();
             Database.Instance.CollectionChanged += Instance_CollectionChanged;
             headerLabel.Text = "Loading...";
             listPicker.ItemsSource = pickerItems;
@@ -241,6 +243,7 @@ namespace lorcanaApp
                 card.SubTitle,
                 card.Body,
                 card.SetCode,
+                card.TypeStr,
                 Helpers.StringFromColor(card.Color),
                 card.RarityStr,
                 card.NumberDisplay,
