@@ -94,41 +94,61 @@ namespace lorcana
             //WriteList(tradeables, (c) => ": " + (c.Total - tradeWithholdValue));
             //Console.WriteLine();
 
-            var allMissingCommonUncommon = cardsList.Where(x => x.Total > 4); //(x.Rarity == Rarity.Common || x.Rarity == Rarity.Uncommon) && 
-            Console.WriteLine("Missing : " + allMissingCommonUncommon.Count());
-            WriteList(allMissingCommonUncommon, (c) => ": " + (c.Total - 4));
-            Console.WriteLine();
-            
-            //var allFoiled = cardsList.Where(x => x.Foils > 0);
-            //Console.WriteLine("Foiled Cards: " + allFoiled.Count());
-            //WriteList(allFoiled, (c) => ": " + (c.Foils));
-            //Console.WriteLine();
-
-            var allFoiledTradeable = cardsList.Where(x => (x.Rarity == Rarity.Common || x.Rarity == Rarity.Uncommon) && x.Foils > 0 && x.Total >= 5);
-            Console.WriteLine("Foiled Cards Tradeable: " + allFoiledTradeable.Count());
-            WriteList(allFoiledTradeable, (c) => ": " + (c.Foils));
-            Console.WriteLine();
-
-            var allFoiledTradeable1v1 = cardsList.Where(x => x.Foils > 0 && x.Total <= 4);
-            Console.WriteLine("Foiled Cards Tradeable 1v1: " + allFoiledTradeable1v1.Count());
-            WriteList(allFoiledTradeable1v1, (c) => ": " + (c.Foils));
-            Console.WriteLine();
-
             //var legendariesIti = cardsList.Where(x => x.Rarity >= Rarity.Legendary && x.Total > 0);
             //Console.WriteLine("Legendaries: " + legendariesIti.Count());
             //WriteList(legendariesIti, (c) => ": Normals (" + c.Normals + ") Foils (" + c.Foils + ")");
             //Console.WriteLine();
 
-            Console.WriteLine("Compared Cards: ");
+            //Console.WriteLine("Compared Cards: ");
+            //foreach (var card in cardsList)
+            //{
+            //    var compareCard = collectionCompare.List.FirstOrDefault(x => x.ConstructKey() == card.ConstructKey());
+            //    if (compareCard != null)
+            //    {
+            //        if (compareCard.Normals != card.Normals || compareCard.Foils != card.Foils)
+            //        {
+            //            WriteCardDisplay(card);
+            //            Console.WriteLine($" {card.Normals} -> {compareCard.Normals} | {card.Foils} -> {compareCard.Foils}");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        WriteCardDisplay(card);
+            //        Console.WriteLine(" Not found in compareList");
+            //    }
+            //}
+            //Console.WriteLine();
+
+            Console.WriteLine("My Extras: ");
             foreach (var card in cardsList)
             {
                 var compareCard = collectionCompare.List.FirstOrDefault(x => x.ConstructKey() == card.ConstructKey());
                 if (compareCard != null)
                 {
-                    if (compareCard.Normals != card.Normals || compareCard.Foils != card.Foils)
+                    if ((compareCard.Total < 4 && card.Total > 4) )
                     {
                         WriteCardDisplay(card);
-                        Console.WriteLine($" {card.Normals} -> {compareCard.Normals} | {card.Foils} -> {compareCard.Foils}");
+                        Console.WriteLine($" MINE: {card.Total} YOUR: {compareCard.Total}");
+                    }
+                }
+                else
+                {
+                    WriteCardDisplay(card);
+                    Console.WriteLine(" Not found in compareList");
+                }
+            }
+            Console.WriteLine();
+
+            Console.WriteLine("Your Extras: ");
+            foreach (var card in cardsList)
+            {
+                var compareCard = collectionCompare.List.FirstOrDefault(x => x.ConstructKey() == card.ConstructKey());
+                if (compareCard != null)
+                {
+                    if ((card.Total < 4 && compareCard.Total > 5))
+                    {
+                        WriteCardDisplay(card);
+                        Console.WriteLine($" MINE: {card.Total} YOUR: {compareCard.Total}");
                     }
                 }
                 else
