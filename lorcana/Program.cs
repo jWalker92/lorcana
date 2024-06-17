@@ -9,6 +9,8 @@ namespace lorcana
     {
         const string allCardsInfoCache = "allCardsInfo.json";
 
+        private static Dictionary<string, SKBitmap> _imgCache = new Dictionary<string, SKBitmap>();
+
         static async Task Main(string[] args)
         {
             Console.BackgroundColor = ConsoleColor.Black;
@@ -26,17 +28,16 @@ namespace lorcana
             File.WriteAllText(allCardsInfoCache, lib.AllCardsInfoJson);
 
             var csv = File.ReadAllText("export.csv");
-            var csvCompare = File.ReadAllText("compare.csv");
-
             Console.WriteLine("Building Collection...");
-            var collection = new CardCollection();
-            collection.InitializeWithCsv(lib.List, csv);
+            var collection = new CardCollection { Name = "Danny" };
+            collection.InitializeWithCsv(lib.List, csv, true);
             var cardsList = collection.List;
 
+            var csvCompare = File.ReadAllText("ingo.csv");
             CardLibrary libCompare = new CardLibrary();
             await libCompare.BuildLibrary(allCardsInfoJson, "de");
-            var collectionCompare = new CardCollection();
-            collectionCompare.InitializeWithCsv(libCompare.List, csvCompare);
+            var collectionCompare = new CardCollection { Name = "Ingo" };
+            collectionCompare.InitializeWithCsv(libCompare.List, csvCompare, false);
 
             Console.Clear();
 
@@ -55,124 +56,55 @@ namespace lorcana
             Console.WriteLine("Total Foiled Cards: " + cardsList.Sum(x => x.Foils));
             Console.WriteLine();
 
-            //Console.WriteLine("Total Play Set Cards (>=2): " + cardsList.Where(x => x.Total >= 2).Count());
-            //Console.WriteLine("Total Play Set Cards (>=3): " + cardsList.Where(x => x.Total >= 3).Count());
-            //var playSet = cardsList.Where(x => x.Total >= 4);
-            //Console.WriteLine("Total Play Set Cards (>=4): " + playSet.Count());
-            //Console.WriteLine();
+            CompareCollections(collection, collectionCompare);
+            CompareCollections(collectionCompare, collection);
 
-            //var missingCards = cardsList.Where(x => x.Total == 0);
-            //Console.WriteLine("4 missing: " + missingCards.Count());
-            //WriteList(missingCards);
-            //Console.WriteLine();
-
-            //var oneCards = cardsList.Where(x => x.Total == 1);
-            //Console.WriteLine("3 missing: " + oneCards.Count());
-            //WriteList(oneCards);
-            //Console.WriteLine();
-
-            //var twoCards = cardsList.Where(x => x.Total == 2);
-            //Console.WriteLine("2 missing: " + twoCards.Count());
-            //WriteList(twoCards);
-            //Console.WriteLine();
-
-            //var threeCards = cardsList.Where(x => x.Total == 3);
-            //Console.WriteLine("1 missing: " + threeCards.Count());
-            //WriteList(threeCards);
-            //Console.WriteLine();
-
-            //var noAlbum = cardsList.Where(x => x.Total == 4);
-            //Console.WriteLine("Playable but not in album: " + noAlbum.Count());
-            //WriteList(noAlbum);
-            //Console.WriteLine();
-
-            //int tradeWithholdValue = 8;
-
-            //var tradeables = cardsList.Where(x => x.Total > tradeWithholdValue);
-            //Console.WriteLine($"Total Tradeable Cards (>{tradeWithholdValue}): " + tradeables.Count());
-            //Console.WriteLine("Total Tradeable Card count: " + tradeables.Sum(x => x.Total - tradeWithholdValue));
-            //WriteList(tradeables, (c) => ": " + (c.Total - tradeWithholdValue));
-            //Console.WriteLine();
-
-            //var legendariesIti = cardsList.Where(x => x.Rarity >= Rarity.Legendary && x.Total > 0);
-            //Console.WriteLine("Legendaries: " + legendariesIti.Count());
-            //WriteList(legendariesIti, (c) => ": Normals (" + c.Normals + ") Foils (" + c.Foils + ")");
-            //Console.WriteLine();
-
-            //Console.WriteLine("Compared Cards: ");
-            //foreach (var card in cardsList)
-            //{
-            //    var compareCard = collectionCompare.List.FirstOrDefault(x => x.ConstructKey() == card.ConstructKey());
-            //    if (compareCard != null)
-            //    {
-            //        if (compareCard.Normals != card.Normals || compareCard.Foils != card.Foils)
-            //        {
-            //            WriteCardDisplay(card);
-            //            Console.WriteLine($" {card.Normals} -> {compareCard.Normals} | {card.Foils} -> {compareCard.Foils}");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        WriteCardDisplay(card);
-            //        Console.WriteLine(" Not found in compareList");
-            //    }
-            //}
-            //Console.WriteLine();
-
-            Console.WriteLine("My Extras: ");
-            foreach (var card in cardsList)
-            {
-                var compareCard = collectionCompare.List.FirstOrDefault(x => x.ConstructKey() == card.ConstructKey());
-                if (compareCard != null)
-                {
-                    if ((compareCard.Total < 4 && card.Total > 4) )
-                    {
-                        WriteCardDisplay(card);
-                        Console.WriteLine($" MINE: {card.Total} YOUR: {compareCard.Total}");
-                    }
-                }
-                else
-                {
-                    WriteCardDisplay(card);
-                    Console.WriteLine(" Not found in compareList");
-                }
-            }
-            Console.WriteLine();
-
-            Console.WriteLine("Your Extras: ");
-            foreach (var card in cardsList)
-            {
-                var compareCard = collectionCompare.List.FirstOrDefault(x => x.ConstructKey() == card.ConstructKey());
-                if (compareCard != null)
-                {
-                    if ((card.Total < 4 && compareCard.Total > 5))
-                    {
-                        WriteCardDisplay(card);
-                        Console.WriteLine($" MINE: {card.Total} YOUR: {compareCard.Total}");
-                    }
-                }
-                else
-                {
-                    WriteCardDisplay(card);
-                    Console.WriteLine(" Not found in compareList");
-                }
-            }
-            Console.WriteLine();
-
-            //DrawListToImageFiles(legendariesIti, (c) => "N(" + c.Normals + ") F(" + c.Foils + ")", 12, 5, 250, 350, 4, null);
+            //DrawListToImageFiles("all", cardsList.Where(x => x.Rarity >= Rarity.Rare && x.NumberAsInt <= 204 && x.SetNumber == 4 && x.Total < 4), (c) => 4 - c.Total, null, 3, 3, 1500, 2092, 0, null);
+            //DrawListToImageFiles("soeren", cardsList.Where(x => x.ConstructKey() == "1:18" || x.ConstructKey() == "4:70"), (c) => 5, null, 3, 3, 1500, 2092, 0, null);
+            //DrawListToImageFiles("enchanted_playset", cardsList.Where(x => x.Rarity == Rarity.Enchanted), (c) => 4, null, 3, 3, 1500, 2092, 0, null);
 
             Console.ReadKey();
         }
 
-        private static void DrawListToImageFiles(IEnumerable<Card> cardList, Func<Card, string>? txtFunc, uint cols, uint rows, uint cardWidth, uint cardHeight, uint padding, Func<Card, int, string>? fileNameFunction)
+        private static void CompareCollections(CardCollection collection1, CardCollection collection2)
         {
+            Console.WriteLine(collection1.Name + "'s Extras: ");
+            foreach (var card in collection1.List)
+            {
+                var compareCard = collection2.List.FirstOrDefault(x => x.ConstructKey() == card.ConstructKey());
+                int comparedCount = 0;
+                if (compareCard != null)
+                {
+                    comparedCount = compareCard.Total;
+                }
+                if (comparedCount < 4 && card.Total > 4)
+                {
+                    WriteCardDisplay(card);
+                    Console.WriteLine($" {collection1.Name}: {card.Total} | {collection2.Name}: {comparedCount}");
+                }
+            }
+            Console.WriteLine();
+        }
+
+
+        private static void DrawListToImageFiles(string folderName, IEnumerable<Card> list, Func<Card, int> amountFunc, Func<Card, string>? txtFunc, uint cols, uint rows, uint cardWidth, uint cardHeight, uint padding, Func<Card, int, string>? fileNameFunction)
+        {
+            var cardList = new List<Card>();
+            foreach (var card in list)
+            {
+                int amount = amountFunc == null ? 1 : amountFunc.Invoke(card);
+                for (int i = 0; i < amount; i++)
+                {
+                    cardList.Add(card);
+                }
+            }
             Console.WriteLine($"Drawing {cardList.Count()} images...");
             for (int i = 0; i < cardList.Count(); i += (int)(cols * rows))
             {
                 SKBitmap bmp = new SKBitmap((int)(cols * cardWidth),(int)(rows * cardHeight));
                 using (SKCanvas canvas = new SKCanvas(bmp))
                 {
-                    canvas.Clear(SKColors.White);
+                    canvas.Clear(SKColors.Transparent);
                     for (int index = i; index < i + (cols * rows) && index < cardList.Count(); index++)
                     {
                         Card c = cardList.ElementAt(index);
@@ -200,8 +132,12 @@ namespace lorcana
                         {
                             fileName = fileNameFunction.Invoke(cardList.ElementAt(i), i);
                         }
-                        string filePath = Path.Combine(Environment.CurrentDirectory, $"{fileName}.png");
-                        string? directoryName = Path.GetDirectoryName(filePath);
+                        string directory = Path.Combine(Environment.CurrentDirectory, folderName);
+                        if (!Directory.Exists(directory))
+                        {
+                            Directory.CreateDirectory(directory);
+                        }
+                        string filePath = Path.Combine(directory, $"{fileName}.png");
 
                         if (File.Exists(filePath))
                         {
@@ -220,6 +156,11 @@ namespace lorcana
         //https://images.dreamborn.ink/cards/de/001-001_1468x2048.webp
         private static SKBitmap? DownloadImage(int setNumber, string number)
         {
+            string key = setNumber + "_" + number;
+            if (_imgCache.ContainsKey(key))
+            {
+                return _imgCache[key];
+            }
             HttpWebResponse response = null;
             string url = Card.GetImageLink(number, null, setNumber);
             var request = (HttpWebRequest)WebRequest.Create(url);
@@ -236,7 +177,9 @@ namespace lorcana
                     {
                         stream = webClient.DownloadData(url);
                     }
-                    return SKBitmap.Decode(stream);
+                    var imgDecoded = SKBitmap.Decode(stream);
+                    _imgCache.Add(key, imgDecoded);
+                    return imgDecoded;
                 }
             }
             catch (Exception ex)
@@ -270,7 +213,7 @@ namespace lorcana
 
         private static void WriteCardDisplay(Card c)
         {
-            Console.Write(c.NumberDisplay);
+            Console.Write($"{c.SetNumber} | {c.NumberDisplay}");
             for (int i = 0; i < 5 - c.NumberDisplay.Length; i++)
             {
                 Console.Write(" ");
@@ -315,13 +258,13 @@ namespace lorcana
             switch (rarity)
             {
                 case Rarity.Common:
-                    return ConsoleColor.DarkGray;
+                    return ConsoleColor.Gray;
                 case Rarity.Uncommon:
                     return ConsoleColor.White;
                 case Rarity.Rare:
                     return ConsoleColor.DarkRed;
                 case Rarity.SuperRare:
-                    return ConsoleColor.Gray;
+                    return ConsoleColor.Blue;
                 case Rarity.Legendary:
                     return ConsoleColor.DarkYellow;
                 case Rarity.Enchanted:

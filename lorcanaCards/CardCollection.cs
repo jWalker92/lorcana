@@ -19,6 +19,8 @@ namespace lorcana.Cards
 
         public List<Card> List { get => cardsList; }
 
+        public string Name { get; set; }
+
         class intVal
         {
             public int IntegerValue { get; set; }
@@ -42,7 +44,7 @@ namespace lorcana.Cards
             return csvOutput;
         }
 
-        public void InitializeWithCsv(List<Card> library, string csv)
+        public void InitializeWithCsv(List<Card> library, string csv, bool includeEnchanted)
         {
             try
             {
@@ -96,7 +98,7 @@ namespace lorcana.Cards
                             else
                             {
                                 string rarity = values[rarityIndex];
-                                if (rarity == "Enchanted" || rarity == "Promo")
+                                if ((!includeEnchanted && rarity == "Enchanted") || rarity == "Promo")
                                 {
                                     continue;
                                 }
