@@ -36,7 +36,7 @@ namespace lorcana
             var csvCompare = File.ReadAllText("ingo.csv");
             CardLibrary libCompare = new CardLibrary();
             await libCompare.BuildLibrary(allCardsInfoJson, "de");
-            var collectionCompare = new CardCollection { Name = "Ingo" };
+            var collectionCompare = new CardCollection { Name = "ingo" };
             collectionCompare.InitializeWithCsv(libCompare.List, csvCompare, false);
 
             Console.Clear();
@@ -56,12 +56,15 @@ namespace lorcana
             Console.WriteLine("Total Foiled Cards: " + cardsList.Sum(x => x.Foils));
             Console.WriteLine();
 
+            WriteDecklist(cardsList.Where(x => x.Rarity == Rarity.Rare && x.NumberAsInt <= 204 && x.SetNumber == 4 && x.Total < 4), (card) => 4 - card.Total + "x ");
+
             CompareCollections(collection, collectionCompare);
             CompareCollections(collectionCompare, collection);
 
-            //DrawListToImageFiles("all", cardsList.Where(x => x.Rarity >= Rarity.Rare && x.NumberAsInt <= 204 && x.SetNumber == 4 && x.Total < 4), (c) => 4 - c.Total, null, 3, 3, 1500, 2092, 0, null);
+            //DrawListToImageFiles("rares", cardsList.Where(x => x.Rarity == Rarity.Rare && x.NumberAsInt <= 204 && x.SetNumber == 4 && x.Total < 4), (c) => 4 - c.Total, null, 3, 3, 1500, 2092, 0, null);
             //DrawListToImageFiles("soeren", cardsList.Where(x => x.ConstructKey() == "1:18" || x.ConstructKey() == "4:70"), (c) => 5, null, 3, 3, 1500, 2092, 0, null);
             //DrawListToImageFiles("enchanted_playset", cardsList.Where(x => x.Rarity == Rarity.Enchanted), (c) => 4, null, 3, 3, 1500, 2092, 0, null);
+            //DrawListToImageFiles("ingo", cardsList.Where(x => x.), (c) => 1, null, 3, 3, 1500, 2092, 0, null);
 
             Console.ReadKey();
         }
@@ -209,6 +212,23 @@ namespace lorcana
                 WriteCardDisplay(card);
                 Console.WriteLine(postString == null ? "" : postString.Invoke(card));
             }
+            Console.WriteLine();
+        }
+
+        private static void WriteDecklist(IEnumerable<Card> list, Func<Card, string> amountFunc = null)
+        {
+            string currentSetCode = string.Empty;
+            foreach (var card in list.OrderBy(x => x.SetNumber))
+            {
+                if (currentSetCode != card.SetCode)
+                {
+                    currentSetCode = card.SetCode;
+                    Console.WriteLine(currentSetCode);
+                }
+                Console.Write(amountFunc == null ? "" : amountFunc.Invoke(card));
+                Console.WriteLine(card.Title + (string.IsNullOrEmpty(card.SubTitle) ? "" : " - " + card.SubTitle));
+            }
+            Console.WriteLine();
         }
 
         private static void WriteCardDisplay(Card c)
