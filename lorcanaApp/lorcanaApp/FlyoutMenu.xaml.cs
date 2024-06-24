@@ -97,7 +97,7 @@ namespace lorcanaApp
                     return;
                 }
                 var importedCollection = new CardCollection();
-                importedCollection.InitializeWithCsv(MainPage.CardLibrary.List, importDataStr);
+                importedCollection.InitializeWithCsv(MainPage.CardLibrary.List, importDataStr, false);
                 foreach (var card in importedCollection.List)
                 {
                     await Database.Instance.AddOrReplaceCardAsync(card);

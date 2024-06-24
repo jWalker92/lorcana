@@ -10,16 +10,21 @@ namespace lorcana.Cards
             switch (str)
             {
                 case "Amber":
+                case "Bernstein":
                     return CardColor.Amber;
                 case "Amethyst":
                     return CardColor.Amethyst;
                 case "Emerald":
+                case "Smaragd":
                     return CardColor.Emerald;
                 case "Ruby":
+                case "Rubin":
                     return CardColor.Ruby;
                 case "Sapphire":
+                case "Saphir":
                     return CardColor.Sapphire;
                 case "Steel":
+                case "Stahl":
                     return CardColor.Steel;
                 default:
                     return CardColor.Amber;
@@ -85,13 +90,28 @@ namespace lorcana.Cards
 
         public static Rarity RarityFromString(string str)
         {
-            if (str == "Common") return Rarity.Common;
-            if (str == "Uncommon") return Rarity.Uncommon;
-            if (str == "Rare") return Rarity.Rare;
-            if (str == "Super Rare") return Rarity.SuperRare;
-            if (str == "Legendary") return Rarity.Legendary;
-            if (str == "Enchanted") return Rarity.Enchanted;
-            return Rarity.Unknown;
+            switch (str)
+            {
+                case "Common":
+                case "Häufig":
+                    return Rarity.Common;
+                case "Uncommon":
+                case "Ungewöhnlich":
+                    return Rarity.Uncommon;
+                case "Rare":
+                    return Rarity.Rare;
+                case "Super Rare":
+                case "Super Selten":
+                    return Rarity.SuperRare;
+                case "Legendary":
+                case "Legendär":
+                    return Rarity.Legendary;
+                case "Enchanted":
+                case "Verzaubert":
+                    return Rarity.Enchanted;
+                default:
+                    return Rarity.Unknown;
+            }
         }
 
         public static CardType CardTypeFromString(string str)

@@ -57,6 +57,8 @@ namespace lorcana.Cards
                 int nameIndex = -1;
                 int colorIndex = -1;
                 int rarityIndex = -1;
+                int rarityErrors = 0;
+                int colorErrors = 0;
                 for (int line = 0; line < lines.Length - 1; line++)
                 {
                     try
@@ -83,6 +85,8 @@ namespace lorcana.Cards
                             continue;
                         }
                         string number = values[numberIndex];
+                        string rarity = values[rarityIndex];
+                        string color = values[colorIndex];
                         int.TryParse(values[setIndex], out int setCodeNumber);
                         Card card = cardsList.FirstOrDefault(x => x.Number == number && x.SetNumber == setCodeNumber);
                         if (card == null)
@@ -90,6 +94,18 @@ namespace lorcana.Cards
                             if (library != null)
                             {
                                 card = library.FirstOrDefault(x => x.Number == number && x.SetNumber == setCodeNumber);
+                                if (card.RarityStr != rarity)
+                                {
+                                    Console.WriteLine("Rarity Error: " + card.ConstructKey() + " " + card.Display + " API: " + card.RarityStr + " Actual: " + rarity);
+                                    card.RarityStr = rarity;
+                                    rarityErrors++;
+                                }
+                                if (card.Color != Helpers.ColorFromString(color))
+                                {
+                                    Console.WriteLine("Color Error: " + card.ConstructKey() + " " + card.Display + " API: " + Helpers.StringFromColor(card.Color) + " Actual: " + color);
+                                    card.Color = Helpers.ColorFromString(color);
+                                    colorErrors++;
+                                }
                             }
                             if (card != null)
                             {
@@ -97,13 +113,11 @@ namespace lorcana.Cards
                             }
                             else
                             {
-                                string rarity = values[rarityIndex];
                                 if ((!includeEnchanted && rarity == "Enchanted") || rarity == "Promo")
                                 {
                                     continue;
                                 }
                                 string name = values[nameIndex];
-                                string color = values[colorIndex];
                                 string setCode = Helpers.NumberToSetcode(setCodeNumber);
                                 card = new Card() { Title = name, SetNumber = setCodeNumber, Number = number, Color = Helpers.ColorFromString(color), RarityStr = rarity };
 

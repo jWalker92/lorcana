@@ -24,7 +24,7 @@ namespace lorcana
                 allCardsInfoJson = File.ReadAllText(allCardsInfoCache);
             }
             CardLibrary lib = new CardLibrary();
-            await lib.BuildLibrary(allCardsInfoJson, "de");
+            await lib.BuildLibrary(null, "de");
             File.WriteAllText(allCardsInfoCache, lib.AllCardsInfoJson);
 
             var csv = File.ReadAllText("export.csv");
@@ -33,10 +33,10 @@ namespace lorcana
             collection.InitializeWithCsv(lib.List, csv, true);
             var cardsList = collection.List;
 
-            var csvCompare = File.ReadAllText("ingo.csv");
+            var csvCompare = File.ReadAllText("natalie.csv");
             CardLibrary libCompare = new CardLibrary();
             await libCompare.BuildLibrary(allCardsInfoJson, "de");
-            var collectionCompare = new CardCollection { Name = "ingo" };
+            var collectionCompare = new CardCollection { Name = "natalie" };
             collectionCompare.InitializeWithCsv(libCompare.List, csvCompare, false);
 
             Console.Clear();
@@ -56,10 +56,10 @@ namespace lorcana
             Console.WriteLine("Total Foiled Cards: " + cardsList.Sum(x => x.Foils));
             Console.WriteLine();
 
-            WriteDecklist(cardsList.Where(x => x.Rarity == Rarity.Rare && x.NumberAsInt <= 204 && x.SetNumber == 4 && x.Total < 4), (card) => 4 - card.Total + "x ");
+            //WriteDecklist(cardsList.Where(x => x.Rarity == Rarity.Rare && x.NumberAsInt <= 204 && x.SetNumber < 4 && x.Total < 4), (card) => 4 - card.Total + "x ");
 
-            CompareCollections(collection, collectionCompare);
-            CompareCollections(collectionCompare, collection);
+            //CompareCollections(collection, collectionCompare);
+            //CompareCollections(collectionCompare, collection);
 
             //DrawListToImageFiles("rares", cardsList.Where(x => x.Rarity == Rarity.Rare && x.NumberAsInt <= 204 && x.SetNumber == 4 && x.Total < 4), (c) => 4 - c.Total, null, 3, 3, 1500, 2092, 0, null);
             //DrawListToImageFiles("soeren", cardsList.Where(x => x.ConstructKey() == "1:18" || x.ConstructKey() == "4:70"), (c) => 5, null, 3, 3, 1500, 2092, 0, null);
