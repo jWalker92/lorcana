@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace lorcana.Cards
 {
@@ -93,18 +94,22 @@ namespace lorcana.Cards
                         {
                             if (library != null)
                             {
-                                card = library.FirstOrDefault(x => x.Number == number && x.SetNumber == setCodeNumber);
-                                if (card.RarityStr != rarity)
+                                var libraryCard = library.FirstOrDefault(x => x.Number == number && x.SetNumber == setCodeNumber);
+                                if (libraryCard.Rarity != Helpers.RarityFromString(rarity))
                                 {
-                                    Console.WriteLine("Rarity Error: " + card.ConstructKey() + " " + card.Display + " API: " + card.RarityStr + " Actual: " + rarity);
-                                    card.RarityStr = rarity;
+                                    Console.WriteLine("Rarity Error: " + libraryCard.ConstructKey() + " " + libraryCard.Display + " API: " + libraryCard.RarityStr + " Actual: " + rarity);
+                                    libraryCard.RarityStr = rarity;
                                     rarityErrors++;
                                 }
-                                if (card.Color != Helpers.ColorFromString(color))
+                                if (libraryCard.Color != Helpers.ColorFromString(color))
                                 {
-                                    Console.WriteLine("Color Error: " + card.ConstructKey() + " " + card.Display + " API: " + Helpers.StringFromColor(card.Color) + " Actual: " + color);
-                                    card.Color = Helpers.ColorFromString(color);
+                                    Console.WriteLine("Color Error: " + libraryCard.ConstructKey() + " " + libraryCard.Display + " API: " + Helpers.StringFromColor(libraryCard.Color) + " Actual: " + color);
+                                    libraryCard.Color = Helpers.ColorFromString(color);
                                     colorErrors++;
+                                }
+                                if (libraryCard != null)
+                                {
+                                    card = JsonConvert.DeserializeObject<Card>(JsonConvert.SerializeObject(libraryCard));
                                 }
                             }
                             if (card != null)

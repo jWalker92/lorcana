@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Net;
 using lorcana.Cards;
 using SkiaSharp;
@@ -24,22 +24,14 @@ namespace lorcana
                 allCardsInfoJson = File.ReadAllText(allCardsInfoCache);
             }
             CardLibrary lib = new CardLibrary();
-            await lib.BuildLibrary(null, "de");
+            await lib.BuildLibrary(allCardsInfoJson, "de");
             File.WriteAllText(allCardsInfoCache, lib.AllCardsInfoJson);
 
-            var csv = File.ReadAllText("export.csv");
-            Console.WriteLine("Building Collection...");
-            var collection = new CardCollection { Name = "Danny" };
-            collection.InitializeWithCsv(lib.List, csv, true);
+            var collection = ImportCollection("export.csv", "Danny", lib);
             var cardsList = collection.List;
-
-            var csvCompare = File.ReadAllText("natalie.csv");
-            CardLibrary libCompare = new CardLibrary();
-            await libCompare.BuildLibrary(allCardsInfoJson, "de");
-            var collectionCompare = new CardCollection { Name = "natalie" };
-            collectionCompare.InitializeWithCsv(libCompare.List, csvCompare, false);
-
-            Console.Clear();
+            var collectionOlli = ImportCollection("olli.csv", "olli", lib);
+            var collectionIngo = ImportCollection("ingo.csv", "ingo", lib);
+            var collectionNatalie = ImportCollection("natalie.csv", "natalie", lib);
 
             Console.WriteLine("INFOS: ");
             foreach (CardColor color in (CardColor[])Enum.GetValues(typeof(CardColor)))
@@ -56,23 +48,38 @@ namespace lorcana
             Console.WriteLine("Total Foiled Cards: " + cardsList.Sum(x => x.Foils));
             Console.WriteLine();
 
-            //WriteDecklist(cardsList.Where(x => x.Rarity == Rarity.Rare && x.NumberAsInt <= 204 && x.SetNumber < 4 && x.Total < 4), (card) => 4 - card.Total + "x ");
+            //WriteDecklist(cardsList.Where(x => x.Rarity == Rarity.Rare && x.NumberAsInt <= 204 && x.SetNumber == 4 && x.Total < 4), (card) => 4 - card.Total + "x ");
 
-            //CompareCollections(collection, collectionCompare);
-            //CompareCollections(collectionCompare, collection);
+
+            bool filter(Card c)
+            {
+                return true;
+            }
+            //CompareCollections(collection, collectionNatalie, filter);
+            //CompareCollections(collectionNatalie, collection, filter);
 
             //DrawListToImageFiles("rares", cardsList.Where(x => x.Rarity == Rarity.Rare && x.NumberAsInt <= 204 && x.SetNumber == 4 && x.Total < 4), (c) => 4 - c.Total, null, 3, 3, 1500, 2092, 0, null);
-            //DrawListToImageFiles("soeren", cardsList.Where(x => x.ConstructKey() == "1:18" || x.ConstructKey() == "4:70"), (c) => 5, null, 3, 3, 1500, 2092, 0, null);
+            //DrawListToImageFiles("moritz", cardsList.Where(x => x.ConstructKey() == "1:18" || x.ConstructKey() == "4:70"), (c) => 5, null, "en", 3, 3, 1500, 2092, 0, null);
+            DrawListToImageFiles("auftrag", new List<CardToDraw> { new CardToDraw(1, "18", 3, "en"), new CardToDraw(3, "190", 1, "en"), new CardToDraw(4, "70", 4, "de"), new CardToDraw(4, "221", 1, "de") }, 3, 3, 1500, 2092, 0);
             //DrawListToImageFiles("enchanted_playset", cardsList.Where(x => x.Rarity == Rarity.Enchanted), (c) => 4, null, 3, 3, 1500, 2092, 0, null);
             //DrawListToImageFiles("ingo", cardsList.Where(x => x.), (c) => 1, null, 3, 3, 1500, 2092, 0, null);
 
             Console.ReadKey();
         }
 
-        private static void CompareCollections(CardCollection collection1, CardCollection collection2)
+        private static CardCollection ImportCollection(string filename, string title, CardLibrary library)
+        {
+            var csv = File.ReadAllText(filename);
+            var collection = new CardCollection { Name = title };
+            collection.InitializeWithCsv(library.List, csv, false);
+            return collection;
+        }
+
+        private static void CompareCollections(CardCollection collection1, CardCollection collection2, Func<Card, bool>? filter = null)
         {
             Console.WriteLine(collection1.Name + "'s Extras: ");
-            foreach (var card in collection1.List)
+            var list = filter == null ? collection1.List : collection1.List.Where(filter);
+            foreach (var card in list)
             {
                 var compareCard = collection2.List.FirstOrDefault(x => x.ConstructKey() == card.ConstructKey());
                 int comparedCount = 0;
@@ -89,8 +96,68 @@ namespace lorcana
             Console.WriteLine();
         }
 
+        private static void DrawListToImageFiles(string folderName, IEnumerable<CardToDraw> list, uint cols, uint rows, uint cardWidth, uint cardHeight, uint padding)
+        {
+            Console.WriteLine($"Drawing {list.Sum(x => x.Amount)} images of {list.Count()} cards...");
+            int cardIndex = 0;
+            var currentCard = list.First();
+            var cardImage = DownloadImage(currentCard.SetNumber, currentCard.Number, currentCard.CountryCode);
+            int cardImagesDrawn = 0;
+            int pageIndex = 0;
+            int amountPerPage = (int)(cols * rows);
+            for (int i = 0; i < list.Sum(x => x.Amount); i += amountPerPage)
+            {
+                SKBitmap bmp = new SKBitmap((int)(cols * cardWidth), (int)(rows * cardHeight));
+                using (SKCanvas canvas = new SKCanvas(bmp))
+                {
+                    for (int r = 0; r < amountPerPage; r++)
+                    {
+                        if (cardImagesDrawn == currentCard.Amount)
+                        {
+                            cardIndex++;
+                            currentCard = list.ElementAt(cardIndex);
+                            cardImage = DownloadImage(currentCard.SetNumber, currentCard.Number, currentCard.CountryCode);
+                            cardImagesDrawn = 0;
+                        }
 
-        private static void DrawListToImageFiles(string folderName, IEnumerable<Card> list, Func<Card, int> amountFunc, Func<Card, string>? txtFunc, uint cols, uint rows, uint cardWidth, uint cardHeight, uint padding, Func<Card, int, string>? fileNameFunction)
+                        int colIndex = (int)((r - i) % cols);
+                        int rowIndex = (int)((r - i) / cols);
+                        float x = colIndex * cardWidth;
+                        float y = rowIndex * cardHeight;
+
+                        canvas.DrawBitmap(cardImage, new SKRect(x + padding, y + padding, x + cardWidth - padding, y + cardHeight - padding));
+                        cardImagesDrawn++;
+                    }
+                }
+                using (SKImage img = SKImage.FromBitmap(bmp))
+                {
+                    using (var encodedImage = img.Encode(SKEncodedImageFormat.Png, 100))
+                    {
+                        string fileName = i.ToString();
+                        string directory = Path.Combine(Environment.CurrentDirectory, folderName);
+                        if (!Directory.Exists(directory))
+                        {
+                            Directory.CreateDirectory(directory);
+                        }
+                        string filePath = Path.Combine(directory, $"{fileName}.png");
+
+                        if (File.Exists(filePath))
+                        {
+                            File.Delete(filePath);
+                        }
+                        using (var stream = File.OpenWrite(filePath))
+                        {
+                            encodedImage.SaveTo(stream);
+                        }
+                    }
+                }
+                pageIndex++;
+            }
+            Console.WriteLine($"Done.");
+        }
+
+
+        private static void DrawListToImageFiles(string folderName, IEnumerable<Card> list, Func<Card, int> amountFunc, Func<Card, string>? txtFunc, string countryCode, uint cols, uint rows, uint cardWidth, uint cardHeight, uint padding, Func<Card, int, string>? fileNameFunction)
         {
             var cardList = new List<Card>();
             foreach (var card in list)
@@ -117,7 +184,7 @@ namespace lorcana
                         float x = colIndex * cardWidth;
                         float y = rowIndex * cardHeight;
 
-                        var img = DownloadImage(c.SetNumber, c.Number);
+                        var img = DownloadImage(c.SetNumber, c.Number, countryCode);
                         canvas.DrawBitmap(img, new SKRect(x + padding, y + padding, x + cardWidth - padding, y + cardHeight - padding));
                         if (txtFunc != null)
                         {
@@ -157,7 +224,7 @@ namespace lorcana
         }
 
         //https://images.dreamborn.ink/cards/de/001-001_1468x2048.webp
-        private static SKBitmap? DownloadImage(int setNumber, string number)
+        private static SKBitmap? DownloadImage(int setNumber, string number, string countryCode)
         {
             string key = setNumber + "_" + number;
             if (_imgCache.ContainsKey(key))
@@ -165,7 +232,7 @@ namespace lorcana
                 return _imgCache[key];
             }
             HttpWebResponse response = null;
-            string url = Card.GetImageLink(number, null, setNumber);
+            string url = Card.GetImageLink(number, null, setNumber, countryCode);
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
 
