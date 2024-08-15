@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using lorcanaCards;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -27,63 +28,46 @@ namespace lorcana.Cards
             {
                 return;
             }
-            var allInfo = JsonConvert.DeserializeObject<List<JObject>>(AllCardsInfoJson);
+
+            var allInfo = JObject.Parse(AllCardsInfoJson);
+            var cardsItems = allInfo["cards"].ToObject<List<JsonCard>>();
 
             allCardsInfo = new List<Card>();
-            foreach (var item in allInfo)
+            foreach (var item in cardsItems)
             {
-                string numberStr = Helpers.GetPropertyValue<string>(item, "Card_Num");
-                string nameAndSubtitle = Helpers.GetPropertyValue<string>(item, "Name");
-                var nameSubSplit = nameAndSubtitle.Split(new string[]{ " - "}, StringSplitOptions.RemoveEmptyEntries);
-                string name = nameAndSubtitle;
-                string subtitle = null;
-                if (nameSubSplit.Count() == 2)
+                string numberStr = item.number.ToString();
+                string name = item.name;
+                string subtitle = item.version;
+                string cardVariant = item.variant;
+                bool couldParse = int.TryParse(item.setCode, out int setNum);
+                if (!couldParse)
                 {
-                    name = nameSubSplit.First();
-                    subtitle = nameSubSplit.Last();
+                    continue;
                 }
-                bool hasEnchantedVariant = false;
-                bool hasCardVariants = false;
-                string variantsStr = Helpers.GetPropertyValue<string>(item, "Card_Variants");
-                if (variantsStr != null)
-                {
-                    var variants = variantsStr.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (var variant in variants)
-                    {
-                        if (variant.ToLower().Contains("enchanted"))
-                        {
-                            hasEnchantedVariant = true;
-                        }
-                        if (variant.ToLower().Contains("card_num"))
-                        {
-                            hasCardVariants = true;
-                        }
-                    }
-                }
-                int setNum = Helpers.GetPropertyValue<int>(item, "Set_Num");
-                string baseImage = Card.GetImageLink(numberStr, hasCardVariants ? "a" : null, setNum, countryCode);
-                string rarityStr = Helpers.GetPropertyValue<string>(item, "Rarity");
-                string typeStr = Helpers.GetPropertyValue<string>(item, "Type");
+                string baseImage = item.images.full; //Card.GetImageLink(numberStr, cardVariant, setNum, countryCode);
+                string rarityStr = item.rarity;
+                string typeStr = item.type;
                 var infoCard = new Card
                 {
                     Number = numberStr,
                     Title = name,
                     SetNumber = setNum,
                     SubTitle = subtitle,
-                    Color = Helpers.ColorFromString(Helpers.GetPropertyValue<string>(item, "Color")),
+                    Color = Helpers.ColorFromString(item.color),
                     RarityStr = rarityStr,
                     TypeStr = typeStr,
                     Image = baseImage,
-                    //SmallImage = Helpers.ReplaceLastOccurrence(baseImage, "large", "small"),
+                    SmallImage = item.images.thumbnail,
+                    FoilMaskImage = item.images.foilMask,
                     //ArtImage = Helpers.GetPropertyValue<string>(Helpers.GetPropertyValue<JObject>(item, "image-urls"), "art-crop"),
-                    Strength = Helpers.GetPropertyValue<int?>(item, "Strength"),
-                    Willpower = Helpers.GetPropertyValue<int?>(item, "Willpower"),
-                    LoreValue = Helpers.GetPropertyValue<int?>(item, "Lore"),
-                    FlavorText = Helpers.GetPropertyValue<string>(item, "Flavor_Text"),
-                    InkCost = Helpers.GetPropertyValue<int>(item, "Cost"),
-                    Inkable = Helpers.GetPropertyValue<bool>(item, "Inkable"),
-                    Artist = Helpers.GetPropertyValue<string>(item, "Artist"),
-                    Body = Helpers.GetPropertyValue<string>(item, "Body_Text")
+                    Strength = item.strength,
+                    Willpower = item.willpower,
+                    LoreValue = item.lore,
+                    FlavorText = item.flavorText,
+                    InkCost = item.cost,
+                    Inkable = item.inkwell,
+                    Artist = item.artistsText,
+                    Body = item.fullText
                 };
                 allCardsInfo.Add(infoCard);
             }
@@ -93,7 +77,7 @@ namespace lorcana.Cards
         private static async Task<string> GetAllCards()
         {
 
-            string apiUrl = $"https://api.lorcana-api.com/cards/all";
+            string apiUrl = $"https://lorcanajson.org/files/current/en/allCards.json";
 
             try
             {

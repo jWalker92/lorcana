@@ -47,14 +47,30 @@
     <None Remove="Resources\Lore.svg" />
     <None Remove="Resources\menu.svg" />
     <None Remove="Resources\menu %28copy%29.svg" />
-    <None Remove="data\" />
+    <None Remove="Manager\" />
+    <None Remove="Controls\" />
+    <None Remove="Converter\" />
+    <None Remove="Pages\" />
+    <None Remove="Pages\LoreCounter\" />
+    <None Remove="Pages\CardDetail\" />
+    <None Remove="Pages\CardList\" />
+    <None Remove="Models\" />
+    <None Remove="Resources\filter.svg" />
+    <None Remove="Resources\filter_off.svg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
     <Folder Include="Resources\Raw\" />
     <Folder Include="Resources\Rarity\" />
     <Folder Include="Resources\Inks\" />
-    <Folder Include="data\" />
+    <Folder Include="Manager\" />
+    <Folder Include="Controls\" />
+    <Folder Include="Converter\" />
+    <Folder Include="Pages\" />
+    <Folder Include="Pages\LoreCounter\" />
+    <Folder Include="Pages\CardDetail\" />
+    <Folder Include="Pages\CardList\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Raw\update.json">
@@ -76,5 +92,7 @@
     <EmbeddedResource Include="Resources\rotate.svg" />
     <EmbeddedResource Include="Resources\lore.svg" />
     <EmbeddedResource Include="Resources\menu.svg" />
+    <EmbeddedResource Include="Resources\filter.svg" />
+    <EmbeddedResource Include="Resources\filter_off.svg" />
   </ItemGroup>
 </Project>

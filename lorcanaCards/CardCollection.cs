@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -41,6 +42,24 @@ namespace lorcana.Cards
             foreach (var item in list)
             {
                 csvOutput += item.SetNumber + "," + item.NumberAsInt + "," + item.Normals + "," + item.Foils + Environment.NewLine;
+            }
+            return csvOutput;
+        }
+
+        public static string ListToCsvDreamborn(List<Card> list)
+        {
+            string csvOutput = string.Empty;
+            csvOutput += "Set Number,Card Number,Variant,Count" + Environment.NewLine;
+            foreach (var item in list)
+            {
+                if (item.Normals != item.NormalsOnImport)
+                {
+                    csvOutput += item.SetNumber + "," + item.NumberAsInt + ",normal," + (item.Normals - item.NormalsOnImport) + Environment.NewLine;
+                }
+                if (item.Foils != item.FoilsOnImport)
+                {
+                    csvOutput += item.SetNumber + "," + item.NumberAsInt + ",foil," + (item.Foils - item.FoilsOnImport) + Environment.NewLine;
+                }
             }
             return csvOutput;
         }
@@ -86,6 +105,11 @@ namespace lorcana.Cards
                             continue;
                         }
                         string number = values[numberIndex];
+                        Regex regex = new Regex(@"^\d+[^\d]$");
+                        if (regex.IsMatch(number))
+                        {
+                            number = number.Remove(number.Length - 1);
+                        }
                         string rarity = values[rarityIndex];
                         string color = values[colorIndex];
                         int.TryParse(values[setIndex], out int setCodeNumber);
@@ -95,20 +119,20 @@ namespace lorcana.Cards
                             if (library != null)
                             {
                                 var libraryCard = library.FirstOrDefault(x => x.Number == number && x.SetNumber == setCodeNumber);
-                                if (libraryCard.Rarity != Helpers.RarityFromString(rarity))
-                                {
-                                    Console.WriteLine("Rarity Error: " + libraryCard.ConstructKey() + " " + libraryCard.Display + " API: " + libraryCard.RarityStr + " Actual: " + rarity);
-                                    libraryCard.RarityStr = rarity;
-                                    rarityErrors++;
-                                }
-                                if (libraryCard.Color != Helpers.ColorFromString(color))
-                                {
-                                    Console.WriteLine("Color Error: " + libraryCard.ConstructKey() + " " + libraryCard.Display + " API: " + Helpers.StringFromColor(libraryCard.Color) + " Actual: " + color);
-                                    libraryCard.Color = Helpers.ColorFromString(color);
-                                    colorErrors++;
-                                }
                                 if (libraryCard != null)
                                 {
+                                    if (libraryCard.Rarity != Helpers.RarityFromString(rarity))
+                                    {
+                                        Console.WriteLine("Rarity Error: " + libraryCard.ConstructKey() + " " + libraryCard.Display + " API: " + libraryCard.RarityStr + " Actual: " + rarity);
+                                        libraryCard.RarityStr = rarity;
+                                        rarityErrors++;
+                                    }
+                                    if (libraryCard.Color != Helpers.ColorFromString(color))
+                                    {
+                                        Console.WriteLine("Color Error: " + libraryCard.ConstructKey() + " " + libraryCard.Display + " API: " + Helpers.StringFromColor(libraryCard.Color) + " Actual: " + color);
+                                        libraryCard.Color = Helpers.ColorFromString(color);
+                                        colorErrors++;
+                                    }
                                     card = JsonConvert.DeserializeObject<Card>(JsonConvert.SerializeObject(libraryCard));
                                 }
                             }
@@ -145,6 +169,16 @@ namespace lorcana.Cards
                         }
                         card.Foils = foils;
                         card.Normals = normals;
+                        card.FoilsOnImport = foils;
+                        card.NormalsOnImport = normals;
+                        if (card.ConstructKey() == Card.CreateKey(1, 2))
+                        {
+
+                        }
+                        if (card.ConstructKey() == Card.CreateKey(1, 7))
+                        {
+
+                        }
                         importedCards.Add(card);
                     }
                     catch (Exception ex)
@@ -167,11 +201,23 @@ namespace lorcana.Cards
                 var listCard = cardsList.FirstOrDefault(x => x.ConstructKey() == libCard.ConstructKey());
                 if (listCard != null)
                 {
+                    if (listCard.ConstructKey() == Card.CreateKey(1, 2))
+                    {
+
+                    }
+                    if (listCard.ConstructKey() == Card.CreateKey(1, 7))
+                    {
+
+                    }
                     int normalsBackup = listCard.Normals;
                     int foilsBackup = listCard.Foils;
+                    int normalsImportBackup = listCard.NormalsOnImport;
+                    int foilsImportBackup = listCard.FoilsOnImport;
                     listCard = libCard;
                     listCard.Normals = normalsBackup;
                     listCard.Foils = foilsBackup;
+                    listCard.NormalsOnImport = normalsImportBackup;
+                    listCard.FoilsOnImport = foilsImportBackup;
                 }
                 else
                 {

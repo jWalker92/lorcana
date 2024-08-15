@@ -11,7 +11,7 @@
     <FlyoutPage.Detail>
         <NavigationPage x:Name="navPage" BarTextColor="WhiteSmoke">
             <x:Arguments>
-                <lorcana:MainPage />
+                <lorcana:CardListPage />
             </x:Arguments>
             <NavigationPage.BarBackground>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">

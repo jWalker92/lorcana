@@ -142,6 +142,23 @@ namespace lorcana.Cards
             return default;
         }
 
+
+        public static T GetPropertyValue<T>(JToken token)
+        {
+            if (token != null)
+            {
+                try
+                {
+                    return token.Value<T>();
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return default;
+        }
+
         public static JToken FindProperty(JToken token, string key)
         {
             if (token is JObject obj)

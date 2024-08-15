@@ -14,7 +14,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Button">
-                <Setter Property="FontSize" Value="24"/>
+                <Setter Property="FontSize" Value="20"/>
                 <Setter Property="TextColor" Value="WhiteSmoke"/>
                 <Setter Property="BackgroundColor" Value="#20FFFFFF"/>
                 <Setter Property="Margin" Value="16,0"/>
@@ -30,5 +30,6 @@
         <Button Text="Language" Clicked="Language_Clicked"/>
         <Button Text="Import" Clicked="Import_Clicked"/>
         <Button Text="Export" Clicked="Export_Clicked"/>
+        <Button Text="Delete Data" BackgroundColor="#80FF0000" Clicked="Delete_Clicked"/>
     </StackLayout>
 </ContentPage>

@@ -22,9 +22,20 @@ namespace lorcanaApp
         private Database()
         {
             instance = this;
-            //File.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "lorcana.db3"));
-            connection = new SQLiteAsyncConnection(
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "lorcana.db3"));
+            connection = new SQLiteAsyncConnection(GetDbPath());
+        }
+
+        public async Task DeleteDatabase()
+        {
+            await connection.CloseAsync();
+            File.Delete(GetDbPath());
+            connection = new SQLiteAsyncConnection(GetDbPath());
+            await Init();
+        }
+
+        private string GetDbPath()
+        {
+            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), "lorcana.db3");
         }
 
         public void FireCollectionChanged()
@@ -51,6 +62,7 @@ namespace lorcanaApp
         {
             try
             {
+                await connection.DropTableAsync<Card>();
                 await connection.CreateTableAsync<Card>();
             }
             catch (Exception ex)

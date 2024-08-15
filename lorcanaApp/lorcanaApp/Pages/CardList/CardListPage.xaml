@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:lorcana="clr-namespace:lorcanaApp"
+    x:Class="lorcanaApp.CardListPage"
+    xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+    Title="Lorcana Collection">
+    <Grid RowDefinitions="Auto,*" x:Name="grid" RowSpacing="0">
+        <Frame Padding="8" CornerRadius="0">
+            <Frame.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#2E3192" Offset="0.0" />
+                    <GradientStop Color="#540D6E" Offset="1.0" />
+                </LinearGradientBrush>
+            </Frame.Background>
+            <Grid ColumnDefinitions="*,48" RowDefinitions="48">
+                <Frame Padding="0,-8" CornerRadius="8" BackgroundColor="#66FFFFFF">
+                    <SearchBar x:Name="searchBar" Placeholder="Search..." PlaceholderColor="#E0E0E0" TextColor="White" TextChanged="SearchBar_TextChanged" CancelButtonColor="White"
+                               BackgroundColor="Transparent" VerticalOptions="Center" ios:SearchBar.SearchBarStyle="Minimal"/>
+                </Frame>
+                <lorcana:SvgImageButton Source="{lorcana:ImageResource Source='lorcanaApp.Resources.filter.svg'}" Grid.Column="1" Clicked="FilterButton_Clicked" Padding="12" BackgroundColor="#66FFFFFF" CornerRadius="8"/>
+            </Grid>
+        </Frame>
+        <CollectionView Grid.Row="1" x:Name="cardsList" SelectionMode="None">
+            <CollectionView.Header>
+                <Grid Padding="8,16,8,8" ColumnDefinitions="*,Auto">
+                    <Label x:Name="headerLabel" HorizontalOptions="Center" TextColor="#666666" VerticalOptions="Center"/>
+                    <Button BackgroundColor="#2E3192" TextColor="WhiteSmoke" Padding="8" Text="Refresh Cards" Clicked="Rebuild_Clicked" Grid.Column="1" VerticalOptions="Center"/>
+                </Grid>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <lorcana:CardListView OnTap="{Binding OnTap}" OnTapAmounts="{Binding OnTapAmounts}"/>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+            <CollectionView.Footer>
+                <BoxView HeightRequest="40"/>
+            </CollectionView.Footer>
+        </CollectionView>
+        <ContentView x:Name="filterView" IsVisible="False" Grid.Row="1" VerticalOptions="Start" Padding="8,16">
+            <ContentView.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#2E3192" Offset="0.0" />
+                    <GradientStop Color="#540D6E" Offset="1.0" />
+                </LinearGradientBrush>
+            </ContentView.Background>
+            <StackLayout Spacing="8">
+                <StackLayout.Resources>
+                    <ResourceDictionary>
+                        <Style TargetType="lorcana:SvgImageButton">
+                            <Setter Property="Padding" Value="2"/>
+                            <Setter Property="CornerRadius" Value="16"/>
+                            <Setter Property="BackgroundColor" Value="#66FFFFFF"/>
+                        </Style>
+                    </ResourceDictionary>
+                </StackLayout.Resources>
+                <Grid ColumnDefinitions="*,*,*,*,*,*" RowDefinitions="48">
+                    <ContentView Grid.Column="0" x:Name="amberFilter" Opacity=".5">
+                        <lorcana:SvgImageButton Source="{lorcana:ImageResource Source='lorcanaApp.Resources.Inks.Amber.svg'}" Clicked="Amber_Clicked"/>
+                    </ContentView>
+                    <ContentView Grid.Column="1" x:Name="amethystFilter" Opacity=".5">
+                        <lorcana:SvgImageButton Source="{lorcana:ImageResource Source='lorcanaApp.Resources.Inks.Amethyst.svg'}" Clicked="Amethyst_Clicked"/>
+                    </ContentView>
+                    <ContentView Grid.Column="2" x:Name="emeraldFilter" Opacity=".5">
+                        <lorcana:SvgImageButton Source="{lorcana:ImageResource Source='lorcanaApp.Resources.Inks.Emerald.svg'}" Clicked="Emerald_Clicked"/>
+                    </ContentView>
+                    <ContentView Grid.Column="3" x:Name="rubyFilter" Opacity=".5">
+                        <lorcana:SvgImageButton Source="{lorcana:ImageResource Source='lorcanaApp.Resources.Inks.Ruby.svg'}" Clicked="Ruby_Clicked"/>
+                    </ContentView>
+                    <ContentView Grid.Column="4" x:Name="sapphireFilter" Opacity=".5">
+                        <lorcana:SvgImageButton Source="{lorcana:ImageResource Source='lorcanaApp.Resources.Inks.Sapphire.svg'}" Clicked="Sapphire_Clicked"/>
+                    </ContentView>
+                    <ContentView Grid.Column="5" x:Name="steelFilter" Opacity=".5">
+                        <lorcana:SvgImageButton Source="{lorcana:ImageResource Source='lorcanaApp.Resources.Inks.Steel.svg'}" Clicked="Steel_Clicked"/>
+                    </ContentView>
+                </Grid>
+                <Grid ColumnDefinitions="*,*,*,*,*" RowDefinitions="48">
+                    <ContentView Grid.Column="0" x:Name="commonFilter" Opacity=".5">
+                        <lorcana:SvgImageButton Source="{lorcana:ImageResource Source='lorcanaApp.Resources.Rarity.Common.svg'}" Clicked="Common_Clicked"/>
+                    </ContentView>
+                    <ContentView Grid.Column="1" x:Name="uncommonFilter" Opacity=".5">
+                        <lorcana:SvgImageButton Source="{lorcana:ImageResource Source='lorcanaApp.Resources.Rarity.Uncommon.svg'}" Clicked="Uncommon_Clicked"/>
+                    </ContentView>
+                    <ContentView Grid.Column="2" x:Name="rareFilter" Opacity=".5">
+                        <lorcana:SvgImageButton Source="{lorcana:ImageResource Source='lorcanaApp.Resources.Rarity.Rare.svg'}" Clicked="Rare_Clicked"/>
+                    </ContentView>
+                    <ContentView Grid.Column="3" x:Name="superRareFilter" Opacity=".5">
+                        <lorcana:SvgImageButton Source="{lorcana:ImageResource Source='lorcanaApp.Resources.Rarity.SuperRare.svg'}" Clicked="SuperRare_Clicked"/>
+                    </ContentView>
+                    <ContentView Grid.Column="4" x:Name="legendaryFilter" Opacity=".5">
+                        <lorcana:SvgImageButton Source="{lorcana:ImageResource Source='lorcanaApp.Resources.Rarity.Legendary.svg'}" Clicked="Legendary_Clicked"/>
+                    </ContentView>
+                </Grid>
+                <Grid>
+                    <Frame Grid.Column="0" Padding="0" CornerRadius="8" BackgroundColor="#66FFFFFF" x:Name="sortPickerFrame">
+                        <StackLayout Orientation="Horizontal">
+                            <Picker x:Name="sortPicker" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" TextColor="WhiteSmoke" Title="Sort" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Center"/>
+                        </StackLayout>
+                    </Frame>
+                    <Frame Grid.Column="1" Padding="0" CornerRadius="8" BackgroundColor="#66FFFFFF" x:Name="pickerFrame">
+                        <Picker x:Name="listPicker" HorizontalOptions="FillAndExpand" BackgroundColor="Transparent" TextColor="WhiteSmoke" Title="Filter" VerticalOptions="FillAndExpand" HorizontalTextAlignment="Center"/>
+                    </Frame>
+                </Grid>
+            </StackLayout>
+        </ContentView>
+        <lorcana:AmountAdjustView x:Name="adjustView" Grid.Row="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"/>
+    </Grid> 
+</ContentPage>

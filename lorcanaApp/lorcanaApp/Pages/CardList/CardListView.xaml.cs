@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using lorcana.Cards;
 using Xamarin.Forms;
 
@@ -66,7 +65,7 @@ namespace lorcanaApp
             cardImage.Source = null;
             if (BindingContext is Card c)
             {
-                cardImage.Source = c.Image;
+                cardImage.Source = c.SmallImage;
             }
             base.OnBindingContextChanged();
         }

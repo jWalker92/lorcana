@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using FFImageLoading;
+using FFImageLoading.Mock;
 using lorcana.Cards;
 using SkiaSharp;
 using SkiaSharp.Views.Forms;
@@ -23,6 +24,8 @@ namespace lorcanaApp
         private SKBitmap placeholderBitmap;
         private SKBitmap rawResourceBitmap;
         private SKBitmap resourceBitmap;
+        private SKBitmap rawfoilMask;
+        private SKBitmap foilMask;
         private SKBitmap oldResourceBitmap;
         private float xRotation;
         private float yRotation;
@@ -48,6 +51,7 @@ namespace lorcanaApp
         private int drawsLeft = 100;
         private float glareIntensity = 1;
         private TaskCompletionSource<bool> sizeAllocatedTaskCompletionSource = new TaskCompletionSource<bool>();
+        private SKShader maskShader;
 
         public AdjustableCard CurrentCard { get => currentCard; set { currentCard = value; OnPropertyChanged(); } }
 
@@ -223,6 +227,7 @@ namespace lorcanaApp
             resourceBitmap = null;
             Title = CurrentCard.NumberDisplay + " - " + CurrentCard.Title;
             Task.Run(async () => await DownloadImage(CurrentCard));
+            Task.Run(async () => await DownloadFoilMask(CurrentCard));
         }
 
         public async Task<Stream> GetCachedImagePath(string imageUrl)
@@ -245,6 +250,11 @@ namespace lorcanaApp
         private Task DownloadImage(Card card)
         {
             return DownloadImage(card.Image);
+        }
+
+        private Task DownloadFoilMask(Card card)
+        {
+            return DownloadFoilMask(card.FoilMaskImage);
         }
 
         private async Task DownloadImage(string url)
@@ -294,6 +304,53 @@ namespace lorcanaApp
             }
         }
 
+        private async Task DownloadFoilMask(string url)
+        {
+            if (!viewerEnabled)
+            {
+                return;
+            }
+
+            var cachedStream = await GetCachedImagePath(url);
+            if (cachedStream != null)
+            {
+                await SetFoilMaskFromByteArray(cachedStream.ToByteArray());
+                return;
+            }
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "HEAD";
+
+            HttpWebResponse response = null;
+            try
+            {
+                response = (HttpWebResponse)request.GetResponse();
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    byte[] stream = null;
+                    using (var webClient = new WebClient())
+                    {
+                        stream = webClient.DownloadData(url);
+                    }
+                    resBitmapAlpha = 0;
+                    await ImageService.Instance.Config.DiskCache.AddToSavingQueueIfNotExistsAsync(ImageService.Instance.Config.MD5Helper.MD5(url), stream, TimeSpan.FromDays(90));
+                    await SetFoilMaskFromByteArray(stream);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (response != null)
+                {
+                    response.Close();
+                }
+            }
+        }
+
         private async Task SetImageFromByteArray(byte[] stream)
         {
             rawResourceBitmap = SKBitmap.Decode(stream);
@@ -303,6 +360,17 @@ namespace lorcanaApp
             }
             var resized = ResizeBitmap(rawResourceBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
             resourceBitmap = AddRoundedCorners(resized, resized.Width * 0.055f);
+        }
+
+        private async Task SetFoilMaskFromByteArray(byte[] stream)
+        {
+            rawfoilMask = SKBitmap.Decode(stream);
+            if (!sizeAllocatedTaskCompletionSource.Task.IsCompleted)
+            {
+                await sizeAllocatedTaskCompletionSource.Task;
+            }
+            var resized = ResizeBitmap(rawfoilMask, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
+            foilMask = AddRoundedCorners(resized, resized.Width * 0.055f);
         }
 
         public SKBitmap AddRoundedCorners(SKBitmap sourceBitmap, float cornerRadius)
@@ -424,6 +492,7 @@ namespace lorcanaApp
                     skiaViewHeight = skiaView.Height;
                     skiaViewCanvasHeight = skiaView.CanvasSize.Height;
                     resourceBitmap = ResizeBitmap(rawResourceBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
+                    foilMask = ResizeBitmap(rawfoilMask, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
                     placeholderBitmap = ResizeBitmap(rawPlaceholderBitmap, (int)(skiaView.CanvasSize.Width * 0.9f), (int)(skiaViewCanvasHeight * 0.9f));
                     if (!sizeAllocatedTaskCompletionSource.Task.IsCompleted)
                         sizeAllocatedTaskCompletionSource.SetResult(true);
@@ -501,24 +570,29 @@ namespace lorcanaApp
                     resBitmapAlpha = Lerp(resBitmapAlpha, 255, 0.23f);
                     canvas.DrawBitmap(resourceBitmap, x + resourceX, y, new SKPaint { IsAntialias = true, Color = SKColors.White.WithAlpha((byte)resBitmapAlpha) });
                 }
-
-                SKPoint startPoint = new SKPoint(x, y);
-                SKPoint endPoint = new SKPoint(currentBitmap.Width + x, currentBitmap.Height + y);
-                SKColor.TryParse("#00FFFFFF", out SKColor transparent);
-                SKColor.TryParse("#FFFFFF", out SKColor highlight);
-                float shineAddition = (xRotation + yRotation) * 100;
-                SKColor[] colors = { transparent, highlight.WithAlpha(Convert.ToByte(glareIntensity * Math.Max(0, Math.Min(50, 50 - (Math.Abs(shineAddition) * 30))))), transparent };
-                float[] colorPos = { 0.05f + shineAddition, 0.4f + shineAddition, 0.9f + shineAddition };
-                SKShader shader = SKShader.CreateLinearGradient(startPoint, endPoint, colors, colorPos, SKShaderTileMode.Clamp);
-
-                SKPaint paint = new SKPaint
+                if (foilMask != null)
                 {
-                    Shader = shader
-                };
+                    SKPoint startPoint = new SKPoint(x, y);
+                    SKPoint endPoint = new SKPoint(currentBitmap.Width + x, currentBitmap.Height + y);
+                    SKColor.TryParse("#00FFFFFF", out SKColor transparent);
+                    SKColor.TryParse("#FFFFFF", out SKColor highlight);
+                    float shineAddition = (xRotation + yRotation) * 100;
+                    SKColor[] colors = { transparent, highlight.WithAlpha(Convert.ToByte(glareIntensity * Math.Max(0, Math.Min(120, 120 - (Math.Abs(shineAddition) * 30))))), transparent };
+                    float[] colorPos = { 0.05f + shineAddition, 0.4f + shineAddition, 0.9f + shineAddition };
+                    SKShader shader = SKShader.CreateLinearGradient(startPoint, endPoint, colors, colorPos, SKShaderTileMode.Clamp);
 
-                SKRect rect = new SKRect(x + resourceX, y, currentBitmap.Width + x + resourceX, currentBitmap.Height + y);
-                var cornerRadius = currentBitmap.Width * 0.055f;
-                canvas.DrawRoundRect(rect, cornerRadius, cornerRadius, paint);
+                    // Create a paint object with the gradient shader
+                    var gradientPaint = new SKPaint
+                    {
+                        Shader = shader,
+                        BlendMode = SKBlendMode.HardLight // Apply the mask to the gradient
+                    };
+
+                    SKRect rect = new SKRect(x + resourceX, y, currentBitmap.Width + x + resourceX, currentBitmap.Height + y);
+                    var cornerRadius = currentBitmap.Width * 0.055f;
+                    //canvas.DrawBitmap(foilMask, x + resourceX, y, gradientPaint);
+                    canvas.DrawRoundRect(rect, cornerRadius, cornerRadius, gradientPaint);
+                }
             }
 
             glareIntensity = Lerp(glareIntensity, gyroEnabled ? 1 : 0, 0.03f);

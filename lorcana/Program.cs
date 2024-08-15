@@ -32,6 +32,7 @@ namespace lorcana
             var collectionOlli = ImportCollection("olli.csv", "olli", lib);
             var collectionIngo = ImportCollection("ingo.csv", "ingo", lib);
             var collectionNatalie = ImportCollection("natalie.csv", "natalie", lib);
+            var collectionBine = ImportCollection("bine.csv", "BineKiki", lib);
 
             Console.WriteLine("INFOS: ");
             foreach (CardColor color in (CardColor[])Enum.GetValues(typeof(CardColor)))
@@ -41,7 +42,7 @@ namespace lorcana
                 Console.WriteLine(": " + cardsInColor.Count());
             }
             Console.WriteLine();
-
+            
             Console.WriteLine("YOUR COLLECTION:");
             Console.WriteLine("Total Unique Cards: " + cardsList.Where(x => x.Total > 0).Count());
             Console.WriteLine("Total Cards: " + cardsList.Sum(x => x.Total));
@@ -55,12 +56,15 @@ namespace lorcana
             {
                 return true;
             }
-            //CompareCollections(collection, collectionNatalie, filter);
-            //CompareCollections(collectionNatalie, collection, filter);
+            
+            WriteList(collectionBine.List.Where(x => x.Rarity >= Rarity.Rare && x.Total > 4));
+
+            CompareCollections(collection, collectionBine, filter);
+            CompareCollections(collectionBine, collection, filter);
 
             //DrawListToImageFiles("rares", cardsList.Where(x => x.Rarity == Rarity.Rare && x.NumberAsInt <= 204 && x.SetNumber == 4 && x.Total < 4), (c) => 4 - c.Total, null, 3, 3, 1500, 2092, 0, null);
             //DrawListToImageFiles("moritz", cardsList.Where(x => x.ConstructKey() == "1:18" || x.ConstructKey() == "4:70"), (c) => 5, null, "en", 3, 3, 1500, 2092, 0, null);
-            DrawListToImageFiles("auftrag", new List<CardToDraw> { new CardToDraw(1, "18", 3, "en"), new CardToDraw(3, "190", 1, "en"), new CardToDraw(4, "70", 4, "de"), new CardToDraw(4, "221", 1, "de") }, 3, 3, 1500, 2092, 0);
+            //DrawListToImageFiles("auftrag", new List<CardToDraw> { new CardToDraw(1, "18", 3, "en"), new CardToDraw(3, "190", 1, "en"), new CardToDraw(4, "70", 4, "de"), new CardToDraw(4, "221", 1, "de") }, 3, 3, 1500, 2092, 0);
             //DrawListToImageFiles("enchanted_playset", cardsList.Where(x => x.Rarity == Rarity.Enchanted), (c) => 4, null, 3, 3, 1500, 2092, 0, null);
             //DrawListToImageFiles("ingo", cardsList.Where(x => x.), (c) => 1, null, 3, 3, 1500, 2092, 0, null);
 
@@ -90,7 +94,8 @@ namespace lorcana
                 if (comparedCount < 4 && card.Total > 4)
                 {
                     WriteCardDisplay(card);
-                    Console.WriteLine($" {collection1.Name}: {card.Total} | {collection2.Name}: {comparedCount}");
+                    int spareCards = Math.Min(card.Total - 4, 4 - comparedCount);
+                    Console.WriteLine($" {spareCards}x ({collection1.Name}: {card.Total} | {collection2.Name}: {comparedCount})");
                 }
             }
             Console.WriteLine();

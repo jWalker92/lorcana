@@ -5,7 +5,8 @@
     xmlns:lorcanaapp="clr-namespace:lorcanaApp"
     xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:ffimageloadingsvg="clr-namespace:FFImageLoading.Svg.Forms;assembly=FFImageLoading.Svg.Forms"
-    x:Class="lorcanaApp.CardListView">
+    x:Class="lorcanaApp.CardListView"
+    x:DataType="lorcanaapp:AdjustableCard">
     <Grid ColumnDefinitions="60,*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12" Padding="8,4" HeightRequest="90" BackgroundColor="{AppThemeBinding Light={StaticResource bgLight}, Dark={StaticResource bgDark}}">
         <ContentView IsVisible="{Binding FoilBackground}" Background="{StaticResource gradientBg}" Margin="-8,-4" Grid.RowSpan="2" Grid.ColumnSpan="3"/>
         <Frame Grid.RowSpan="2" CornerRadius="4" VerticalOptions="Center" Padding="0" IsClippedToBounds="True" BackgroundColor="Transparent">
@@ -24,7 +25,10 @@
             <Label Text="{Binding SubTitle}" FontSize="16" FontAttributes="Italic"/>
             <Label Text="{Binding Body}" MaxLines="2" FontSize="14" LineBreakMode="TailTruncation"/>
         </StackLayout>
-        <Label Text="{Binding Number, StringFormat='{}#{0:000}'}" FontSize="18" Grid.Column="2" HorizontalOptions="End"/>
+        <StackLayout Orientation="Horizontal" Grid.Column="2" HorizontalOptions="End">
+            <Label Text="{Binding SetNumber}" FontSize="18" FontAttributes="Italic"/>
+            <Label Text="{Binding Number, StringFormat='{}#{0:000}'}" FontSize="18" FontAttributes="Bold"/>
+        </StackLayout>
         <StackLayout x:Name="amountsTapArea" Orientation="Horizontal" Grid.Row="1" Grid.Column="2" IsVisible="{Binding ShowAmounts}">
             <Frame WidthRequest="32" HeightRequest="32" HasShadow="False" 
                     BorderColor="#44000000" Padding="0" CornerRadius="8" VerticalOptions="Center" BackgroundColor="#33A0A0A0">

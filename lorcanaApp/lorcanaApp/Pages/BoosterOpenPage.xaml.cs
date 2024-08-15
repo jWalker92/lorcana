@@ -17,7 +17,13 @@ namespace lorcanaApp
             cards = new ObservableCollection<AdjustableCard>();
 			cardsList.ItemsSource = cards;
 		}
-        
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Database.Instance.FireCollectionChanged();
+        }
+
         async void Normals_Add(object sender, EventArgs e)
         {
             await AddCard((c) => c.Normals++, (c) => c.Normals--);
